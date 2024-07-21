@@ -13,15 +13,26 @@ const Sidebar = () => {
     }, [dispatch]);
 
     return (
-        <div className="flex flex-col border">
+        <div className="border">
             {categories.map(el => (
-                <NavLink
-                    to={createSlug(el.name)}
+                <div
                     key={el.id}
-                    className={({isActive}) => isActive ? 'px-5 pt-[15px] pb-[14px] text-sm bg-main text-white hover:text-main' : 'px-5 pt-[15px] pb-[14px] text-sm hover:text-main'}
+                    className="flex items-center p-3"
                 >
-                    {el.name}
-                </NavLink>
+                    <img
+                        className="w-6 h-6 mr-3"
+                        src={el.imageUrl}
+                        alt="ImageIcon"
+                    />
+                    <NavLink
+                        to={createSlug(el.name)}
+                        className={({ isActive }) =>
+                            isActive ? 'flex-1 text-main font-semibold' : 'flex-1 text-gray-700 hover:text-main'
+                        }
+                    >
+                        {el.name}
+                    </NavLink>
+                </div>
             ))}
         </div>
     )

@@ -4,3 +4,4 @@ export { default as Sidebar } from './Sidebar';
 export { default as Banner } from './Banner';
 export { default as BestSeller } from './BestSeller';
 export { default as Product } from './Product';
+export { default as SelectOption } from './SelectOption';

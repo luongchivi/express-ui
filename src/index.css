@@ -15,24 +15,28 @@ button.slick-prev{
 }
 
 button.slick-next::before{
-    color: gray;
+    color: #8a8585;
     background-color: #d0c9c9;
     font-size: 30px;
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     display: flex;
     justify-content: center;
     align-items: center;
+    top: 50%; /* Căn giữa theo chiều dọc */
+    transform: translateY(-50%); /* Căn giữa theo chiều dọc */
     content: '\276F'; /* https://www.toptal.com/designers/htmlarrows/symbols/ */
 }
 button.slick-prev::before{
-    color: gray;
+    color: #8a8585;
     background-color: #d0c9c9;
     font-size: 30px;
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     display: flex;
     justify-content: center;
     align-items: center;
+    top: 50%; /* Căn giữa theo chiều dọc */
+    transform: translateY(-50%); /* Căn giữa theo chiều dọc */
     content: '\276E';
 }
