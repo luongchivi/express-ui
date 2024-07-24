@@ -2,6 +2,9 @@ import React, {useEffect, useState} from 'react';
 import {apiGetProducts} from "../apis/product";
 import {Product} from "../../src/components";
 import Slider from "react-slick";
+import CustomSlider from "./CustomSlider";
+import {useDispatch, useSelector} from "react-redux";
+import {getNewProducts} from "../store/products/asyncAction";
 
 const tabs = [
     {
@@ -14,41 +17,47 @@ const tabs = [
     },
 ];
 
-const settings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1
-};
-
 const BestSeller = () => {
     const [betterSellers, setBetterSeller] = useState([]);
-    const [newProducts, setNewProduct] = useState([]);
     const [activeTab, setActiveTab] = useState(1);
     const [products, setProducts] = useState([]);
+    const dispatch = useDispatch();
+    const { newProducts } = useSelector(state => state.products);
+
+    const fetchProducts = async () => {
+        const response = await apiGetProducts({sortBy: 'unitsSold', sortOrder: 'desc'});
+        if (response?.results?.statusCode === 200) {
+            const {products} = response.results;
+            setBetterSeller(products);
+        }
+    };
 
     useEffect(() => {
-        const fetchProducts = async () => {
-            const [bestSellerData, newProductData] = await Promise.all([
-                apiGetProducts({sortBy: 'unitsSold', sortOrder: 'desc'}),
-                apiGetProducts({sortBy: 'id', sortOrder: 'desc'}),
-            ]);
-
-            if (bestSellerData?.results?.statusCode === 200) {
-                const {products} = bestSellerData.results;
-                setBetterSeller(products);
-                if (activeTab === 1) setProducts(products);
-            }
-            if (newProductData?.results?.statusCode === 200) {
-                const {products} = newProductData.results;
-                setNewProduct(products);
-                if (activeTab === 2) setProducts(products);
-            }
-        };
-
         fetchProducts().then();
+        dispatch(getNewProducts())
     }, [activeTab]);
+
+    // useEffect(() => {
+    //     const fetchProducts = async () => {
+    //         const [bestSellerData, newProductData] = await Promise.all([
+    //             apiGetProducts({sortBy: 'unitsSold', sortOrder: 'desc'}),
+    //             apiGetProducts({sortBy: 'id', sortOrder: 'desc'}),
+    //         ]);
+    //
+    //         if (bestSellerData?.results?.statusCode === 200) {
+    //             const {products} = bestSellerData.results;
+    //             setBetterSeller(products);
+    //             if (activeTab === 1) setProducts(products);
+    //         }
+    //         if (newProductData?.results?.statusCode === 200) {
+    //             const {products} = newProductData.results;
+    //             setNewProduct(products);
+    //             if (activeTab === 2) setProducts(products);
+    //         }
+    //     };
+    //
+    //     fetchProducts().then();
+    // }, [activeTab]);
 
     useEffect(() => {
         if (activeTab === 1) setProducts(betterSellers);
@@ -61,7 +70,7 @@ const BestSeller = () => {
                 {tabs.map(el => (
                     <span
                         key={el.id}
-                        className={`font-semibold capitalize border-r pr-8 cursor-pointer ${activeTab === el.id ? 'text-black' : 'text-gray-400'}`}
+                        className={`font-semibold uppercase border-r pr-8 cursor-pointer ${activeTab === el.id ? 'text-black' : 'text-gray-400'}`}
                         onClick={() => setActiveTab(el.id)}
                     >
                         {el.name}
@@ -69,15 +78,7 @@ const BestSeller = () => {
                 ))}
             </div>
             <div className="mt-4 mx-[-10px]">
-                <Slider {...settings}>
-                    {products.map(el => (
-                        <Product
-                            key={el.id}
-                            productData={el}
-                            isNew={activeTab === 1}
-                        />
-                    ))}
-                </Slider>
+                <CustomSlider products={products} activeTab={activeTab} />
             </div>
             <div className="w-full flex gap-4 mt-4">
                 <img

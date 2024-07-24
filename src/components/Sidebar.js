@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {NavLink} from 'react-router-dom';
 import {createSlug} from '../utils/helpers';
 import {useDispatch, useSelector} from "react-redux";
-import {getCategories} from "../store/asyncAction";
+import {getCategories} from "../store/app/asyncAction";
 
 const Sidebar = () => {
     const dispatch = useDispatch();
@@ -21,7 +21,7 @@ const Sidebar = () => {
                 >
                     <img
                         className="w-6 h-6 mr-3"
-                        src={el.imageUrl}
+                        src={el.iconImageUrl}
                         alt="ImageIcon"
                     />
                     <NavLink
