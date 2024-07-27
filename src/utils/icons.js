@@ -9,6 +9,10 @@ import { FaHeart } from "react-icons/fa6";
 import { FaRegStar } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
+import { MdOutlineMail } from "react-icons/md";
+import { MdMarkEmailUnread } from "react-icons/md";
+import { FaLock } from "react-icons/fa";
+import { RiLockPasswordFill } from "react-icons/ri";
 
 const icons = {
     MdPhone,
@@ -22,6 +26,10 @@ const icons = {
     FaRegStar,
     FaStar,
     IoIosArrowForward,
+    MdOutlineMail,
+    MdMarkEmailUnread,
+    FaLock,
+    RiLockPasswordFill,
 }
 
 export default icons;

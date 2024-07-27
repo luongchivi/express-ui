@@ -4,7 +4,7 @@ import {Product} from "../../src/components";
 import Slider from "react-slick";
 import CustomSlider from "./CustomSlider";
 import {useDispatch, useSelector} from "react-redux";
-import {getNewProducts} from "../store/products/asyncAction";
+import {getNewProducts} from "../store/product/asyncAction";
 
 const tabs = [
     {
@@ -37,31 +37,9 @@ const BestSeller = () => {
         dispatch(getNewProducts())
     }, [activeTab]);
 
-    // useEffect(() => {
-    //     const fetchProducts = async () => {
-    //         const [bestSellerData, newProductData] = await Promise.all([
-    //             apiGetProducts({sortBy: 'unitsSold', sortOrder: 'desc'}),
-    //             apiGetProducts({sortBy: 'id', sortOrder: 'desc'}),
-    //         ]);
-    //
-    //         if (bestSellerData?.results?.statusCode === 200) {
-    //             const {products} = bestSellerData.results;
-    //             setBetterSeller(products);
-    //             if (activeTab === 1) setProducts(products);
-    //         }
-    //         if (newProductData?.results?.statusCode === 200) {
-    //             const {products} = newProductData.results;
-    //             setNewProduct(products);
-    //             if (activeTab === 2) setProducts(products);
-    //         }
-    //     };
-    //
-    //     fetchProducts().then();
-    // }, [activeTab]);
-
     useEffect(() => {
-        if (activeTab === 1) setProducts(betterSellers);
-        if (activeTab === 2) setProducts(newProducts);
+        if (activeTab === 1) setProducts(newProducts);
+        if (activeTab === 2) setProducts(betterSellers);
     }, [activeTab, betterSellers, newProducts]);
 
     return (

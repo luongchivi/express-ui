@@ -8,8 +8,10 @@ const { IoIosArrowForward } = icons;
 const Home = () => {
     const {newProducts} = useSelector(state => state.products);
     const {categories} = useSelector(state => state.app);
+    const { isLogin, currentUser } = useSelector(state => state.user);
 
-    console.log(categories);
+    console.log(isLogin);
+    console.log(currentUser);
 
     return (
         <div>
@@ -37,7 +39,7 @@ const Home = () => {
             <div className="my-8 w-full">
                 <h3 className="text-[20px] font-semibold py-[15px] border-b-2 border-main">HOT COLLECTIONS</h3>
                 <div className="flex flex-wrap gap-4 mt-4">
-                    {categories?.filter(el => el.suppliers.length > 0).map(el => (
+                    {categories?.map(el => (
                         <div
                             key={el.id}
                             className="w-[396px]"

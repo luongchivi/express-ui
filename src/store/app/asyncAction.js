@@ -3,8 +3,8 @@ import * as apis from '../../apis';
 
 
 export const getCategories = createAsyncThunk('app/categories', async (data, {rejectWithValue}) => {
-    const response = await apis.apiGetCategories();
-    const { statusCode, categories } = response.results;
+    const response = await apis.apiGetCategories({pageSize: 8});
+    const {statusCode, categories} = response.results;
     if (statusCode !== 200) {
         return rejectWithValue(response);
     }
