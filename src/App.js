@@ -12,6 +12,7 @@ import {
     VerifyEmail,
     ForgotPassword,
     ResetPassword,
+    SignUp,
 } from './pages/public';
 import path from './utils/path';
 
@@ -29,8 +30,9 @@ function App() {
                     <Route path={path.VERIFY_EMAIL} element={<VerifyEmail/>}/>
                     <Route path={path.FORGOT_PASSWORD} element={<ForgotPassword/>}/>
                     <Route path={path.RESET_PASSWORD__RESET_TOKEN} element={<ResetPassword/>}/>
+                    <Route path={path.LOGIN} element={<Login/>}/>
+                    <Route path={path.SIGN_UP} element={<SignUp/>}/>
                 </Route>
-                <Route path={path.LOGIN} element={<Login/>}/>
             </Routes>
         </div>
     );

@@ -1,25 +1,35 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useState} from 'react';
 import {Button, InputField} from "../../components";
 import icons from '../../utils/icons';
 import {apiForgotPassword} from "../../apis/auth";
 import Swal from "sweetalert2";
+import {validate} from "../../utils/helpers";
 
 const {FaLock} = icons;
 
 const ForgotPassword = () => {
+    const [invalidFields, setInvalidFields] = useState([]);
     const [payload, setPayload] = React.useState({
         email: '',
     });
 
+    const resetPayload = () => {
+        setPayload({
+            email: '',
+        })
+    };
+
     const handleSubmit = useCallback(async () => {
         try {
-            const {email} = payload;
-            if (email) {
+            const invalids = validate(payload, setInvalidFields);
+            if (invalids === 0) {
                 const response = await apiForgotPassword(payload);
                 if (response?.results?.statusCode === 200) {
                     await Swal.fire('Request forgot password successfully.', response?.results?.message, 'success');
+                    resetPayload();
                 } else {
                     await Swal.fire('Oops! something wrong.', response?.results?.message, 'error');
+                    resetPayload();
                 }
             }
         } catch (error) {
@@ -42,6 +52,8 @@ const ForgotPassword = () => {
                         value={payload.email}
                         setValue={setPayload}
                         nameKey="email"
+                        invalidFields={invalidFields}
+                        setInvalidFields={setInvalidFields}
                     />
                 </>
                 <Button

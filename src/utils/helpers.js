@@ -21,3 +21,39 @@ export const renderStar = (number, size = 16) => {
 
     return starsArray;
 };
+
+export const validate = (payload, setInvalidFields) => {
+    let invalids = 0;
+    const formatPayload = Object.entries(payload);
+    const newInvalidFields = []; // Create a temporary array for invalid fields
+
+    formatPayload.forEach(arr => {
+        if (arr[1]?.trim() === '') {
+            invalids++;
+            newInvalidFields.push({ name: arr[0], message: 'Require this field.' });
+        }
+    });
+
+    formatPayload.forEach(arr => {
+        switch (arr[0]) {
+            case 'email':
+                const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+                if (!arr[1].match(regex)) {
+                    invalids++;
+                    newInvalidFields.push({ name: arr[0], message: 'Email invalid.' });
+                }
+                break;
+            case 'password':
+                if (arr[1].length < 6) {
+                    invalids++;
+                    newInvalidFields.push({ name: arr[0], message: 'Password need at least 6 characters.' });
+                }
+                break;
+            default:
+                break;
+        }
+    })
+
+    setInvalidFields(newInvalidFields); // Set the new invalid fields once validation is done
+    return invalids;
+}

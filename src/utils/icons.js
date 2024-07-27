@@ -13,6 +13,8 @@ import { MdOutlineMail } from "react-icons/md";
 import { MdMarkEmailUnread } from "react-icons/md";
 import { FaLock } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
+import { MdLogin } from "react-icons/md";
+import { FaRegRegistered } from "react-icons/fa";
 
 const icons = {
     MdPhone,
@@ -30,6 +32,8 @@ const icons = {
     MdMarkEmailUnread,
     FaLock,
     RiLockPasswordFill,
+    MdLogin,
+    FaRegRegistered,
 }
 
 export default icons;

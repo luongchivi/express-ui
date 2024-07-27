@@ -10,14 +10,13 @@ export const userSlice = createSlice({
         messageErrorAPI: null,
     },
     reducers: {
-        signUp: (state, action) => {
-            console.log(action);
+        login: (state, action) => {
             state.isLogin = action.payload.isLogin;
             state.currentUser = action.payload.userData;
             state.token = action.payload.token;
         }
     },
 });
-export const { signUp } = userSlice.actions;
+export const { login } = userSlice.actions;
 
 export default userSlice.reducer;
