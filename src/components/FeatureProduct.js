@@ -8,7 +8,6 @@ const FeatureProduct = () => {
 
     const fetchProducts = async () => {
         const response = await apiGetProducts({pageSize: 9, page: Math.round(Math.random() * 5) + 1});
-        console.log(response);
         if (response?.results?.statusCode === 200) {
             setProducts(response?.results?.products);
         }
@@ -19,7 +18,7 @@ const FeatureProduct = () => {
     }, [])
 
     return (
-        <div className="w-full">
+        <div className="w-main">
             <h3 className="text-[20px] font-semibold py-[15px] border-b-2 border-main">FEATURE PRODUCTS</h3>
             <div className="flex flex-wrap mt-[15px] mx-[-10px]">
                 {products.map((el, index) => (

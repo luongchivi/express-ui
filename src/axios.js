@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {deepParseJSON} from "./utils/helpers";
 
 const instance = axios.create({
     baseURL: process.env.REACT_APP_API_URI,
@@ -7,6 +8,14 @@ const instance = axios.create({
 // Add a request interceptor
 instance.interceptors.request.use(function (config) {
     // Do something before request is sent
+    const localStorageData = window.localStorage.getItem('persist:shop/user');
+    const dataParse = deepParseJSON(localStorageData);
+    const { accessToken } = dataParse;
+    if (accessToken) {
+        config.headers = {
+            authorization: `Bearer ${accessToken}`,
+        }
+    }
     return config;
 }, function (error) {
     // Do something with request error

@@ -29,12 +29,13 @@ const Header = () => {
                     </span>
                     <span>Online Support 24/7</span>
                 </div>
-                <div className='flex items-center justify-center gap-2 px-6 border-r'>
+                <div className='flex items-center justify-center gap-2 px-6 border-r cursor-pointer'>
                     <IoBagCheckSharp color='red' size={20}/>
                     <span>0 item(s)</span>
                 </div>
-                <div className='flex flex-col items-center justify-center gap-2 px-6'>
-                    <FaCircleUser size={24}/>
+                <div className='flex items-center justify-center gap-2 px-6 cursor-pointer'>
+                    <FaCircleUser size={20} color='red'/>
+                    <span>Profile</span>
                 </div>
             </div>
         </div>

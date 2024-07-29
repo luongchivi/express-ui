@@ -57,3 +57,22 @@ export const validate = (payload, setInvalidFields) => {
     setInvalidFields(newInvalidFields); // Set the new invalid fields once validation is done
     return invalids;
 }
+
+export const deepParseJSON = (data) => {
+    if (typeof data === 'string') {
+        try {
+            return deepParseJSON(JSON.parse(data));
+        } catch (e) {
+            return data; // Nếu không parse được thì trả về chính string đó
+        }
+    } else if (Array.isArray(data)) {
+        return data.map(item => deepParseJSON(item));
+    } else if (data !== null && typeof data === 'object') {
+        return Object.keys(data).reduce((acc, key) => {
+            acc[key] = deepParseJSON(data[key]);
+            return acc;
+        }, {});
+    } else {
+        return data;
+    }
+}

@@ -51,6 +51,13 @@ module.exports = {
                 'slide-top': 'slide-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;',
             }
         },
+        listStyleType: {
+            none: 'none',
+            disc: 'disc',
+            decimal: 'decimal',
+            square: 'square',
+            roman: 'upper-roman',
+        }
     },
     plugins: [
         require('@tailwindcss/line-clamp'),

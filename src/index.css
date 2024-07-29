@@ -4,17 +4,17 @@
 @tailwind components;
 @tailwind utilities;
 
-button.slick-next{
-    right: 80px;
+.custom-slider button.slick-next{
+    right: 60px;
     z-index: 10;
 }
 
-button.slick-prev{
+.custom-slider button.slick-prev{
     left: 20px;
     z-index: 10;
 }
 
-button.slick-next::before{
+.custom-slider button.slick-next::before{
     color: #8a8585;
     background-color: #f6e5e5;
     font-size: 30px;
@@ -27,12 +27,51 @@ button.slick-next::before{
     transform: translateY(-50%); /* Căn giữa theo chiều dọc */
     content: '\276F'; /* https://www.toptal.com/designers/htmlarrows/symbols/ */
 }
-button.slick-prev::before{
+.custom-slider button.slick-prev::before{
     color: #8a8585;
     background-color: #f6e5e5;
     font-size: 30px;
     width: 60px;
     height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 50%; /* Căn giữa theo chiều dọc */
+    transform: translateY(-50%); /* Căn giữa theo chiều dọc */
+    content: '\276E';
+}
+
+.images-slider button.slick-next{
+    right: 20px;
+    top: 80px;
+    z-index: 10;
+}
+
+.images-slider button.slick-prev{
+    left: -20px;
+    top: 80px;
+    z-index: 10;
+}
+
+.images-slider button.slick-next::before{
+    color: #8a8585;
+    background-color: #f6e5e5;
+    font-size: 30px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 50%; /* Căn giữa theo chiều dọc */
+    transform: translateY(-50%); /* Căn giữa theo chiều dọc */
+    content: '\276F'; /* https://www.toptal.com/designers/htmlarrows/symbols/ */
+}
+.images-slider button.slick-prev::before{
+    color: #8a8585;
+    background-color: #f6e5e5;
+    font-size: 30px;
+    width: 40px;
+    height: 40px;
     display: flex;
     justify-content: center;
     align-items: center;

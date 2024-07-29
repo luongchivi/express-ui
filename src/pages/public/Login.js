@@ -39,7 +39,7 @@ const Login = () => {
                 if (response?.results?.statusCode === 200) {
                     const { accessToken, user } = response?.results;
                     await Swal.fire('Login successfully', response?.results?.message, 'success');
-                    dispatch(login({isLogin: true, token: accessToken, userData: user }));
+                    dispatch(login({isLogin: true, accessToken: accessToken, userData: user }));
                     navigate(`/${path.HOME}`);
                 } else {
                     await Swal.fire('Oops! something wrong', response?.results?.message, 'error');
@@ -54,7 +54,7 @@ const Login = () => {
 
 
     return (
-        <div className="flex items-center justify-center rounded-sm mb-[24px]">
+        <div className="w-main flex items-center justify-center rounded-sm my-[24px]">
             <div
                 className="bg-white p-8 rounded-lg shadow-lg text-center max-w-md w-full border border-1 border-gray-200">
                 <MdLogin size={80} className="mx-auto mb-4 text-main"/>
@@ -78,10 +78,9 @@ const Login = () => {
                     />
                 </>
                 <Button
-                    name={'Submit'}
                     fw
                     handleOnClick={handleSubmit}
-                />
+                >Submit</Button>
                 <div className="flex items-center justify-between my-2 w-full text-sm">
                     <span
                         className="text-blue-500 hover:underline cursor-pointer"

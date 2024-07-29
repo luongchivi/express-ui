@@ -38,7 +38,7 @@ const ForgotPassword = () => {
     }, [payload])
 
     return (
-        <div className="flex items-center justify-center rounded-sm mb-[24px]">
+        <div className="w-main flex items-center justify-center rounded-sm my-[24px]">
             <div
                 className="bg-white p-8 rounded-lg shadow-lg text-center max-w-md w-full border border-1 border-gray-200">
                 <FaLock size={80} className="mx-auto mb-4 text-main"/>
@@ -57,10 +57,9 @@ const ForgotPassword = () => {
                     />
                 </>
                 <Button
-                    name={'Request link rest'}
                     fw
                     handleOnClick={handleSubmit}
-                />
+                >Request link rest</Button>
             </div>
         </div>
     );

@@ -38,7 +38,7 @@ const VerifyEmail = () => {
     }, [payload])
 
     return (
-        <div className="flex items-center justify-center rounded-sm mb-[24px]">
+        <div className="w-main flex items-center justify-center rounded-sm my-[24px]">
             <div
                 className="bg-white p-8 rounded-lg shadow-lg text-center max-w-md w-full border border-1 border-gray-200">
                 <MdMarkEmailUnread size={80} className="mx-auto mb-4 text-main"/>
@@ -58,10 +58,9 @@ const VerifyEmail = () => {
                     />
                 </>
                 <Button
-                    name={'Resend verification link'}
                     fw
                     handleOnClick={handleSubmit}
-                />
+                >Resend verification link</Button>
             </div>
         </div>
     );

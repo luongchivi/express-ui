@@ -5,17 +5,16 @@ import labelBest from '../assets/label_best.png';
 import {SelectOption} from '../components';
 import icons from "../utils/icons";
 import {Link} from 'react-router-dom';
-import path from '../utils/path';
 
 const {IoEyeSharp, IoMenu, FaHeart} = icons;
 
-const Product = ({productData, isNew}) => {
+const Product = ({productData, isNew, normal}) => {
     const [isShowOption, setShowOption] = useState(false);
 
     return (
         <div className="w-full text-base px-[10px]">
             <Link
-                to={`/${path.PRODUCT_DETAILS}/${productData?.id}/${productData?.name}`}
+                to={`/${productData?.category?.name?.toLowerCase() || 'product'}/${productData?.id}/${productData?.name}`}
                 className="w-full border p-[15px] flex flex-col items-center"
                 onMouseEnter={e => {
                     e.stopPropagation();
@@ -41,11 +40,14 @@ const Product = ({productData, isNew}) => {
                         alt=""
                         className="w-full h-[360px]  object-contain"
                     />
-                    <img
-                        className="absolute top-[-10px] right-[-10px] h-[30px] object-cover"
-                        src={isNew ? labelNew : labelBest}
-                        alt=""
-                    />
+                    {
+                        !normal &&
+                        <img
+                            className="absolute top-[-10px] right-[-10px] h-[30px] object-cover"
+                            src={isNew ? labelNew : labelBest}
+                            alt=""
+                        />
+                    }
                 </div>
                 <div className="flex flex-col gap-2 mt-[15px] items-start w-full gap-1">
                     <span className="line-clamp-1">{productData?.name}</span>

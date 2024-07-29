@@ -23,7 +23,7 @@ function App() {
                 <Route path={path.PUBLIC} element={<Public/>}>
                     <Route path={path.HOME} element={<Home/>}/>
                     <Route path={path.PRODUCTS} element={<Product/>}/>
-                    <Route path={path.PRODUCT_DETAILS__PID__NAME} element={<ProductDetails/>}/>
+                    <Route path={path.PRODUCT_DETAILS__CATEGORY__PID__NAME} element={<ProductDetails/>}/>
                     <Route path={path.BLOGS} element={<Blog/>}/>
                     <Route path={path.FAQS} element={<FAQ/>}/>
                     <Route path={path.OUR_SERVICES} element={<Service/>}/>

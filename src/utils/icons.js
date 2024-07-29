@@ -15,6 +15,12 @@ import { FaLock } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { MdLogin } from "react-icons/md";
 import { FaRegRegistered } from "react-icons/fa";
+import { MdLogout } from "react-icons/md";
+import { FaShieldAlt } from "react-icons/fa";
+import { FaTruck } from "react-icons/fa";
+import { FaGift } from "react-icons/fa";
+import { FaReply } from "react-icons/fa6";
+import { FaTty } from "react-icons/fa6";
 
 const icons = {
     MdPhone,
@@ -34,6 +40,12 @@ const icons = {
     RiLockPasswordFill,
     MdLogin,
     FaRegRegistered,
+    MdLogout,
+    FaShieldAlt,
+    FaTruck,
+    FaGift,
+    FaReply,
+    FaTty,
 }
 
 export default icons;
