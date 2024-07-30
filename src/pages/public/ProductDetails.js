@@ -21,6 +21,7 @@ const ProductDetails = () => {
     const [product, setProduct] = useState(null);
     const [products, setProducts] = useState([]);
     const [quantity, setQuantity] = useState(1);
+    const [currentImage, setCurrentImage] = useState(null);
 
     const fetchProductByCategory = async () => {
         const response = await apiGetProducts({ categoryName: category});
@@ -35,6 +36,7 @@ const ProductDetails = () => {
         if (response?.results?.statusCode === 200) {
             const {product} = response?.results;
             setProduct(product);
+            setCurrentImage(product?.thumbImageUrl);
         }
     }
 
@@ -56,11 +58,16 @@ const ProductDetails = () => {
         if (flag === 'plus') setQuantity(prev => +prev + 1)
     }, [])
 
+    const handleClickImage = (e, imageSrc) => {
+        e.stopPropagation();
+        setCurrentImage(imageSrc);
+    }
+
     return (
         <div className="w-full">
             <div className="h-[81px] flex justify-center items-center bg-gray-100">
                 <div className="w-main">
-                    <h3 className="font-semibold">{name}</h3>
+                    <h3 className="font-semibold uppercase">{name}</h3>
                     <Breadcrumb name={name} category={category || 'product'}/>
                 </div>
             </div>
@@ -71,12 +78,12 @@ const ProductDetails = () => {
                             smallImage: {
                                 alt: 'Wristwatch by Ted Baker London',
                                 isFluidWidth: true,
-                                src: product?.thumbImageUrl
+                                src: currentImage,
                             },
                             largeImage: {
-                                src: product?.thumbImageUrl,
+                                src: currentImage,
                                 width: 1800,
-                                height: 1800
+                                height: 1800,
                             }
                         }} />
                     </div>
@@ -86,8 +93,10 @@ const ProductDetails = () => {
                                 product?.imagesUrl?.map((el, index) => (
                                     <div className="flex w-full gap-1" key={index}>
                                         <img
+                                            onClick={e => handleClickImage(e, el)}
                                             className="h-[143px] w-[143px] object-cover border border-gray-200"
-                                            src={el} alt={`sub-product image ${index}`}
+                                            src={el}
+                                            alt={`sub-product image ${index}`}
                                         />
                                     </div>
                                 ))
@@ -141,7 +150,10 @@ const ProductDetails = () => {
                 </div>
             </div>
             <div className=" w-main m-auto mt-[8px]">
-                <ProductDescription products={products}/>
+                <ProductDescription
+                    products={products}
+                    pid={pid}
+                />
             </div>
         </div>
     )

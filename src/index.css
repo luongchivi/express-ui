@@ -23,8 +23,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    top: 50%; /* Căn giữa theo chiều dọc */
-    transform: translateY(-50%); /* Căn giữa theo chiều dọc */
+    top: 50%;
+    transform: translateY(-50%);
     content: '\276F'; /* https://www.toptal.com/designers/htmlarrows/symbols/ */
 }
 .custom-slider button.slick-prev::before{
@@ -36,8 +36,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    top: 50%; /* Căn giữa theo chiều dọc */
-    transform: translateY(-50%); /* Căn giữa theo chiều dọc */
+    top: 50%;
+    transform: translateY(-50%);
     content: '\276E';
 }
 
@@ -62,8 +62,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    top: 50%; /* Căn giữa theo chiều dọc */
-    transform: translateY(-50%); /* Căn giữa theo chiều dọc */
+    top: 50%;
+    transform: translateY(-50%);
     content: '\276F'; /* https://www.toptal.com/designers/htmlarrows/symbols/ */
 }
 .images-slider button.slick-prev::before{
@@ -75,7 +75,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    top: 50%; /* Căn giữa theo chiều dọc */
-    transform: translateY(-50%); /* Căn giữa theo chiều dọc */
+    top: 50%;
+    transform: translateY(-50%);
     content: '\276E';
+}
+
+.my-masonry-grid_column > div {
+    margin-bottom: 20px;
 }

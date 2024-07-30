@@ -43,7 +43,7 @@ export const productExtraInfo = [
         title: 'guarantee',
         sub: 'Quality checked',
         icon: <FaShieldAlt/>
-    },,
+    }, ,
     {
         id: 2,
         title: 'Free Shipping',
@@ -115,10 +115,73 @@ In preparation for your delivery, please remove existing furniture, pictures, mi
 6. **Installment Plans:** We offer flexible installment plans for eligible purchases. Choose the installment option at checkout and select the duration that suits you best.
 For any questions or assistance with payment, please contact our customer service team.`,
     },
-    {
-        id: 5,
-        title: 'CUSTOMER REVIEW',
-        content: ``,
-    },
 ];
 
+export const ratings = [1, 2, 3, 4, 5];
+
+export const sortBy = [
+    {
+        id: 1,
+        title: 'Featured',
+        value: {
+            sortBy: 'id',
+            sortOrder: 'desc',
+        }
+    },
+    {
+        id: 2,
+        title: 'Best Selling',
+        value: {
+            sortBy: 'unitsSold',
+            sortOrder: 'desc',
+        }
+    },
+    {
+        id: 3,
+        title: 'Alphabetically, A-Z',
+        value: {
+            sortBy: 'name',
+            sortOrder: 'asc',
+        }
+    },
+    {
+        id: 4,
+        title: 'Alphabetically, Z-A',
+        value: {
+            sortBy: 'name',
+            sortOrder: 'desc',
+        }
+    },
+    {
+        id: 5,
+        title: 'Price, low to high',
+        value: {
+            sortBy: 'unitPrice',
+            sortOrder: 'asc',
+        }
+    },
+    {
+        id: 6,
+        title: 'Price, high to low',
+        value: {
+            sortBy: 'unitPrice',
+            sortOrder: 'desc',
+        }
+    },
+    {
+        id: 7,
+        title: 'Date, old to new',
+        value: {
+            sortBy: 'createdAt',
+            sortOrder: 'asc',
+        }
+    },
+    {
+        id: 8,
+        title: 'Date, new to old',
+        value: {
+            sortBy: 'createdAt',
+            sortOrder: 'desc',
+        }
+    },
+];

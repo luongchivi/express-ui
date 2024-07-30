@@ -8,7 +8,7 @@ import {
     ProductDetails,
     FAQ,
     Service,
-    Product,
+    Products,
     VerifyEmail,
     ForgotPassword,
     ResetPassword,
@@ -22,7 +22,7 @@ function App() {
             <Routes>
                 <Route path={path.PUBLIC} element={<Public/>}>
                     <Route path={path.HOME} element={<Home/>}/>
-                    <Route path={path.PRODUCTS} element={<Product/>}/>
+                    <Route path={path.PRODUCTS} element={<Products/>}/>
                     <Route path={path.PRODUCT_DETAILS__CATEGORY__PID__NAME} element={<ProductDetails/>}/>
                     <Route path={path.BLOGS} element={<Blog/>}/>
                     <Route path={path.FAQS} element={<FAQ/>}/>
