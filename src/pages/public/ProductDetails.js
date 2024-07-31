@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom'
 import {apiGetProductDetails, apiGetProducts} from '../../apis';
-import {Breadcrumb, Button, ProductDescription, ProductExtraInfo, SelectQuantity} from '../../components';
+import {Breadcrumb, Button, CustomSlider, ProductDescription, ProductExtraInfo, SelectQuantity} from '../../components';
 import Slider from "react-slick";
 import ReactImageMagnify from 'react-image-magnify';
 import {formatMoney, renderStar} from "../../utils/helpers";
@@ -45,6 +45,7 @@ const ProductDetails = () => {
             fetchProductDetails().then();
             fetchProductByCategory().then();
         }
+        window.scrollTo(0, 0);
     }, [pid])
 
     const handleQuantity = useCallback((number) => {
@@ -151,9 +152,16 @@ const ProductDetails = () => {
             </div>
             <div className=" w-main m-auto mt-[8px]">
                 <ProductDescription
-                    products={products}
                     pid={pid}
+                    productName={product?.name}
                 />
+            </div>
+            <div className="w-main m-auto">
+                <h3 className="text-[20px] font-semibold py-[15px] border-b-2 border-main uppercase">Other Customers
+                    also buy:</h3>
+                <div className="w-full my-8">
+                    <CustomSlider products={products} normal={true}/>
+                </div>
             </div>
         </div>
     )

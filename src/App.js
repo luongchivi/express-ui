@@ -15,10 +15,18 @@ import {
     SignUp,
 } from './pages/public';
 import path from './utils/path';
+import {Modal} from './components';
+import {useSelector} from "react-redux";
 
 function App() {
+    const {isShowModal, modalChildren} = useSelector(state => state.app);
     return (
-        <div className="min-h-screen font-main">
+        <div className="font-main relative">
+            { isShowModal &&
+                <Modal>
+                    {modalChildren}
+                </Modal>
+            }
             <Routes>
                 <Route path={path.PUBLIC} element={<Public/>}>
                     <Route path={path.HOME} element={<Home/>}/>

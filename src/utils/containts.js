@@ -185,3 +185,26 @@ export const sortBy = [
         }
     },
 ];
+
+export const feedbackScore = [
+    {
+        id: 1,
+        text: 'Bad'
+    },
+    {
+        id: 2,
+        text: 'Poor'
+    },
+    {
+        id: 3,
+        text: 'Normal'
+    },
+    {
+        id: 4,
+        text: 'Good'
+    },
+    {
+        id: 5,
+        text: 'Perfect'
+    }
+];

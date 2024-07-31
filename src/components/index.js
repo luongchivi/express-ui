@@ -21,4 +21,6 @@ export { default as ProductDescription } from './ProductDescription';
 export { default as SearchItem } from './SearchItem';
 export { default as InputSelect } from './InputSelect';
 export { default as RatingBar } from './RatingBar';
-export { default as Rating } from './Rating';
+export { default as AddReview } from './AddReview';
+export { default as Modal } from './Modal';
+
