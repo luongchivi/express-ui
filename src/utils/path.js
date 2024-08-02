@@ -13,6 +13,18 @@ const path = {
     VERIFY_EMAIL: 'verify-email',
     FORGOT_PASSWORD: 'forgot-password',
     RESET_PASSWORD__RESET_TOKEN: 'reset-password/:resetToken',
-}
 
-export default path
+    // Admin
+    ADMIN: '/admin',
+    DASHBOARD: 'dashboard',
+    MANAGE_USERS: 'manage-users',
+    MANAGE_PRODUCTS: 'manage-products',
+    MANAGE_ORDERS: 'manage-orders',
+    CREATE_PRODUCT: 'create-product',
+
+    // Member
+    MEMBER: 'member',
+    PERSONAL: 'personal',
+};
+
+export default path;

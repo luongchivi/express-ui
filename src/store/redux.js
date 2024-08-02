@@ -22,7 +22,7 @@ const commonConfig = {
 
 const userConfig = {
     ...commonConfig,
-    whitelist: ['isLogin', 'accessToken']
+    whitelist: ['isLogin', 'accessToken', 'currentUser']
 };
 
 export const redux = configureStore({

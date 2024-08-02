@@ -1,8 +1,8 @@
 import React, {memo, useEffect, useRef, useState} from 'react';
-import logo from '../assets/logo_digital_new_250x.png';
-import {feedbackScore} from "../utils/containts";
-import icons from "../utils/icons";
-import {Button} from "../components";
+import logo from 'assets/logo_digital_new_250x.png';
+import {feedbackScore} from "utils/containts";
+import icons from "utils/icons";
+import {Button} from "components";
 
 const {FaStar} = icons;
 

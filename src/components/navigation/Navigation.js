@@ -1,5 +1,5 @@
 import React, {memo} from 'react';
-import { navigation } from '../utils/containts';
+import { navigation } from 'utils/containts';
 import { NavLink } from "react-router-dom";
 
 const Navigation = () => {

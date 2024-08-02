@@ -1,5 +1,5 @@
 import React, {memo} from 'react';
-import banner from '../assets/banner.png'
+import banner from 'assets/banner.png'
 
 const Banner = () => {
     return (

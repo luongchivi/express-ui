@@ -1,9 +1,9 @@
 import React, {useEffect, useState, memo} from 'react';
-import icons from "../utils/icons";
-import {apiGetProducts} from "../apis/product";
-import {formatMoney, renderStar} from "../utils/helpers";
+import icons from "utils/icons";
+import {apiGetProducts} from "apis/product";
+import {formatMoney, renderStar} from "utils/helpers";
 import {IoMenu} from "react-icons/io5";
-import {Countdown} from "./index";
+import {Countdown} from "components";
 
 let idInterval;
 

@@ -23,6 +23,10 @@ import { FaReply } from "react-icons/fa6";
 import { FaTty } from "react-icons/fa6";
 import { IoIosArrowDown } from "react-icons/io";
 import { BsThreeDots } from "react-icons/bs";
+import { AiOutlineDashboard } from "react-icons/ai";
+import { MdGroups } from "react-icons/md";
+import { AiFillProduct } from "react-icons/ai";
+import { TiShoppingCart } from "react-icons/ti";
 
 const icons = {
     MdPhone,
@@ -50,6 +54,10 @@ const icons = {
     FaTty,
     IoIosArrowDown,
     BsThreeDots,
+    AiOutlineDashboard,
+    MdGroups,
+    AiFillProduct,
+    TiShoppingCart,
 }
 
 export default icons;

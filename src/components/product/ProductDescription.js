@@ -1,13 +1,13 @@
 import React, {memo, useEffect, useState} from 'react';
-import {productDescriptionTabs} from "../utils/containts";
-import {Button, RatingBar, AddReview, Comment} from "../components";
-import {renderStar} from "../utils/helpers";
-import {apiAddReviewProduct, apiCountReviewsStarProduct, apiGetAllReviewsProduct} from "../apis";
+import {productDescriptionTabs} from "utils/containts";
+import {Button, RatingBar, AddReview, Comment} from "../index";
+import {renderStar} from "utils/helpers";
+import {apiAddReviewProduct, apiCountReviewsStarProduct, apiGetAllReviewsProduct} from "../../apis";
 import {useDispatch, useSelector} from "react-redux";
-import {showModal} from "../store/app/appSlice";
+import {showModal} from "store/app/appSlice";
 import Swal from "sweetalert2";
 import {useNavigate} from "react-router-dom";
-import path from '../utils/path';
+import path from 'utils/path';
 
 
 const ProductDescription = ({pid, productName}) => {

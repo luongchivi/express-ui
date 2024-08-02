@@ -1,6 +1,6 @@
 import React, {memo} from 'react';
-import usePagination from "../hooks/usePagination";
-import {PaginateItem} from "../components";
+import usePagination from "hooks/usePagination";
+import {PaginateItem} from "components";
 
 const Pagination = ({totalItemsFiltered, currentPage, pageSize, saveQueriesInFilter}) => {
     const pagination = usePagination(totalItemsFiltered, currentPage);

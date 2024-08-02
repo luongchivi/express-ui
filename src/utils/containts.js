@@ -1,5 +1,5 @@
-import path from '../utils/path';
-import icons from "../utils/icons";
+import path from 'utils/path';
+import icons from "utils/icons";
 
 export const navigation = [
     {
@@ -212,4 +212,51 @@ export const feedbackScore = [
         id: 5,
         text: 'Perfect'
     }
+];
+
+const {
+    AiOutlineDashboard,
+    MdGroups,
+    AiFillProduct,
+    TiShoppingCart,
+} = icons;
+
+export const adminSidebar = [
+    {
+        id: 1,
+        type: 'SINGLE',
+        text: 'Dashboard',
+        path: `${path.ADMIN}/${path.DASHBOARD}`,
+        icon: <AiOutlineDashboard/>
+    },
+    {
+        id: 2,
+        type: 'SINGLE',
+        text: 'Manage Users',
+        path: `${path.ADMIN}/${path.MANAGE_USERS}`,
+        icon: <MdGroups/>
+    },
+    {
+        id: 3,
+        type: 'PARENT',
+        text: 'Manage Products',
+        submenu: [
+            {
+                text: 'Create Product',
+                path: `${path.ADMIN}/${path.CREATE_PRODUCT}`,
+            },
+            {
+                text: 'Manage Product',
+                path: `${path.ADMIN}/${path.MANAGE_PRODUCTS}`,
+            }
+        ],
+        icon: <AiFillProduct/>
+    },
+    {
+        id: 4,
+        type: 'SINGLE',
+        text: 'Manage Orders',
+        path: `${path.ADMIN}/${path.MANAGE_ORDERS}`,
+        icon: <TiShoppingCart/>
+    },
 ];

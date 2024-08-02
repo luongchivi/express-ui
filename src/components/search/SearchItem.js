@@ -1,8 +1,8 @@
 import React, {memo, useEffect} from 'react';
-import icons from "../utils/icons";
-import {ratings} from "../utils/containts";
-import {apiGetProducts} from "../apis";
-import useDebounce from "../hooks/useDebounce";
+import icons from "utils/icons";
+import {ratings} from "utils/containts";
+import {apiGetProducts} from "apis";
+import useDebounce from "hooks/useDebounce";
 
 const {IoIosArrowDown} = icons;
 

@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {createSearchParams, useNavigate, useParams, useSearchParams} from "react-router-dom";
+import {createSearchParams, useNavigate, useSearchParams} from "react-router-dom";
 import {Breadcrumb, InputSelect, Pagination, Product, SearchItem} from "../../components";
 import {apiGetCategories, apiGetProducts} from "../../apis";
 import Masonry from 'react-masonry-css';

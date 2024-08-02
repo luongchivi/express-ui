@@ -19,7 +19,11 @@ export const userSlice = createSlice({
         },
         logout: (state, action) => {
             state.isLogin = false;
+            state.isLoading = false;
+            state.currentUser = null;
             state.accessToken = null;
+            state.messageErrorAPI = null;
+            state.sessionExpiredMessage = '';
         },
         clearSessionExpiredMessage: (state) => {
             state.sessionExpiredMessage = '';

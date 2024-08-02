@@ -1,7 +1,7 @@
 import React, {memo} from 'react';
-import avatar from '../assets/default_avatar.png';
+import avatar from 'assets/default_avatar.png';
 import moment from 'moment';
-import {renderStar} from "../utils/helpers";
+import {renderStar} from "utils/helpers";
 
 const Comment = ({comment}) => {
     return (

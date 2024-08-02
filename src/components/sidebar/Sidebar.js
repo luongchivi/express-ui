@@ -1,8 +1,8 @@
 import React, {memo, useEffect} from 'react';
 import {NavLink} from 'react-router-dom';
 import {useDispatch, useSelector} from "react-redux";
-import {getCategories} from "../store/app/asyncAction";
-import path from "../utils/path";
+import {getCategories} from "store/app/asyncAction";
+import path from "utils/path";
 
 const Sidebar = () => {
     const dispatch = useDispatch();

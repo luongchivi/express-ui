@@ -1,11 +1,11 @@
 import React, {memo, useState} from 'react';
-import {formatMoney, renderStar} from '../utils/helpers';
-import labelNew from '../assets/label_new.png';
-import labelBest from '../assets/label_best.png';
-import {SelectOption} from '../components';
-import icons from "../utils/icons";
+import {formatMoney, renderStar} from 'utils/helpers';
+import labelNew from 'assets/label_new.png';
+import labelBest from 'assets/label_best.png';
+import {SelectOption} from 'components';
+import icons from "utils/icons";
 import {Link} from 'react-router-dom';
-import defaultImageProduct from '../assets/default_image_product.png';
+import defaultImageProduct from 'assets/default_image_product.png';
 
 const {IoEyeSharp, IoMenu, FaHeart} = icons;
 

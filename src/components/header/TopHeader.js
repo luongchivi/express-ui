@@ -1,10 +1,10 @@
 import React, {memo, useEffect} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
-import path from '../utils/path';
+import path from 'utils/path';
 import {useDispatch, useSelector} from "react-redux";
-import {getCurrentUser} from "../store/user/asyncAction";
-import icons from "../utils/icons";
-import {clearSessionExpiredMessage, logout} from "../store/user/userSlice";
+import {getCurrentUser} from "store/user/asyncAction";
+import icons from "utils/icons";
+import {clearSessionExpiredMessage, logout} from "store/user/userSlice";
 import Swal from "sweetalert2";
 
 const {MdLogout} = icons;

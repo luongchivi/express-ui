@@ -1,6 +1,6 @@
 import React, {memo, useEffect, useState} from 'react';
-import {apiGetProducts} from "../apis/product";
-import {ProductCard} from "./index";
+import {apiGetProducts} from "apis/product";
+import {ProductCard} from "components";
 
 
 const FeatureProduct = () => {
