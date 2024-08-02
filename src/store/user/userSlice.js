@@ -10,6 +10,7 @@ export const userSlice = createSlice({
         currentUser: null,
         accessToken: null,
         messageErrorAPI: null,
+        sessionExpiredMessage: '',
     },
     reducers: {
         login: (state, action) => {
@@ -19,6 +20,9 @@ export const userSlice = createSlice({
         logout: (state, action) => {
             state.isLogin = false;
             state.accessToken = null;
+        },
+        clearSessionExpiredMessage: (state) => {
+            state.sessionExpiredMessage = '';
         }
     },
     extraReducers: (builder) => {
@@ -28,14 +32,18 @@ export const userSlice = createSlice({
         builder.addCase(actions.getCurrentUser.fulfilled, (state, action) => {
             state.isLoading = false;
             state.currentUser = action.payload;
+            state.isLogin = true;
         });
         builder.addCase(actions.getCurrentUser.rejected, (state, action) => {
             state.isLoading = false;
             state.currentUser = null;
+            state.isLogin = false;
+            state.accessToken = null;
             state.messageErrorAPI = action.payload?.results.messageErrorAPI;
+            state.sessionExpiredMessage = 'Your Session Has Expired! Please Login Again.'
         });
     }
 });
-export const { login, logout } = userSlice.actions;
+export const { login, logout, clearSessionExpiredMessage } = userSlice.actions;
 
 export default userSlice.reducer;

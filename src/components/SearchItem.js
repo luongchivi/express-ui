@@ -1,16 +1,15 @@
 import React, {memo, useEffect} from 'react';
 import icons from "../utils/icons";
 import {ratings} from "../utils/containts";
-import {createSearchParams, useNavigate, useParams} from "react-router-dom";
+import {createSearchParams, useNavigate, useParams, useSearchParams} from "react-router-dom";
 import {apiGetProducts} from "../apis";
-import {formatMoney} from "../utils/helpers";
 import useDebounce from "../hooks/useDebounce";
 
 const {IoIosArrowDown} = icons;
 
 
 const SearchItem = ({name, activeClick, changeActiveFilter, type = 'checkbox'}) => {
-    const {category} = useParams();
+    const { category } = useParams();
     const navigate = useNavigate();
     const [selected, setSelected] = React.useState([]);
     const [highestPrice, setHighestPrice] = React.useState(0);
@@ -28,11 +27,13 @@ const SearchItem = ({name, activeClick, changeActiveFilter, type = 'checkbox'}) 
     }
 
     const fetchHighestPrice = async () => {
-        const response = await apiGetProducts({sortBy: 'unitPrice', sortOrder: 'desc'});
+        const response = await apiGetProducts({sortBy: 'unitPrice', sortOrder: 'desc', categoryName: category});
         if (response?.results?.statusCode === 200) {
             const {products} = response?.results;
-            const {unitPrice} = products[0];
-            setHighestPrice(unitPrice)
+            if (products[0]) {
+                const {unitPrice} = products[0];
+                setHighestPrice(unitPrice)
+            }
         }
     }
 
@@ -42,10 +43,16 @@ const SearchItem = ({name, activeClick, changeActiveFilter, type = 'checkbox'}) 
                 pathname: `/${category}`,
                 search: createSearchParams({
                     averageRating: selected.join(','),
+                    page: 1,
                 }).toString(),
             })
         } else {
-            navigate(`/${category}`)
+            navigate({
+                pathname: `/${category}`,
+                search: createSearchParams({
+                    page: 1,
+                }).toString(),
+            })
         }
     }, [selected])
 
@@ -65,40 +72,43 @@ const SearchItem = ({name, activeClick, changeActiveFilter, type = 'checkbox'}) 
                 pathname: `/${category}`,
                 search: createSearchParams({
                     unitPrice: `${priceFrom},${priceTo}`,
+                    page: 1,
                 }).toString(),
             })
         } else {
-            navigate(`/${category}`)
+            navigate({
+                pathname: `/${category}`,
+                search: createSearchParams({
+                    page: 1,
+                }).toString(),
+            })
         }
     }, [debouncePriceFrom, debouncePriceTo]);
 
     return (
         <div
             onClick={() => changeActiveFilter(name)}
-            className=" cursor-pointer relative text-gray-500 gap-6 p-3 text-xs border border-gray-800 flex justify-between items-center">
+            className="cursor-pointer relative text-gray-500 gap-6 p-3 text-xs border border-gray-800 flex justify-between items-center"
+        >
             <span className="capitalize">{name}</span>
-            <IoIosArrowDown/>
-            {
-                activeClick === name &&
+            <IoIosArrowDown />
+            {activeClick === name && (
                 <div className="absolute z-10 top-[calc(100%+1px)] left-0 w-fit border bg-white min-w-[150px] border-b">
-                    {
-                        type === "checkbox" &&
+                    {type === "checkbox" && (
                         <div className="p-2">
                             <div className="py-2 items-center flex justify-between gap-2">
-                                <span
-                                    className="whitespace-nowrap">{`${selected.length === 0 ? 'None' : selected.length} selected`}</span>
+                                <span className="whitespace-nowrap">{`${selected.length === 0 ? 'None' : selected.length} selected`}</span>
                                 <span
                                     onClick={e => {
                                         e.stopPropagation();
                                         setSelected([]);
                                     }}
                                     className="underline hover:text-main"
-                                >Reset</span>
+                                >
+                                    Reset
+                                </span>
                             </div>
-                            <div
-                                onClick={e => e.stopPropagation()}
-                                className="flex flex-col gap-2"
-                            >
+                            <div onClick={e => e.stopPropagation()} className="flex flex-col gap-2">
                                 {ratings.map((el, index) => (
                                     <div key={index} className="flex items-center gap-4">
                                         <input
@@ -114,32 +124,31 @@ const SearchItem = ({name, activeClick, changeActiveFilter, type = 'checkbox'}) 
                                 ))}
                             </div>
                         </div>
-                    }
-                    {
-                        type === "input" &&
+                    )}
+                    {type === "input" && (
                         <div onClick={e => e.stopPropagation()}>
-                            <div
-                                className="p-4 items-center flex justify-between gap-8 border-b">
-                                <span
-                                    className="whitespace-nowrap">The highest price is {formatMoney(highestPrice)} VND</span>
+                            <div className="p-4 items-center flex justify-between gap-8 border-b">
+                                <span className="whitespace-nowrap">The highest price is {highestPrice} VND</span>
                                 <span
                                     onClick={e => {
                                         e.stopPropagation();
-                                        setPrice([0,0]);
+                                        setPrice([0, 0]);
                                         changeActiveFilter(null);
                                     }}
                                     className="underline hover:text-main"
-                                >Reset</span>
+                                >
+                                    Reset
+                                </span>
                             </div>
                             <div className="flex items-center gap-2 p-2">
                                 <div className="flex items-center gap-2">
-                                    <label htmlFor="from">Form</label>
+                                    <label htmlFor="from">From</label>
                                     <input
                                         className="form-input"
                                         type="number"
                                         id="from"
-                                        value={price.from}
-                                        onChange={e => setPrice(prev => prev.map((el, index) => index === 0 ? +e.target.value : el))}
+                                        value={price[0]}
+                                        onChange={e => setPrice([+e.target.value, price[1]])}
                                     />
                                 </div>
                                 <div className="flex items-center gap-2">
@@ -148,17 +157,17 @@ const SearchItem = ({name, activeClick, changeActiveFilter, type = 'checkbox'}) 
                                         className="form-input"
                                         type="number"
                                         id="to"
-                                        value={price.to}
-                                        onChange={e => setPrice(prev => prev.map((el, index) => index === 1 ? +e.target.value : el))}
+                                        value={price[1]}
+                                        onChange={e => setPrice([price[0], +e.target.value])}
                                     />
                                 </div>
                             </div>
                         </div>
-                    }
+                    )}
                 </div>
-            }
+            )}
         </div>
-    )
+    );
 }
 
-export default memo(SearchItem)
+export default memo(SearchItem);

@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {useParams, useSearchParams} from "react-router-dom";
-import {Breadcrumb, InputSelect, Product, SearchItem} from "../../components";
+import {createSearchParams, useNavigate, useParams, useSearchParams} from "react-router-dom";
+import {Breadcrumb, InputSelect, Pagination, Product, SearchItem} from "../../components";
 import {apiGetProducts} from "../../apis";
 import Masonry from 'react-masonry-css'
 import {sortBy} from "../../utils/containts";
@@ -15,26 +15,29 @@ const breakpointColumnsObj = {
 const Products = () => {
     const [products, setProducts] = useState([]);
     const [activeClick, setActiveClick] = useState(null);
+    const {category} = useParams();
     const [params] = useSearchParams();
     const [sort, setSort] = useState('');
+    const [totalItemsFiltered, setTotalItemsFiltered] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
+    const navigate = useNavigate();
 
     const fetchProducts = async (queries) => {
         const response = await apiGetProducts(queries);
         if (response?.results?.statusCode === 200) {
-            const {products} = response?.results;
+            const {
+                products,
+                totalItemsFiltered: totalItemsFilteredData,
+                currentPage: currentPageData,
+                pageSize: pageSizeData,
+            } = response?.results;
             setProducts(products);
+            setCurrentPage(currentPageData);
+            setTotalItemsFiltered(totalItemsFilteredData);
+            setPageSize(pageSizeData);
         }
     }
-
-    const {category} = useParams();
-    useEffect(() => {
-        let param = []
-        for (let i of params.entries()) {
-            param.push(i);
-        }
-        let queries = Object.fromEntries(params.entries());
-        fetchProducts({ ...queries, categoryName: category.replace('-',' ')}).then();
-    }, [params])
 
     const changeActiveFilter = useCallback((name) => {
         if (activeClick === name) {
@@ -46,8 +49,21 @@ const Products = () => {
 
     const changeValueSort = useCallback((value) => {
         setSort(value);
-        fetchProducts({...value.value, categoryName: category.replace('-',' ')}).then();
+        navigate({
+            pathname: `/${category}`,
+            search: createSearchParams({...value.value, categoryName: category}).toString()
+        })
     }, [sort])
+
+    useEffect(() => {
+        let param = []
+        for (let i of params.entries()) {
+            param.push(i);
+        }
+        let queries = Object.fromEntries(params.entries());
+        fetchProducts({...queries, categoryName: category}).then();
+        window.scrollTo(0, 0);
+    }, [params])
 
     return (
         <div className="w-full">
@@ -95,6 +111,15 @@ const Products = () => {
                         />
                     ))}
                 </Masonry>
+            </div>
+            <div className="w-main m-auto py-4">
+                <div className="">
+                    <Pagination
+                        totalItemsFiltered={totalItemsFiltered}
+                        currentPage={currentPage}
+                        pageSize={pageSize}
+                    />
+                </div>
             </div>
         </div>
     )

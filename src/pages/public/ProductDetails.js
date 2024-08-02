@@ -6,6 +6,7 @@ import Slider from "react-slick";
 import ReactImageMagnify from 'react-image-magnify';
 import {formatMoney, renderStar} from "../../utils/helpers";
 import {productExtraInfo} from "../../utils/containts"
+import defaultImageProduct from "../../assets/default_image_product.png";
 
 const settings = {
     dots: false,
@@ -79,10 +80,10 @@ const ProductDetails = () => {
                             smallImage: {
                                 alt: 'Wristwatch by Ted Baker London',
                                 isFluidWidth: true,
-                                src: currentImage,
+                                src: currentImage || defaultImageProduct,
                             },
                             largeImage: {
-                                src: currentImage,
+                                src: currentImage || defaultImageProduct,
                                 width: 1800,
                                 height: 1800,
                             }
@@ -91,16 +92,27 @@ const ProductDetails = () => {
                     <div className="w-full">
                         <Slider className="images-slider" {...settings}>
                             {
-                                product?.imagesUrl?.map((el, index) => (
-                                    <div className="flex w-full gap-1" key={index}>
-                                        <img
-                                            onClick={e => handleClickImage(e, el)}
-                                            className="h-[143px] w-[143px] object-cover border border-gray-200"
-                                            src={el}
-                                            alt={`sub-product image ${index}`}
-                                        />
-                                    </div>
-                                ))
+                                product?.imagesUrl?.length > 0 ?
+                                    product.imagesUrl.map((el, index) => (
+                                        <div className="flex w-full gap-1" key={index}>
+                                            <img
+                                                onClick={e => handleClickImage(e, el)}
+                                                className="h-[143px] w-[143px] object-cover border border-gray-200"
+                                                src={el}
+                                                alt={`sub-product image ${index}`}
+                                            />
+                                        </div>
+                                    ))
+                                    :
+                                    Array.from({ length: 3 }).map((_, index) => (
+                                        <div className="flex w-full gap-1" key={index}>
+                                            <img
+                                                className="h-[143px] w-[143px] object-cover border border-gray-200"
+                                                src={defaultImageProduct}
+                                                alt={`default image ${index}`}
+                                            />
+                                        </div>
+                                    ))
                             }
                         </Slider>
                     </div>

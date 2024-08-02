@@ -22,6 +22,7 @@ import { FaGift } from "react-icons/fa";
 import { FaReply } from "react-icons/fa6";
 import { FaTty } from "react-icons/fa6";
 import { IoIosArrowDown } from "react-icons/io";
+import { BsThreeDots } from "react-icons/bs";
 
 const icons = {
     MdPhone,
@@ -48,6 +49,7 @@ const icons = {
     FaReply,
     FaTty,
     IoIosArrowDown,
+    BsThreeDots,
 }
 
 export default icons;

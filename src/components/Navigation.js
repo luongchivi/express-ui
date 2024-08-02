@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import { navigation } from '../utils/containts';
 import { NavLink } from "react-router-dom";
 
@@ -20,4 +20,4 @@ const Navigation = () => {
     );
 }
 
-export default Navigation;
+export default memo(Navigation);

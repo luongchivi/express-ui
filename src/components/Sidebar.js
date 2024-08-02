@@ -1,6 +1,5 @@
-import React, {useEffect} from 'react';
+import React, {memo, useEffect} from 'react';
 import {NavLink} from 'react-router-dom';
-import {createSlug} from '../utils/helpers';
 import {useDispatch, useSelector} from "react-redux";
 import {getCategories} from "../store/app/asyncAction";
 
@@ -25,7 +24,7 @@ const Sidebar = () => {
                         alt="ImageIcon"
                     />
                     <NavLink
-                        to={createSlug(el.name)}
+                        to={el.name}
                         className={({ isActive }) =>
                             isActive ? 'flex-1 text-main font-semibold' : 'flex-1 text-gray-700 hover:text-main'
                         }
@@ -38,4 +37,4 @@ const Sidebar = () => {
     )
 }
 
-export default Sidebar;
+export default memo(Sidebar);

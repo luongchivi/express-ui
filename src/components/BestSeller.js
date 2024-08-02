@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import {apiGetProducts} from "../apis/product";
 import {Product} from "../../src/components";
 import Slider from "react-slick";
@@ -72,4 +72,4 @@ const BestSeller = () => {
     );
 };
 
-export default BestSeller;
+export default memo(BestSeller);
