@@ -1,33 +1,32 @@
 import React, {memo, useEffect} from 'react';
 import icons from "../utils/icons";
 import {ratings} from "../utils/containts";
-import {createSearchParams, useNavigate, useParams, useSearchParams} from "react-router-dom";
 import {apiGetProducts} from "../apis";
 import useDebounce from "../hooks/useDebounce";
 
 const {IoIosArrowDown} = icons;
 
-
-const SearchItem = ({name, activeClick, changeActiveFilter, type = 'checkbox'}) => {
-    const { category } = useParams();
-    const navigate = useNavigate();
-    const [selected, setSelected] = React.useState([]);
+const SearchItem = ({name, activeClick, changeActiveFilter, saveQueriesInFilter, categoryName, type = 'checkbox'}) => {
+    const [averageRatingSelected, setAverageRatingSelected] = React.useState([]);
     const [highestPrice, setHighestPrice] = React.useState(0);
     const [price, setPrice] = React.useState([0,0]);
 
     const handleSelect = (e) => {
         const value = parseInt(e.target.value);
-        const alreadySelected = selected.find(el => el === value);
+        const alreadySelected = averageRatingSelected.find(el => el === value);
         if (alreadySelected) {
-            setSelected(prev => prev.filter(el => el !== value));
+            setAverageRatingSelected(prev => prev.filter(el => el !== value));
         } else {
-            setSelected(prev => [...prev, value]);
+            setAverageRatingSelected(prev => [...prev, value]);
         }
-        // changeActiveFilter(null);
     }
 
     const fetchHighestPrice = async () => {
-        const response = await apiGetProducts({sortBy: 'unitPrice', sortOrder: 'desc', categoryName: category});
+        let filterCategoryName = {};
+        if (categoryName) {
+            filterCategoryName.categoryName = categoryName;
+        }
+        const response = await apiGetProducts({sortBy: 'unitPrice', sortOrder: 'desc', ...filterCategoryName});
         if (response?.results?.statusCode === 200) {
             const {products} = response?.results;
             if (products[0]) {
@@ -38,29 +37,18 @@ const SearchItem = ({name, activeClick, changeActiveFilter, type = 'checkbox'}) 
     }
 
     useEffect(() => {
-        if (selected.length > 0) {
-            navigate({
-                pathname: `/${category}`,
-                search: createSearchParams({
-                    averageRating: selected.join(','),
-                    page: 1,
-                }).toString(),
-            })
-        } else {
-            navigate({
-                pathname: `/${category}`,
-                search: createSearchParams({
-                    page: 1,
-                }).toString(),
+        if (averageRatingSelected.length > 0) {
+            saveQueriesInFilter({
+                averageRating: averageRatingSelected.join(','),
             })
         }
-    }, [selected])
+    }, [averageRatingSelected, saveQueriesInFilter]);
 
     useEffect(() => {
         if (type === 'input') {
             fetchHighestPrice().then();
         }
-    }, [type])
+    }, [categoryName]);
 
     const debouncePriceFrom = useDebounce(price[0], 400)
     const debouncePriceTo = useDebounce(price[1], 400)
@@ -68,27 +56,28 @@ const SearchItem = ({name, activeClick, changeActiveFilter, type = 'checkbox'}) 
         const priceFrom = price[0]
         const priceTo = price[1]
         if (priceFrom >= 0 && priceTo > 0 && priceFrom < priceTo) {
-            navigate({
-                pathname: `/${category}`,
-                search: createSearchParams({
-                    unitPrice: `${priceFrom},${priceTo}`,
-                    page: 1,
-                }).toString(),
-            })
-        } else {
-            navigate({
-                pathname: `/${category}`,
-                search: createSearchParams({
-                    page: 1,
-                }).toString(),
+            saveQueriesInFilter({
+                unitPrice: `${priceFrom},${priceTo}`,
             })
         }
-    }, [debouncePriceFrom, debouncePriceTo]);
+    }, [debouncePriceFrom, debouncePriceTo, saveQueriesInFilter]);
+
+    const resetFilter = () => {
+        if (type === 'checkbox') {
+            setAverageRatingSelected([]);
+            saveQueriesInFilter({}, ['averageRating']);
+        }
+        if (type === 'input') {
+            setPrice([0, 0]);
+            saveQueriesInFilter({}, ['unitPrice']);
+        }
+        changeActiveFilter(null);
+    };
 
     return (
         <div
             onClick={() => changeActiveFilter(name)}
-            className="cursor-pointer relative text-gray-500 gap-6 p-3 text-xs border border-gray-800 flex justify-between items-center"
+            className="cursor-pointer relative text-gray-500 gap-6 p-3 text-sm border border-gray-800 flex justify-between items-center"
         >
             <span className="capitalize">{name}</span>
             <IoIosArrowDown />
@@ -97,11 +86,12 @@ const SearchItem = ({name, activeClick, changeActiveFilter, type = 'checkbox'}) 
                     {type === "checkbox" && (
                         <div className="p-2">
                             <div className="py-2 items-center flex justify-between gap-2">
-                                <span className="whitespace-nowrap">{`${selected.length === 0 ? 'None' : selected.length} selected`}</span>
+                                <span className="whitespace-nowrap">{`${averageRatingSelected.length === 0 ? 'None' : averageRatingSelected.length} selected`}</span>
                                 <span
                                     onClick={e => {
                                         e.stopPropagation();
-                                        setSelected([]);
+                                        resetFilter();
+                                        changeActiveFilter(null);
                                     }}
                                     className="underline hover:text-main"
                                 >
@@ -116,7 +106,7 @@ const SearchItem = ({name, activeClick, changeActiveFilter, type = 'checkbox'}) 
                                             id={el}
                                             value={el}
                                             onChange={handleSelect}
-                                            checked={selected.some(i => i === el)}
+                                            checked={averageRatingSelected.some(i => i === el)}
                                             className="form-checkbox"
                                         />
                                         <label className="capitalize text-gray-700" htmlFor={el}>{el} Star</label>
@@ -132,7 +122,7 @@ const SearchItem = ({name, activeClick, changeActiveFilter, type = 'checkbox'}) 
                                 <span
                                     onClick={e => {
                                         e.stopPropagation();
-                                        setPrice([0, 0]);
+                                        resetFilter();
                                         changeActiveFilter(null);
                                     }}
                                     className="underline hover:text-main"

@@ -4,7 +4,7 @@ import React, {memo} from 'react';
 const InputSelect = ({value, changeValue, options}) => {
     return (
         <select
-            className="form-select text-gray-500 text-sm"
+            className="form-select text-gray-500 text-sm p-3"
             value={value.title}
             onChange={e => changeValue(options.find(opt => opt.title === e.target.value))}
         >

@@ -1,35 +1,39 @@
 import React, {memo} from 'react';
 import useBreadcrumbs from "use-react-router-breadcrumbs";
-import {Link} from "react-router-dom";
-import icons from "../utils/icons"
+import {Link, useLocation} from "react-router-dom";
+import icons from "../utils/icons";
 
 const {IoIosArrowForward} = icons;
 
-
-const Breadcrumb = ({name, category}) => {
+const Breadcrumb = ({name}) => {
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const categoryName = queryParams.get('categoryName');
+    // Define breadcrumb routes
     const routes = [
-        {path: "/:category", breadcrumb: category},
-        {path: "/:category/:pid/:name", breadcrumb: name},
         {path: "/", breadcrumb: "Home"},
+        {path: "/products", breadcrumb: "Products"},
+        {path: categoryName ? `/products?categoryName=${categoryName}` : "/products", breadcrumb: categoryName || "Category"},
+        {path: name ? `/products/:category/:pid/:name` : "", breadcrumb: name || ""}
     ];
 
     const breadcrumbs = useBreadcrumbs(routes);
 
     return (
         <div className='text-sm flex items-center gap-1'>
-            {breadcrumbs?.filter(el => !el.match.route === false).map(({match, breadcrumb}, index, self) => (
-                <Link
-                    className="flex gap-1 items-center hover:text-main"
-                    key={match.pathname} to={match.pathname}>
-                        <span className="capitalize">{breadcrumb} </span>
-                        {
-                            index !== self.length - 1 &&
-                            <IoIosArrowForward/>
-                        }
-                </Link>
+            {breadcrumbs.map(({match, breadcrumb}, index, self) => (
+                <React.Fragment key={match.pathname}>
+                    <Link
+                        className="flex gap-1 items-center hover:text-main"
+                        to={match.pathname}
+                    >
+                        <span className="capitalize">{breadcrumb}</span>
+                        {index !== self.length - 1 && <IoIosArrowForward />}
+                    </Link>
+                </React.Fragment>
             ))}
         </div>
-    )
-}
+    );
+};
 
-export default memo(Breadcrumb)
+export default memo(Breadcrumb);

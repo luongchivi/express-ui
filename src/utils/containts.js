@@ -14,16 +14,21 @@ export const navigation = [
     },
     {
         id: 3,
+        value: 'CATEGORIES',
+        path: `/${path.CATEGORIES}`,
+    },
+    {
+        id: 4,
         value: 'BLOGS',
         path: `/${path.BLOGS}`,
     },
     {
-        id: 4,
+        id: 5,
         value: 'OUR SERVICES',
         path: `/${path.OUR_SERVICES}`,
     },
     {
-        id: 5,
+        id: 6,
         value: 'FAQS',
         path: `/${path.FAQS}`,
     }

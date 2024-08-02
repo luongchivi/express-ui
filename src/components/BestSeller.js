@@ -1,7 +1,5 @@
 import React, {memo, useEffect, useState} from 'react';
 import {apiGetProducts} from "../apis/product";
-import {Product} from "../../src/components";
-import Slider from "react-slick";
 import CustomSlider from "./CustomSlider";
 import {useDispatch, useSelector} from "react-redux";
 import {getNewProducts} from "../store/product/asyncAction";

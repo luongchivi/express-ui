@@ -13,6 +13,7 @@ import {
     ForgotPassword,
     ResetPassword,
     SignUp,
+    Categories,
 } from './pages/public';
 import path from './utils/path';
 import {Modal} from './components';
@@ -31,6 +32,7 @@ function App() {
                 <Route path={path.PUBLIC} element={<Public/>}>
                     <Route path={path.HOME} element={<Home/>}/>
                     <Route path={path.PRODUCTS} element={<Products/>}/>
+                    <Route path={path.CATEGORIES} element={<Categories/>}/>
                     <Route path={path.PRODUCT_DETAILS__CATEGORY__PID__NAME} element={<ProductDetails/>}/>
                     <Route path={path.BLOGS} element={<Blog/>}/>
                     <Route path={path.FAQS} element={<FAQ/>}/>

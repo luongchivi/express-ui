@@ -25,6 +25,7 @@ const ProductDetails = () => {
     const [currentImage, setCurrentImage] = useState(null);
 
     const fetchProductByCategory = async () => {
+        console.log(category)
         const response = await apiGetProducts({ categoryName: category});
         if (response?.results?.statusCode === 200) {
             const {products} = response?.results;

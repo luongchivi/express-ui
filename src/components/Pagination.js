@@ -2,7 +2,7 @@ import React, {memo} from 'react';
 import usePagination from "../hooks/usePagination";
 import {PaginateItem} from "../components";
 
-const Pagination = ({totalItemsFiltered, currentPage, pageSize}) => {
+const Pagination = ({totalItemsFiltered, currentPage, pageSize, saveQueriesInFilter}) => {
     const pagination = usePagination(totalItemsFiltered, currentPage);
 
     const startIndex = (currentPage - 1) * pageSize + 1;
@@ -14,7 +14,10 @@ const Pagination = ({totalItemsFiltered, currentPage, pageSize}) => {
             </span>
             <div className="flex items-center gap-2">
                 {pagination?.map((el, i) => (
-                    <PaginateItem key={i}>
+                    <PaginateItem
+                        key={i}
+                        saveQueriesInFilter={saveQueriesInFilter}
+                    >
                         {el}
                     </PaginateItem>
                 ))}
