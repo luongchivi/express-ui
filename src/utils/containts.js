@@ -1,5 +1,6 @@
 import path from 'utils/path';
 import icons from "utils/icons";
+import {FaBlogger} from "react-icons/fa6";
 
 export const navigation = [
     {
@@ -219,6 +220,7 @@ const {
     MdGroups,
     AiFillProduct,
     TiShoppingCart,
+    FaBloggerB,
 } = icons;
 
 export const adminSidebar = [
@@ -242,13 +244,13 @@ export const adminSidebar = [
         text: 'Manage Products',
         submenu: [
             {
+                text: 'Manage Products',
+                path: `${path.ADMIN}/${path.MANAGE_PRODUCTS}`,
+            },
+            {
                 text: 'Create Product',
                 path: `${path.ADMIN}/${path.CREATE_PRODUCT}`,
             },
-            {
-                text: 'Manage Product',
-                path: `${path.ADMIN}/${path.MANAGE_PRODUCTS}`,
-            }
         ],
         icon: <AiFillProduct/>
     },
@@ -258,5 +260,21 @@ export const adminSidebar = [
         text: 'Manage Orders',
         path: `${path.ADMIN}/${path.MANAGE_ORDERS}`,
         icon: <TiShoppingCart/>
+    },
+    {
+        id: 5,
+        type: 'PARENT',
+        text: 'Manage Blogs',
+        submenu: [
+            {
+                text: 'Manage Blogs',
+                path: `${path.ADMIN}/${path.MANAGE_BLOGS}`,
+            },
+            {
+                text: 'Create Blog',
+                path: `${path.ADMIN}/${path.CREATE_BLOG}`,
+            },
+        ],
+        icon: <FaBloggerB/>
     },
 ];

@@ -27,4 +27,5 @@ export { default as Comment } from './review/Comment';
 export { default as Pagination } from './pagination/Pagination';
 export { default as PaginateItem } from './pagination/PaginateItem';
 export { default as AdminSidebar } from './sidebar/AdminSidebar';
+export { default as InputFieldAdmin } from './input/InputFieldAdmin';
 

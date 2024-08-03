@@ -1,9 +1,10 @@
 import React, { Fragment, memo, useState } from 'react';
 import logo from 'assets/logo_digital_new_250x.png';
 import { adminSidebar } from 'utils/containts';
-import { NavLink } from 'react-router-dom';
+import {Link, NavLink} from 'react-router-dom';
 import clsx from 'clsx';
 import icons from 'utils/icons';
+import path from "utils/path";
 
 const { IoIosArrowDown, IoIosArrowForward } = icons;
 
@@ -24,7 +25,9 @@ const AdminSidebar = () => {
     return (
         <div className="py-4 bg-zinc-600 h-full">
             <div className="p-4 flex flex-col justify-center items-center gap-2">
-                <img className="w-[200px] object-contain" src={logo} alt="logo" />
+                <Link to={`/${path.HOME}`}>
+                    <img className="w-[200px] object-contain" src={logo} alt="logo"/>
+                </Link>
                 <span>Admin Workspace</span>
             </div>
             <div>

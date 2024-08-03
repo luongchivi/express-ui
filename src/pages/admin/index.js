@@ -1,6 +1,10 @@
-export { default as Admin } from './Admin';
-export { default as CreateProduct } from './CreateProduct';
-export { default as Dashboard } from './Dashboard';
-export { default as ManageOrders } from './ManageOrders';
-export { default as ManageProducts } from './ManageProducts';
-export { default as ManageUsers } from './ManageUsers';
+export { default as Admin } from './common/Admin';
+export { default as CreateProduct } from './product/CreateProduct';
+export { default as Dashboard } from './common/Dashboard';
+export { default as ManageOrders } from './order/ManageOrders';
+export { default as ManageProducts } from './product/ManageProducts';
+export { default as ManageUsers } from './user/ManageUsers';
+export { default as CreateBlog } from './blog/CreateBlog';
+export { default as UpdateBlog } from './blog/UpdateBlog';
+export { default as ManageBlog } from './blog/ManageBlog';
+export { default as UpdateProduct } from './product/UpdateProduct';

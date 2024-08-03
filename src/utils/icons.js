@@ -27,6 +27,8 @@ import { AiOutlineDashboard } from "react-icons/ai";
 import { MdGroups } from "react-icons/md";
 import { AiFillProduct } from "react-icons/ai";
 import { TiShoppingCart } from "react-icons/ti";
+import { FaBloggerB } from "react-icons/fa6";
+import { IoSearchOutline } from "react-icons/io5";
 
 const icons = {
     MdPhone,
@@ -58,6 +60,8 @@ const icons = {
     MdGroups,
     AiFillProduct,
     TiShoppingCart,
+    FaBloggerB,
+    IoSearchOutline,
 }
 
 export default icons;

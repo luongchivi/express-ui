@@ -18,9 +18,15 @@ const path = {
     ADMIN: '/admin',
     DASHBOARD: 'dashboard',
     MANAGE_USERS: 'manage-users',
-    MANAGE_PRODUCTS: 'manage-products',
     MANAGE_ORDERS: 'manage-orders',
+
+    MANAGE_PRODUCTS: 'manage-products',
     CREATE_PRODUCT: 'create-product',
+    UPDATE_PRODUCT__PID: 'update-product/:pid',
+
+    MANAGE_BLOGS: 'manage-blogs',
+    CREATE_BLOG: 'create-blog',
+    UPDATE_BLOG: 'update-blog',
 
     // Member
     MEMBER: 'member',

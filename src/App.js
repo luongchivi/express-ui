@@ -18,7 +18,18 @@ import {
 import path from './utils/path';
 import { Modal } from './components';
 import { useSelector } from 'react-redux';
-import { Admin, Dashboard, ManageUsers, ManageOrders, CreateProduct, ManageProducts } from './pages/admin';
+import {
+    Admin,
+    Dashboard,
+    ManageUsers,
+    ManageOrders,
+    CreateProduct,
+    ManageProducts,
+    CreateBlog,
+    UpdateBlog,
+    ManageBlog,
+    UpdateProduct,
+} from './pages/admin';
 import { Member, Personal } from './pages/member';
 
 function App() {
@@ -44,10 +55,18 @@ function App() {
                 </Route>
                 <Route path={path.ADMIN} element={<Admin />}>
                     <Route path={path.DASHBOARD} element={<Dashboard />} />
-                    <Route path={path.MANAGE_PRODUCTS} element={<ManageProducts />} />
+
                     <Route path={path.MANAGE_USERS} element={<ManageUsers />} />
                     <Route path={path.MANAGE_ORDERS} element={<ManageOrders />} />
+
+                    // Manage Products
+                    <Route path={path.MANAGE_PRODUCTS} element={<ManageProducts />} />
                     <Route path={path.CREATE_PRODUCT} element={<CreateProduct />} />
+                    <Route path={path.UPDATE_PRODUCT__PID} element={<UpdateProduct />} />
+                    // Manage Blogs
+                    <Route path={path.MANAGE_BLOGS} element={<ManageBlog />} />
+                    <Route path={path.CREATE_BLOG} element={<CreateBlog />} />
+                    <Route path={path.UPDATE_BLOG} element={<UpdateBlog />} />
                 </Route>
                 <Route path={path.MEMBER} element={<Member />}>
                     <Route path={path.PERSONAL} element={<Personal />} />
