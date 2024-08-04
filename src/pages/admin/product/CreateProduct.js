@@ -1,18 +1,20 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Joi from 'joi';
 import { Button, InputFieldAdmin } from 'components';
-import {apiCreateProduct, apiGetCategories} from "apis";
-import {useNavigate} from "react-router-dom";
-import Swal from "sweetalert2";
-import path from "utils/path";
+import { apiCreateProduct, apiGetCategories } from 'apis';
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import path from 'utils/path';
 
-const nameSchema = Joi.string().min(3).max(30).required();
-const priceSchema = Joi.number().greater(0).required();
-const descriptionSchema = Joi.string().optional();
-const weightSchema = Joi.number().greater(0).required();
-const lengthSchema = Joi.number().greater(0).required();
-const widthSchema = Joi.number().greater(0).required();
-const heightSchema = Joi.number().greater(0).required();
+const schemas = {
+    name: Joi.string().min(3).max(30).required(),
+    unitPrice: Joi.number().greater(0).required(),
+    description: Joi.string().optional(),
+    weight: Joi.number().greater(0).required(),
+    length: Joi.number().greater(0).required(),
+    width: Joi.number().greater(0).required(),
+    height: Joi.number().greater(0).required(),
+};
 
 const CreateProduct = () => {
     const [categories, setCategories] = useState([]);
@@ -39,7 +41,9 @@ const CreateProduct = () => {
             length: '',
             width: '',
             height: '',
-        })
+            thumbImage: null,
+            images: [],
+        });
     };
 
     const handleChange = (name, value) => {
@@ -49,12 +53,17 @@ const CreateProduct = () => {
         }));
     };
 
+    const handleFileChange = (name, files) => {
+        setFormData((prev) => ({
+            ...prev,
+            [name]: name === 'images' ? [...files] : files[0],
+        }));
+    };
+
     const fetchCategories = async () => {
         const response = await apiGetCategories();
         if (response?.results?.statusCode === 200) {
-            const {
-                categories,
-            } = response?.results;
+            const { categories } = response.results;
             setCategories(categories);
         }
     };
@@ -71,66 +80,48 @@ const CreateProduct = () => {
         }
     };
 
+    const validateFormData = (data) => {
+        const allErrors = {};
+        for (const key in data) {
+            if (schemas[key]) {
+                const result = schemas[key].validate(data[key], { abortEarly: false });
+                if (result.error) {
+                    const fieldErrors = result.error.details.reduce((acc, item) => {
+                        acc[item.path[0]] = item.message;
+                        return acc;
+                    }, {});
+                    Object.assign(allErrors, fieldErrors);
+                }
+            }
+        }
+        return allErrors;
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
+        const allErrors = validateFormData(formData);
 
-        const nameResult = nameSchema.validate(formData.name, { abortEarly: false });
-        const priceResult = priceSchema.validate(formData.unitPrice, { abortEarly: false });
-        const weightResult = weightSchema.validate(formData.weight, { abortEarly: false });
-        const lengthResult = weightSchema.validate(formData.length, { abortEarly: false });
-        const widthResult = weightSchema.validate(formData.width, { abortEarly: false });
-        const heightResult = weightSchema.validate(formData.height, { abortEarly: false });
+        if (formData.thumbImage && formData.thumbImage.length > 1) {
+            allErrors.thumbImage = 'Only one thumbnail image is allowed.';
+        }
 
-        const allErrors = {};
-        if (nameResult.error) {
-            const nameErrors = nameResult.error.details.reduce((acc, item) => {
-                acc[item.path[0]] = item.message;
-                return acc;
-            }, {});
-            Object.assign(allErrors, nameErrors);
-        }
-        if (priceResult.error) {
-            const priceErrors = priceResult.error.details.reduce((acc, item) => {
-                acc[item.path[0]] = item.message;
-                return acc;
-            }, {});
-            Object.assign(allErrors, priceErrors);
-        }
-        if (weightResult.error) {
-            const weightErrors = weightResult.error.details.reduce((acc, item) => {
-                acc[item.path[0]] = item.message;
-                return acc;
-            }, {});
-            Object.assign(allErrors, weightErrors);
-        }
-        if (lengthResult.error) {
-            const weightErrors = weightResult.error.details.reduce((acc, item) => {
-                acc[item.path[0]] = item.message;
-                return acc;
-            }, {});
-            Object.assign(allErrors, weightErrors);
-        }
-        if (heightResult.error) {
-            const weightErrors = weightResult.error.details.reduce((acc, item) => {
-                acc[item.path[0]] = item.message;
-                return acc;
-            }, {});
-            Object.assign(allErrors, weightErrors);
-        }
-        if (widthResult.error) {
-            const weightErrors = weightResult.error.details.reduce((acc, item) => {
-                acc[item.path[0]] = item.message;
-                return acc;
-            }, {});
-            Object.assign(allErrors, weightErrors);
+        if (formData.images && formData.images.length > 10) {
+            allErrors.images = 'You can upload a maximum of 10 images.';
         }
 
         if (Object.keys(allErrors).length > 0) {
             setErrors(allErrors);
         } else {
             setErrors({});
-            console.log('Form data:', formData);
-            createProduct(formData).then();
+            const formPayload = new FormData();
+            for (const key in formData) {
+                if (key === 'images') {
+                    formData[key].forEach((file) => formPayload.append('images', file));
+                } else {
+                    formPayload.append(key, formData[key]);
+                }
+            }
+            createProduct(formPayload).then();
         }
     };
 
@@ -139,27 +130,27 @@ const CreateProduct = () => {
     }, []);
 
     return (
-        <div className="p-4 m-auto flex flex-col">
+        <div className="p-4 w-3/5 flex flex-col">
             <h1 className="text-3xl font-bold py-4">Create Product</h1>
-            <form onSubmit={handleSubmit} className="">
+            <form onSubmit={handleSubmit}>
                 <InputFieldAdmin
-                    label="Product Name"
+                    label="Product Name:"
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    schema={nameSchema}
+                    schema={schemas.name}
                     error={errors.name}
                 />
                 <InputFieldAdmin
-                    label="Unit Price"
+                    label="Unit Price:"
                     name="unitPrice"
                     value={formData.unitPrice}
                     onChange={handleChange}
-                    schema={priceSchema}
+                    schema={schemas.unitPrice}
                     error={errors.unitPrice}
                 />
                 <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">Category</label>
+                    <label className="block text-gray-700 text-sm font-bold mb-2">Category:</label>
                     <select
                         name="categoryId"
                         value={formData.categoryId}
@@ -176,51 +167,74 @@ const CreateProduct = () => {
                     {errors.categoryId && <span className="text-red-500 text-xs italic">{errors.categoryId}</span>}
                 </div>
                 <InputFieldAdmin
-                    label="Description"
+                    label="Description:"
                     name="description"
                     value={formData.description}
                     onChange={handleChange}
-                    schema={descriptionSchema}
+                    schema={schemas.description}
                     error={errors.description}
+                    isTextarea={true}
                 />
                 <InputFieldAdmin
-                    label="Weight"
+                    label="Weight:"
                     name="weight"
                     value={formData.weight}
                     onChange={handleChange}
-                    schema={weightSchema}
+                    schema={schemas.weight}
                     error={errors.weight}
                 />
                 <div className="grid grid-cols-3 gap-4">
                     <InputFieldAdmin
-                        label="Length"
+                        label="Length:"
                         name="length"
                         value={formData.length}
                         onChange={handleChange}
-                        schema={lengthSchema}
+                        schema={schemas.length}
                         error={errors.length}
                     />
                     <InputFieldAdmin
-                        label="Width"
+                        label="Width:"
                         name="width"
                         value={formData.width}
                         onChange={handleChange}
-                        schema={widthSchema}
+                        schema={schemas.width}
                         error={errors.width}
                     />
                     <InputFieldAdmin
-                        label="Height"
+                        label="Height:"
                         name="height"
                         value={formData.height}
                         onChange={handleChange}
-                        schema={heightSchema}
+                        schema={schemas.height}
                         error={errors.height}
                     />
                 </div>
-                <Button type={"submit"}>Submit</Button>
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2">Thumbnail Image:</label>
+                    <input
+                        type="file"
+                        name="thumbImage"
+                        onChange={(e) => handleFileChange('thumbImage', e.target.files)}
+                        className={`shadow appearance-none border ${errors.thumbImage ? 'border-red-500' : 'border-gray-300'} rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
+                    />
+                    {errors.thumbImage && <span className="text-red-500 text-xs italic">{errors.thumbImage}</span>}
+                </div>
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2">Images:</label>
+                    <input
+                        type="file"
+                        name="images"
+                        multiple
+                        onChange={(e) => handleFileChange('images', e.target.files)}
+                        className={`shadow appearance-none border ${errors.images ? 'border-red-500' : 'border-gray-300'} rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
+                    />
+                    {errors.images && <span className="text-red-500 text-xs italic">{errors.images}</span>}
+                </div>
+                <Button type="submit">Submit</Button>
             </form>
         </div>
     );
 }
 
 export default CreateProduct;
+

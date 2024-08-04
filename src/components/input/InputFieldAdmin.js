@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import Joi from 'joi';
+import React, {useState, useEffect} from 'react';
 
-const InputFieldAdmin = ({ label, name, value, onChange, schema, error }) => {
+
+const InputFieldAdmin = ({label, name, value, onChange, schema, error, isTextarea = false}) => {
     const [inputError, setInputError] = useState('');
 
     useEffect(() => {
@@ -13,7 +13,7 @@ const InputFieldAdmin = ({ label, name, value, onChange, schema, error }) => {
     }, [error]);
 
     const handleChange = (e) => {
-        const { value } = e.target;
+        const {value} = e.target;
         onChange(name, value);
 
         const result = schema.validate(value);
@@ -27,13 +27,25 @@ const InputFieldAdmin = ({ label, name, value, onChange, schema, error }) => {
     return (
         <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">{label}</label>
-            <input
-                type="text"
-                name={name}
-                value={value}
-                onChange={handleChange}
-                className={`shadow appearance-none border ${inputError ? 'border-red-500' : 'border-gray-300'} rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
-            />
+            {
+                isTextarea ?
+                    <textarea
+                        name={name}
+                        value={value}
+                        onChange={handleChange}
+                        className={`shadow appearance-none border ${inputError ? 'border-red-500' : 'border-gray-300'} rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
+                        rows="6"
+                    />
+                    :
+                    <input
+                        type="text"
+                        name={name}
+                        value={value}
+                        onChange={handleChange}
+                        className={`shadow appearance-none border ${inputError ? 'border-red-500' : 'border-gray-300'} rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
+                    />
+            }
+
             {inputError && <span className="text-red-500 text-xs italic">{inputError}</span>}
         </div>
     );
