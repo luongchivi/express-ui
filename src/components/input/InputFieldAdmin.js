@@ -34,7 +34,7 @@ const InputFieldAdmin = ({label, name, value, onChange, schema, error, isTextare
                         value={value}
                         onChange={handleChange}
                         className={`shadow appearance-none border ${inputError ? 'border-red-500' : 'border-gray-300'} rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
-                        rows="6"
+                        rows="10"
                     />
                     :
                     <input
