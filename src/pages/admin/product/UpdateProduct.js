@@ -1,12 +1,13 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import Joi from 'joi';
-import { Button, InputFieldAdmin } from 'components';
-import { apiUpdateProduct, apiGetProductDetails, apiGetCategories } from 'apis';
-import { useNavigate, useParams } from 'react-router-dom';
+import {Button, InputFieldAdmin} from 'components';
+import {apiUpdateProduct, apiGetProductDetails, apiGetCategories} from 'apis';
+import {useNavigate, useParams} from 'react-router-dom';
 import Swal from 'sweetalert2';
 import path from 'utils/path';
 import Slider from "react-slick";
 import defaultImageProduct from "assets/default_image_product.png";
+import {apiGetAllSuppliers} from "../../../apis/supplier";
 
 const settings = {
     dots: false,
@@ -17,68 +18,63 @@ const settings = {
 };
 
 const schemas = {
-    name: Joi.string().min(3).max(30).required(),
+    name: Joi.string().min(3).max(100).required(),
     unitPrice: Joi.number().greater(0).required(),
     description: Joi.string().optional(),
     weight: Joi.number().greater(0).required(),
     length: Joi.number().greater(0).required(),
     width: Joi.number().greater(0).required(),
     height: Joi.number().greater(0).required(),
+    unitsInStock: Joi.number().greater(0).required(),
 };
 
 const UpdateProduct = () => {
-    const { pid } = useParams();
+    const {pid} = useParams();
     const [categories, setCategories] = useState([]);
+    const [suppliers, setSuppliers] = useState([]);
     const [formData, setFormData] = useState({
         name: '',
         unitPrice: '',
         categoryId: '',
         description: '',
+        unitsInStock: '',
+        supplierId: '',
         weight: '',
         length: '',
         width: '',
         height: '',
-        thumbImage: null,
-        images: [],
     });
     const [oldImages, setOldImages] = useState([]);
     const navigate = useNavigate();
     const [errors, setErrors] = useState({});
-
-    const resetPayload = () => {
-        setFormData({
-            name: '',
-            unitPrice: '',
-            categoryId: '',
-            description: '',
-            weight: '',
-            length: '',
-            width: '',
-            height: '',
-            thumbImage: null,
-            images: [],
-        });
-    };
 
     const handleChange = useCallback((name, value) => {
         setFormData((prev) => ({
             ...prev,
             [name]: value,
         }));
-    }, []);
+    }, [formData]);
 
     const handleFileChange = useCallback((name, files) => {
         setFormData((prev) => ({
             ...prev,
             [name]: name === 'images' ? [...files] : files[0],
         }));
-    }, []);
+    }, [formData]);
 
     const fetchCategories = async () => {
         const response = await apiGetCategories();
         if (response?.results?.statusCode === 200) {
-            const { categories } = response.results;
+            const {categories} = response.results;
             setCategories(categories);
+        }
+    };
+
+    const fetchSuppliers = async () => {
+        const response = await apiGetAllSuppliers();
+        if (response?.results?.statusCode === 200) {
+            const { suppliers } = response.results;
+            setSuppliers(suppliers);
         }
     };
 
@@ -90,13 +86,13 @@ const UpdateProduct = () => {
                 name: product.name,
                 unitPrice: product.unitPrice,
                 categoryId: product.categoryId,
+                supplierId: product.supplierId,
                 description: product.description,
+                unitsInStock: product.unitsInStock,
                 weight: product.weight,
                 length: product.length,
                 width: product.width,
                 height: product.height,
-                thumbImage: null,
-                images: [],
             });
             setOldImages(product.imagesUrl || []);
         }
@@ -116,7 +112,7 @@ const UpdateProduct = () => {
         const allErrors = {};
         for (const key in data) {
             if (schemas[key]) {
-                const result = schemas[key].validate(data[key], { abortEarly: false });
+                const result = schemas[key].validate(data[key], {abortEarly: false});
                 if (result.error) {
                     const fieldErrors = result.error.details.reduce((acc, item) => {
                         acc[item.path[0]] = item.message;
@@ -160,6 +156,7 @@ const UpdateProduct = () => {
     useEffect(() => {
         fetchCategories().then();
         fetchProduct().then();
+        fetchSuppliers().then();
     }, [pid]);
 
     return (
@@ -190,7 +187,7 @@ const UpdateProduct = () => {
                         onChange={(e) => handleChange('categoryId', e.target.value)}
                         className={`shadow appearance-none border ${errors.categoryId ? 'border-red-500' : 'border-gray-300'} rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
                     >
-                        <option value="">Select a category</option>
+                        <option value="null">Select a category</option>
                         {categories.map(category => (
                             <option key={category.id} value={category.id}>
                                 {category.name}
@@ -198,6 +195,23 @@ const UpdateProduct = () => {
                         ))}
                     </select>
                     {errors.categoryId && <span className="text-red-500 text-xs italic">{errors.categoryId}</span>}
+                </div>
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2">Supplier:</label>
+                    <select
+                        name="supplierId"
+                        value={formData.supplierId}
+                        onChange={(e) => handleChange('supplierId', e.target.value)}
+                        className={`shadow appearance-none border ${errors.supplierId ? 'border-red-500' : 'border-gray-300'} rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
+                    >
+                        <option value="null">Select a supplier</option>
+                        {suppliers.map(supplier => (
+                            <option key={supplier.id} value={supplier.id}>
+                                {supplier.companyName}
+                            </option>
+                        ))}
+                    </select>
+                    {errors.supplierId && <span className="text-red-500 text-xs italic">{errors.supplierId}</span>}
                 </div>
                 <InputFieldAdmin
                     label="Description:"
@@ -209,14 +223,22 @@ const UpdateProduct = () => {
                     isTextarea={true}
                 />
                 <InputFieldAdmin
-                    label="Weight:"
-                    name="weight"
-                    value={formData.weight}
+                    label="Units In Stock:"
+                    name="unitsInStock"
+                    value={formData.unitsInStock}
                     onChange={handleChange}
-                    schema={schemas.weight}
-                    error={errors.weight}
+                    schema={schemas.unitsInStock}
+                    error={errors.unitsInStock}
                 />
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-4 gap-4">
+                    <InputFieldAdmin
+                        label="Weight:"
+                        name="weight"
+                        value={formData.weight}
+                        onChange={handleChange}
+                        schema={schemas.weight}
+                        error={errors.weight}
+                    />
                     <InputFieldAdmin
                         label="Length:"
                         name="length"
@@ -261,24 +283,28 @@ const UpdateProduct = () => {
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2">Old Images:</label>
                     <Slider className="images-slider" {...settings}>
-                        {oldImages.map((el, index) => (
-                            <div className="flex w-full gap-1" key={index}>
-                                <img
-                                    className="h-[150px] w-[150px] object-cover border border-gray-200"
-                                    src={el}
-                                    alt={`sub-product image ${index}`}
-                                />
-                            </div>
-                        ))}
-                        {formData.images.map((file, index) => (
-                            <div className="flex w-full gap-1" key={index}>
-                                <img
-                                    className="h-[150px] w-[150px] object-cover border border-gray-200"
-                                    src={URL.createObjectURL(file)}
-                                    alt={`New image ${index}`}
-                                />
-                            </div>
-                        ))}
+                        {
+                            (() => {
+                                const imagesToShow = formData?.images?.length > 0 ? formData.images : oldImages;
+                                const totalImages = 3;
+                                const combinedImages = [...imagesToShow];
+
+                                // Fill with default images if there are less than 3 images
+                                while (combinedImages.length < totalImages) {
+                                    combinedImages.push(defaultImageProduct);
+                                }
+
+                                return combinedImages.map((el, index) => (
+                                    <div className="flex w-full gap-1" key={index}>
+                                        <img
+                                            className="h-[150px] w-[150px] object-cover border border-gray-200"
+                                            src={el instanceof File ? URL.createObjectURL(el) : el}
+                                            alt={`image ${index}`}
+                                        />
+                                    </div>
+                                ));
+                            })()
+                        }
                     </Slider>
                 </div>
                 <div className="mb-4">

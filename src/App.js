@@ -29,6 +29,9 @@ import {
     UpdateBlog,
     ManageBlog,
     UpdateProduct,
+    CreateSupplier,
+    UpdateSupplier,
+    ManageSuppliers,
 } from './pages/admin';
 import { Member, Personal } from './pages/member';
 
@@ -63,10 +66,16 @@ function App() {
                     <Route path={path.MANAGE_PRODUCTS} element={<ManageProducts />} />
                     <Route path={path.CREATE_PRODUCT} element={<CreateProduct />} />
                     <Route path={path.UPDATE_PRODUCT__PID} element={<UpdateProduct />} />
+
                     // Manage Blogs
                     <Route path={path.MANAGE_BLOGS} element={<ManageBlog />} />
                     <Route path={path.CREATE_BLOG} element={<CreateBlog />} />
                     <Route path={path.UPDATE_BLOG} element={<UpdateBlog />} />
+
+                    // Manage Suppliers
+                    <Route path={path.MANAGE_SUPPLIERS} element={<ManageSuppliers />} />
+                    <Route path={path.CREATE_SUPPLIER} element={<CreateSupplier />} />
+                    <Route path={path.UPDATE_SUPPLIER__PID} element={<UpdateSupplier />} />
                 </Route>
                 <Route path={path.MEMBER} element={<Member />}>
                     <Route path={path.PERSONAL} element={<Personal />} />

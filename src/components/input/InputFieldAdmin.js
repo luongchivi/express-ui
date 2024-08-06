@@ -18,7 +18,7 @@ const InputFieldAdmin = ({label, name, value, onChange, schema, error, isTextare
 
         const result = schema.validate(value);
         if (result.error) {
-            setInputError(result.error.details[0].message);
+            setInputError(result.error.details[0].message.replace("value", `${name}`));
         } else {
             setInputError('');
         }

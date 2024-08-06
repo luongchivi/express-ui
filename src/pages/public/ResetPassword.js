@@ -50,10 +50,9 @@ const ResetPassword = () => {
                     />
                 </>
                 <Button
-                    name={'Reset Password'}
                     fw
                     handleOnClick={handleSubmit}
-                />
+                >Reset Password</Button>
             </div>
         </div>
     );

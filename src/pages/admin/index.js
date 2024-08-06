@@ -8,3 +8,6 @@ export { default as CreateBlog } from './blog/CreateBlog';
 export { default as UpdateBlog } from './blog/UpdateBlog';
 export { default as ManageBlog } from './blog/ManageBlog';
 export { default as UpdateProduct } from './product/UpdateProduct';
+export { default as ManageSuppliers } from './supplier/ManageSuppliers';
+export { default as CreateSupplier } from './supplier/CreateSupplier';
+export { default as UpdateSupplier } from './supplier/UpdateSupplier';

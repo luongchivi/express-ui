@@ -22,3 +22,8 @@ export const apiCreateProduct = (data) => axios({
     method: "POST",
     data,
 });
+
+export const apiDeleteProduct = (pid) => axios({
+    url: `/api/v1/products/${pid}`,
+    method: "DELETE",
+});

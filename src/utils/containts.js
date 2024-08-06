@@ -1,6 +1,6 @@
 import path from 'utils/path';
 import icons from "utils/icons";
-import {FaBlogger} from "react-icons/fa6";
+
 
 export const navigation = [
     {
@@ -221,6 +221,7 @@ const {
     AiFillProduct,
     TiShoppingCart,
     FaBloggerB,
+    TbBuildingWarehouse,
 } = icons;
 
 export const adminSidebar = [
@@ -276,5 +277,21 @@ export const adminSidebar = [
             },
         ],
         icon: <FaBloggerB/>
+    },
+    {
+        id: 6,
+        type: 'PARENT',
+        text: 'Manage Supplier',
+        submenu: [
+            {
+                text: 'Manage Supplier',
+                path: `${path.ADMIN}/${path.MANAGE_SUPPLIERS}`,
+            },
+            {
+                text: 'Create Supplier',
+                path: `${path.ADMIN}/${path.CREATE_SUPPLIER}`,
+            },
+        ],
+        icon: <TbBuildingWarehouse/>
     },
 ];

@@ -24,6 +24,10 @@ const path = {
     CREATE_PRODUCT: 'create-product',
     UPDATE_PRODUCT__PID: 'update-product/:pid',
 
+    MANAGE_SUPPLIERS: 'manage-suppliers',
+    CREATE_SUPPLIER: 'create-supplier',
+    UPDATE_SUPPLIER__PID: 'update-supplier/:supplierId',
+
     MANAGE_BLOGS: 'manage-blogs',
     CREATE_BLOG: 'create-blog',
     UPDATE_BLOG: 'update-blog',

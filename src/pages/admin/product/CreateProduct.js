@@ -5,6 +5,7 @@ import { apiCreateProduct, apiGetCategories } from 'apis';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import path from 'utils/path';
+import {apiGetAllSuppliers} from "../../../apis/supplier";
 
 const schemas = {
     name: Joi.string().min(3).max(30).required(),
@@ -18,10 +19,12 @@ const schemas = {
 
 const CreateProduct = () => {
     const [categories, setCategories] = useState([]);
+    const [suppliers, setSuppliers] = useState([]);
     const [formData, setFormData] = useState({
         name: '',
         unitPrice: '',
         categoryId: '',
+        supplierId: '',
         description: '',
         weight: '',
         length: '',
@@ -36,6 +39,7 @@ const CreateProduct = () => {
             name: '',
             unitPrice: '',
             categoryId: '',
+            supplierId: '',
             description: '',
             weight: '',
             length: '',
@@ -68,6 +72,14 @@ const CreateProduct = () => {
         }
     };
 
+    const fetchSuppliers = async () => {
+        const response = await apiGetAllSuppliers();
+        if (response?.results?.statusCode === 200) {
+            const { suppliers } = response.results;
+            setSuppliers(suppliers);
+        }
+    };
+
     const createProduct = async (data) => {
         const response = await apiCreateProduct(data);
         if (response?.results?.statusCode === 201) {
@@ -87,7 +99,7 @@ const CreateProduct = () => {
                 const result = schemas[key].validate(data[key], { abortEarly: false });
                 if (result.error) {
                     const fieldErrors = result.error.details.reduce((acc, item) => {
-                        acc[item.path[0]] = item.message;
+                        acc[key] = item.message.replace("value", `${key}`);
                         return acc;
                     }, {});
                     Object.assign(allErrors, fieldErrors);
@@ -127,6 +139,7 @@ const CreateProduct = () => {
 
     useEffect(() => {
         fetchCategories().then();
+        fetchSuppliers().then();
     }, []);
 
     return (
@@ -165,6 +178,23 @@ const CreateProduct = () => {
                         ))}
                     </select>
                     {errors.categoryId && <span className="text-red-500 text-xs italic">{errors.categoryId}</span>}
+                </div>
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2">Supplier:</label>
+                    <select
+                        name="categoryId"
+                        value={formData.supplierId}
+                        onChange={(e) => handleChange('supplierId', e.target.value)}
+                        className={`shadow appearance-none border ${errors.supplierId ? 'border-red-500' : 'border-gray-300'} rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
+                    >
+                        <option value="">Select a supplier</option>
+                        {suppliers.map(supplier => (
+                            <option key={supplier.id} value={supplier.id}>
+                                {supplier.companyName}
+                            </option>
+                        ))}
+                    </select>
+                    {errors.supplierId && <span className="text-red-500 text-xs italic">{errors.supplierId}</span>}
                 </div>
                 <InputFieldAdmin
                     label="Description:"

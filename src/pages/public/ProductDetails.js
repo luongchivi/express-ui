@@ -76,25 +76,35 @@ const ProductDetails = () => {
             </div>
             <div className="w-main m-auto mt-4 flex">
                 <div className="flex flex-col gap-4 w-2/5">
-                    <div className="h-[470px] w-[469px] border border-gray-200">
+                    <div className="h-[472px] w-[470px] border border-gray-200">
                         <ReactImageMagnify {...{
                             smallImage: {
                                 alt: 'Wristwatch by Ted Baker London',
-                                isFluidWidth: true,
                                 src: currentImage || defaultImageProduct,
+                                width: 468,
+                                height: 470,
                             },
                             largeImage: {
                                 src: currentImage || defaultImageProduct,
-                                width: 1800,
-                                height: 1800,
+                                width: 468,
+                                height: 470,
                             }
                         }} />
                     </div>
                     <div className="w-full">
                         <Slider className="images-slider" {...settings}>
                             {
-                                product?.imagesUrl?.length > 0 ?
-                                    product.imagesUrl.map((el, index) => (
+                                (() => {
+                                    const imagesToShow = product?.imagesUrl?.length > 0 ? product.imagesUrl : [];
+                                    const totalImages = 3;
+                                    const combinedImages = [...imagesToShow];
+
+                                    // Fill with default images if there are less than 3 images
+                                    while (combinedImages.length < totalImages) {
+                                        combinedImages.push(defaultImageProduct);
+                                    }
+
+                                    return combinedImages.map((el, index) => (
                                         <div className="flex w-full gap-1" key={index}>
                                             <img
                                                 onClick={e => handleClickImage(e, el)}
@@ -103,17 +113,8 @@ const ProductDetails = () => {
                                                 alt={`sub-product image ${index}`}
                                             />
                                         </div>
-                                    ))
-                                    :
-                                    Array.from({ length: 3 }).map((_, index) => (
-                                        <div className="flex w-full gap-1" key={index}>
-                                            <img
-                                                className="h-[143px] w-[143px] object-cover border border-gray-200"
-                                                src={defaultImageProduct}
-                                                alt={`default image ${index}`}
-                                            />
-                                        </div>
-                                    ))
+                                    ));
+                                })()
                             }
                         </Slider>
                     </div>

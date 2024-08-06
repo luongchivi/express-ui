@@ -1,14 +1,18 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { apiGetProducts } from "apis";
+import { apiDeleteProduct, apiGetProducts } from "apis";
 import moment from "moment/moment";
-import { Pagination } from "components";
-import { createSearchParams, useNavigate } from "react-router-dom";
+import { ConfirmDelete, Pagination } from "components";
+import { createSearchParams, Link, useNavigate } from "react-router-dom";
 import defaultImage from "assets/default_image_product.png";
 import icons from "utils/icons";
+import { showModal } from "store/app/appSlice";
+import { useDispatch } from "react-redux";
+import Swal from "sweetalert2";
 
 const { IoSearchOutline } = icons;
 
 const ManageProducts = () => {
+    const dispatch = useDispatch();
     const [products, setProducts] = useState([]);
     const [queries, setQueries] = useState({ page: 1 });
     const [searchTerm, setSearchTerm] = useState('');
@@ -37,8 +41,17 @@ const ManageProducts = () => {
         navigate({ pathname: `/admin/update-product/${productId}` });
     };
 
-    const handleDelete = (productId) => {
+    const handleDelete = async (productId) => {
         console.log('Delete product with ID:', productId);
+        if (productId) {
+            const response = await apiDeleteProduct(productId);
+            if (response?.results?.statusCode === 200) {
+                await Swal.fire('Delete product successfully.', response?.results?.message, 'success');
+                setQueries(prev => ({ ...prev })); // Triggers a re-fetch
+            } else {
+                await Swal.fire('Oops! something wrong.', response?.results?.message, 'error');
+            }
+        }
     };
 
     useEffect(() => {
@@ -47,7 +60,7 @@ const ManageProducts = () => {
             pathname: '/admin/manage-products',
             search: createSearchParams(queries).toString()
         });
-    }, [queries, navigate]);
+    }, [queries]);
 
     const saveQueriesInFilter = useCallback((value, keysToRemove = []) => {
         setQueries(prev => {
@@ -76,7 +89,7 @@ const ManageProducts = () => {
                         className="h-[56px] w-[56px] bg-black rounded-l-xl flex items-center justify-center text-white cursor-pointer"
                         onClick={handleSearch}
                     >
-                        <IoSearchOutline size={18} />
+                        <IoSearchOutline size={18}/>
                     </div>
                     <input
                         className="w-full p-4 pr-0 rounded-r-xl bg-[#f04646] outline-none text-gray-100 placeholder:text-sm placeholder:text-gray-200 placeholder:italic placeholder:opacity-50"
@@ -93,44 +106,103 @@ const ManageProducts = () => {
                         <th className="px-6 py-3 text-left text-sm font-semibold text-gray-500 uppercase tracking-wider">No</th>
                         <th className="px-6 py-3 text-left text-sm font-semibold text-gray-500 uppercase tracking-wider">Name</th>
                         <th className="px-6 py-3 text-left text-sm font-semibold text-gray-500 uppercase tracking-wider">Category</th>
+                        <th className="px-6 py-3 text-left text-sm font-semibold text-gray-500 uppercase tracking-wider">Brand</th>
                         <th className="px-6 py-3 text-left text-sm font-semibold text-gray-500 uppercase tracking-wider">Price</th>
                         <th className="px-6 py-3 text-left text-sm font-semibold text-gray-500 uppercase tracking-wider">Stock</th>
                         <th className="px-6 py-3 text-left text-sm font-semibold text-gray-500 uppercase tracking-wider">Rating</th>
                         <th className="px-6 py-3 text-left text-sm font-semibold text-gray-500 uppercase tracking-wider">Image</th>
-                        <th className="px-6 py-4 text-left text-sm font-semibold text-gray-500 uppercase tracking-wider">Created At</th>
-                        <th className="px-6 py-4 text-left text-sm font-semibold text-gray-500 uppercase tracking-wider">Updated At</th>
+                        <th className="px-6 py-4 text-left text-sm font-semibold text-gray-500 uppercase tracking-wider">Created
+                            At
+                        </th>
+                        <th className="px-6 py-4 text-left text-sm font-semibold text-gray-500 uppercase tracking-wider">Updated
+                            At
+                        </th>
                         <th className="px-6 py-4 text-left text-sm font-semibold text-gray-500 uppercase tracking-wider">Action</th>
                     </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
                     {products.map((product, index) => (
-                        <tr key={product.id}>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.id}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.name}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.category.name}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${product.unitPrice.toFixed(2)}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.unitsInStock}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.averageRating.toFixed(1)}</td>
+                        <tr key={product.id} className="hover:bg-gray-100">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <Link
+                                    to={`/products/${product?.category?.name?.toLowerCase()}/${product?.id}/${product?.name}`}>
+                                    {product.id}
+                                </Link>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <Link
+                                    to={`/products/${product?.category?.name?.toLowerCase()}/${product?.id}/${product?.name}`}>
+                                    {product.name}
+                                </Link>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <Link
+                                    to={`/products/${product?.category?.name?.toLowerCase()}/${product?.id}/${product?.name}`}>
+                                    {product?.category?.name || "None"}
+                                </Link>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <Link
+                                    to={`/products/${product?.category?.name?.toLowerCase()}/${product?.id}/${product?.name}`}>
+                                    {product?.supplier?.companyName || "None"}
+                                </Link>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <Link
+                                    to={`/products/${product?.category?.name?.toLowerCase()}/${product?.id}/${product?.name}`}>
+                                    ${product.unitPrice.toFixed(2)}
+                                </Link>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <Link
+                                    to={`/products/${product?.category?.name?.toLowerCase()}/${product?.id}/${product?.name}`}>
+                                    {product.unitsInStock}
+                                </Link>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <Link
+                                    to={`/products/${product?.category?.name?.toLowerCase()}/${product?.id}/${product?.name}`}>
+                                    {product.averageRating.toFixed(1)}
+                                </Link>
+                            </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm">
-                                <img src={product.thumbImageUrl || defaultImage} alt={product.name}
-                                     className="h-16 w-16 object-cover border border-gray-300 p-1" />
+                                <Link
+                                    to={`/products/${product?.category?.name?.toLowerCase()}/${product?.id}/${product?.name}`}>
+                                    <img src={product.thumbImageUrl || defaultImage} alt={product.name}
+                                         className="h-16 w-16 object-cover border border-gray-300 p-1"/>
+                                </Link>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {moment(product.createdAt).format('DD/MM/YYYY HH:mm')}
+                                <Link
+                                    to={`/products/${product?.category?.name?.toLowerCase()}/${product?.id}/${product?.name}`}>
+                                    {moment(product.createdAt).format('DD/MM/YYYY HH:mm')}
+                                </Link>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {moment(product.updatedAt).format('DD/MM/YYYY HH:mm')}
+                                <Link
+                                    to={`/products/${product?.category?.name?.toLowerCase()}/${product?.id}/${product?.name}`}>
+                                    {moment(product.updatedAt).format('DD/MM/YYYY HH:mm')}
+                                </Link>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 <button
                                     className="text-indigo-600 hover:text-indigo-900 mr-4"
-                                    onClick={() => handleEdit(product.id)}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        handleEdit(product.id);
+                                    }}
                                 >
                                     Edit
                                 </button>
                                 <button
                                     className="text-red-600 hover:text-red-900"
-                                    onClick={() => handleDelete(product.id)}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        dispatch(showModal({
+                                            isShowModal: true,
+                                            modalChildren: <ConfirmDelete id={product?.id} handleSubmit={handleDelete}/>
+                                        }))
+                                    }}
                                 >
                                     Delete
                                 </button>
@@ -139,7 +211,6 @@ const ManageProducts = () => {
                     ))}
                     </tbody>
                 </table>
-
                 <div className="flex justify-end py-4">
                     <Pagination
                         totalItemsFiltered={totalItemsFiltered}
