@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Joi from 'joi';
 import { Button, InputFieldAdmin } from 'components';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import path from 'utils/path';
 import {apiAddSupplier} from "apis/supplier";
+import {validateData} from "utils/helpers";
 
 const schemas = {
-    companyName: Joi.string().min(3).max(30).required(),
+    companyName: Joi.string().max(30).required(),
     contactName: Joi.string().required(),
     address: Joi.string().required(),
     city: Joi.string().required(),
@@ -60,7 +61,6 @@ const CreateSupplier = () => {
     const createSupplier = async (data) => {
         const response = await apiAddSupplier(data);
         if (response?.results?.statusCode === 201) {
-            console.log(response);
             await Swal.fire('Add new supplier successfully', response?.results?.message, 'success');
             navigate(`${path.ADMIN}/${path.MANAGE_SUPPLIERS}`);
         } else {
@@ -69,33 +69,13 @@ const CreateSupplier = () => {
         }
     };
 
-    const validateApplicationJsonData = (data) => {
-        const allErrors = {};
-        for (const key in data) {
-            if (schemas[key]) {
-                const result = schemas[key].validate(data[key], { abortEarly: false });
-                if (result.error) {
-                    const fieldErrors = result.error.details.reduce((acc, item) => {
-                        acc[key] = item.message.replace("value", `${key}`);
-                        return acc;
-                    }, {});
-                    Object.assign(allErrors, fieldErrors);
-                }
-            }
-        }
-        return allErrors;
-    };
-
     const handleSubmit = (e) => {
-        console.log("Submit")
         e.preventDefault();
-        const allErrors = validateApplicationJsonData(payload);
-        console.log(allErrors)
+        const allErrors = validateData(payload, schemas);
         if (Object.keys(allErrors).length > 0) {
             setErrors(allErrors);
         } else {
             setErrors({});
-            console.log(payload)
             createSupplier(payload).then();
         }
     };

@@ -5,10 +5,11 @@ import {useNavigate, useParams} from 'react-router-dom';
 import Swal from 'sweetalert2';
 import path from 'utils/path';
 import {apiGetSupplierDetails, apiUpdateSupplier} from "apis/supplier";
+import {validateData} from "utils/helpers";
 
 
 const schemas = {
-    companyName: Joi.string().min(3).max(100).required(),
+    companyName: Joi.string().max(100).required(),
     contactName: Joi.string().required(),
     address: Joi.string().required(),
     city: Joi.string().required(),
@@ -71,27 +72,9 @@ const UpdateSupplier = () => {
         }
     };
 
-    const validateFormData = (data) => {
-        const allErrors = {};
-        for (const key in data) {
-            if (schemas[key]) {
-                const result = schemas[key].validate(data[key], {abortEarly: false});
-                if (result.error) {
-                    const fieldErrors = result.error.details.reduce((acc, item) => {
-                        acc[key] = item.message.replace("value", `${key}`);
-                        return acc;
-                    }, {});
-                    Object.assign(allErrors, fieldErrors);
-                }
-            }
-        }
-        return allErrors;
-    };
-
     const handleSubmit = (e) => {
         e.preventDefault();
-        const allErrors = validateFormData(payload);
-
+        const allErrors = validateData(payload, schemas);
         if (Object.keys(allErrors).length > 0) {
             setErrors(allErrors);
         } else {

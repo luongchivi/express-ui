@@ -30,6 +30,7 @@ import { TiShoppingCart } from "react-icons/ti";
 import { FaBloggerB } from "react-icons/fa6";
 import { IoSearchOutline } from "react-icons/io5";
 import { TbBuildingWarehouse } from "react-icons/tb";
+import { ImBin } from "react-icons/im";
 
 const icons = {
     MdPhone,
@@ -64,6 +65,7 @@ const icons = {
     FaBloggerB,
     IoSearchOutline,
     TbBuildingWarehouse,
+    ImBin,
 }
 
 export default icons;

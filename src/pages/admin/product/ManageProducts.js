@@ -83,23 +83,22 @@ const ManageProducts = () => {
     return (
         <div className="p-4 m-auto flex flex-col">
             <h1 className="text-3xl font-bold py-4">Manage Products</h1>
-            <div className="overflow-x-auto">
-                <div className="w-[500px] flex items-center py-4">
-                    <div
-                        className="h-[56px] w-[56px] bg-black rounded-l-xl flex items-center justify-center text-white cursor-pointer"
-                        onClick={handleSearch}
-                    >
-                        <IoSearchOutline size={18}/>
-                    </div>
-                    <input
-                        className="w-full p-4 pr-0 rounded-r-xl bg-[#f04646] outline-none text-gray-100 placeholder:text-sm placeholder:text-gray-200 placeholder:italic placeholder:opacity-50"
-                        type="text"
-                        placeholder="Search product name"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                    />
+            <div className="w-[500px] flex items-center py-4">
+                <div
+                    className="h-[56px] w-[56px] bg-black rounded-l-xl flex items-center justify-center text-white cursor-pointer"
+                    onClick={handleSearch}
+                >
+                    <IoSearchOutline size={18}/>
                 </div>
-
+                <input
+                    className="w-full p-4 pr-0 rounded-r-xl bg-[#f04646] outline-none text-gray-100 placeholder:text-sm placeholder:text-gray-200 placeholder:italic placeholder:opacity-50"
+                    type="text"
+                    placeholder="Search product name"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+            </div>
+            <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200 border rounded-md">
                     <thead className="bg-gray-50">
                     <tr>
@@ -211,14 +210,14 @@ const ManageProducts = () => {
                     ))}
                     </tbody>
                 </table>
-                <div className="flex justify-end py-4">
-                    <Pagination
-                        totalItemsFiltered={totalItemsFiltered}
-                        currentPage={currentPage}
-                        pageSize={pageSize}
-                        saveQueriesInFilter={saveQueriesInFilter}
-                    />
-                </div>
+            </div>
+            <div className="flex justify-end py-4">
+                <Pagination
+                    totalItemsFiltered={totalItemsFiltered}
+                    currentPage={currentPage}
+                    pageSize={pageSize}
+                    saveQueriesInFilter={saveQueriesInFilter}
+                />
             </div>
         </div>
     );
