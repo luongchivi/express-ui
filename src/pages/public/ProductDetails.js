@@ -7,6 +7,7 @@ import ReactImageMagnify from 'react-image-magnify';
 import {formatMoney, renderStar} from "../../utils/helpers";
 import {productExtraInfo} from "../../utils/containts"
 import defaultImageProduct from "../../assets/default_image_product.png";
+import DOMPurify from 'dompurify';
 
 const settings = {
     dots: false,
@@ -26,7 +27,7 @@ const ProductDetails = () => {
 
     const fetchProductByCategory = async () => {
         const response = await apiGetProducts({
-            ...(category === 'undefined' ? {} : { categoryName: category })
+            ...(category === 'undefined' ? {} : {categoryName: category})
         });
         if (response?.results?.statusCode === 200) {
             const {products} = response?.results;
@@ -72,7 +73,7 @@ const ProductDetails = () => {
             <div className="h-[81px] flex justify-center items-center bg-gray-100">
                 <div className="w-main">
                     <h3 className="font-semibold uppercase">{name}</h3>
-                    <Breadcrumb name={name} category={category || 'product'}/>
+                    <Breadcrumb name={name}/>
                 </div>
             </div>
             <div className="w-main m-auto mt-4 flex">
@@ -100,7 +101,6 @@ const ProductDetails = () => {
                                     const totalImages = 3;
                                     const combinedImages = [...imagesToShow];
 
-                                    // Fill with default images if there are less than 3 images
                                     while (combinedImages.length < totalImages) {
                                         combinedImages.push(defaultImageProduct);
                                     }
@@ -130,13 +130,12 @@ const ProductDetails = () => {
                         </div>
                         <span className="text-sm text-main italic">({product?.unitsSold} Sold)</span>
                     </div>
-                    <ul className='list-square text-sx text-gray-500 pl-6'>
-                        {product?.description.split('\n').map((el, index) => (
-                            <li
-                                className="leading-8"
-                                key={index}
-                            >{el}</li>
-                        ))}
+                    <ul className="list-square text-sx text-gray-500">
+                        <div
+                            dangerouslySetInnerHTML={{
+                                __html: DOMPurify.sanitize(product?.description),
+                            }}
+                        />
                     </ul>
                     <div className="flex flex-col gap-8">
                         <div className="flex items-center justify-start gap-2">

@@ -75,7 +75,7 @@ const CreateProduct = () => {
         }
     };
 
-    const onSubmit = (data) => {
+    const onSubmitCreateProduct = (data) => {
         const allErrors = validateData(data, schemas);
 
         if (data.thumbImage && data.thumbImage.length > 1) {
@@ -93,7 +93,7 @@ const CreateProduct = () => {
             for (const key in data) {
                 if (key === 'images' && data[key].length > 0) {
                     Array.from(data[key]).forEach((file) => formPayload.append('images', file));
-                } else if (key === 'thumbImage' && data[key].length > 0) {
+                } else if (key === 'thumbImage' && data[key]?.length > 0) {
                     formPayload.append(key, data[key][0]);
                 } else if (key !== 'thumbImage' && key !== 'images') {
                     formPayload.append(key, data[key] || null);
@@ -113,8 +113,12 @@ const CreateProduct = () => {
     }, []);
 
     const handlePreviewThumbImage = async (file) => {
-        const base64Thumb = await getBase64(file);
-        setPreview(prev => ({...prev, thumbImage: base64Thumb}));
+        if (file) {
+            const base64Thumb = await getBase64(file);
+            setPreview(prev => ({...prev, thumbImage: base64Thumb}));
+        } else {
+            setPreview(prev => ({...prev, thumbImage: null}));
+        }
     }
 
     const handlePreviewImages = async (files) => {
@@ -148,6 +152,8 @@ const CreateProduct = () => {
     useEffect(() => {
         if (watch('thumbImage') && watch('thumbImage').length > 0) {
             handlePreviewThumbImage(watch('thumbImage')[0]);
+        } else {
+            handlePreviewThumbImage(null);
         }
     }, [watch('thumbImage')]);
 
@@ -162,7 +168,7 @@ const CreateProduct = () => {
     return (
         <div className="p-4 w-3/5 flex flex-col">
             <h1 className="text-3xl font-bold py-4">Create Product</h1>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmitCreateProduct)}>
                 <InputFieldAdmin
                     label="Product Name:"
                     name="name"

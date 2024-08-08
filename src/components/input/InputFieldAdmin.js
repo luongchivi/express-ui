@@ -19,7 +19,7 @@ const InputFieldAdmin = ({label, name, register, schema, error, placeholder}) =>
                 {...register(name, {
                     validate: value => {
                         const result = schema.validate(value);
-                        return result.error ? result.error.details[0].message : true;
+                        return result.error ? result.error.details[0].message.replace("value", `${name}`) : true;
                     }
                 })}
                 placeholder={placeholder}

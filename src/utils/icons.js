@@ -31,6 +31,7 @@ import { FaBloggerB } from "react-icons/fa6";
 import { IoSearchOutline } from "react-icons/io5";
 import { TbBuildingWarehouse } from "react-icons/tb";
 import { ImBin } from "react-icons/im";
+import { MdArrowRightAlt } from "react-icons/md";
 
 const icons = {
     MdPhone,
@@ -66,6 +67,7 @@ const icons = {
     IoSearchOutline,
     TbBuildingWarehouse,
     ImBin,
+    MdArrowRightAlt,
 }
 
 export default icons;

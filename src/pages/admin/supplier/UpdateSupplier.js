@@ -1,15 +1,16 @@
-import React, {useEffect, useState, useCallback} from 'react';
+import React, {useEffect} from 'react';
 import Joi from 'joi';
-import {Button, InputFieldAdmin} from 'components';
+import { Button, InputFieldAdmin } from 'components';
 import {useNavigate, useParams} from 'react-router-dom';
 import Swal from 'sweetalert2';
 import path from 'utils/path';
-import {apiGetSupplierDetails, apiUpdateSupplier} from "apis/supplier";
-import {validateData} from "utils/helpers";
-
+import {apiGetSupplierDetails, apiUpdateSupplier} from 'apis/supplier';
+import { validateData } from 'utils/helpers';
+import { useForm } from 'react-hook-form';
+import {apiGetProductDetails} from "apis";
 
 const schemas = {
-    companyName: Joi.string().max(100).required(),
+    companyName: Joi.string().max(30).required(),
     contactName: Joi.string().required(),
     address: Joi.string().required(),
     city: Joi.string().required(),
@@ -17,157 +18,158 @@ const schemas = {
     postalCode: Joi.string().required(),
     country: Joi.string().required(),
     phone: Joi.string().required(),
-    fax: Joi.string().required(),
-    homePage: Joi.string().required(),
+    fax: Joi.string().optional(),
+    homePage: Joi.string().optional(),
 };
 
-const UpdateSupplier = () => {
+const CreateSupplier = () => {
     const {supplierId} = useParams();
-    const [payload, setPayload] = useState({
-        companyName: '',
-        contactName: '',
-        address: '',
-        city: '',
-        region: '',
-        postalCode: '',
-        country: '',
-        phone: '',
-        fax: '',
-        homePage: '',
-    });
     const navigate = useNavigate();
-    const [errors, setErrors] = useState({});
+    const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm({
+        defaultValues: {
+            companyName: '',
+            contactName: '',
+            address: '',
+            city: '',
+            region: '',
+            postalCode: '',
+            country: '',
+            phone: '',
+            fax: '',
+            homePage: '',
+        }
+    });
 
-    const handleChange = useCallback((name, value) => {
-        setPayload((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-    }, [payload]);
+    useEffect(() => {
+        if (supplierId) {
+            fetchSupplier();
+        }
+    }, [supplierId]);
 
     const fetchSupplier = async () => {
-        try {
-            const response = await apiGetSupplierDetails(supplierId);
-            if (response?.results?.statusCode === 200) {
-                const {supplier} = response.results;
-                const { id, createdAt, updatedAt, products, ...rest } = supplier;
-                setPayload(rest);
-            }
-        } catch (error) {
-            console.log(error);
+        const response = await apiGetSupplierDetails(supplierId);
+        if (response?.results?.statusCode === 200) {
+            const {supplier} = response.results;
+            const {
+                companyName,
+                contactName,
+                address,
+                city,
+                region,
+                postalCode,
+                country,
+                phone,
+                fax,
+                homePage,
+            } = supplier;
+            reset({
+                companyName,
+                contactName,
+                address,
+                city,
+                region,
+                postalCode,
+                country,
+                phone,
+                fax,
+                homePage,
+            });
         }
     };
 
     const updateSupplier = async (data) => {
-        try {
-            const response = await apiUpdateSupplier(supplierId, data);
-            if (response?.results?.statusCode === 200) {
-                await Swal.fire('Update supplier successfully', response?.results?.message, 'success');
-                navigate(`${path.ADMIN}/${path.MANAGE_SUPPLIERS}`);
-            } else {
-                await Swal.fire('Oops! something wrong', response?.results?.message, 'error');
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const allErrors = validateData(payload, schemas);
-        if (Object.keys(allErrors).length > 0) {
-            setErrors(allErrors);
+        const response = await apiUpdateSupplier(supplierId, data);
+        if (response?.results?.statusCode === 200) {
+            await Swal.fire('Create supplier successfully', response?.results?.message, 'success');
+            navigate(`${path.ADMIN}/${path.MANAGE_SUPPLIERS}`);
+            reset();
         } else {
-            setErrors({});
-            updateSupplier(payload).then();
+            await Swal.fire('Oops! something wrong', response?.results?.message, 'error');
         }
     };
 
-    useEffect(() => {
-        fetchSupplier().then();
-    }, [supplierId]);
+    const onSubmitCreateSupplier = (data) => {
+        const allErrors = validateData(data, schemas);
+
+        if (Object.keys(allErrors).length > 0) {
+            console.log(allErrors);
+        } else {
+            console.log(data);
+            updateSupplier(data);
+        }
+    };
 
     return (
         <div className="p-4 w-3/5 flex flex-col">
-            <h1 className="text-3xl font-bold py-4">Update Supplier</h1>
-            <form onSubmit={handleSubmit}>
+            <h1 className="text-3xl font-bold py-4">Create Supplier</h1>
+            <form onSubmit={handleSubmit(onSubmitCreateSupplier)}>
                 <InputFieldAdmin
                     label="Company Name:"
                     name="companyName"
-                    value={payload.companyName}
-                    onChange={handleChange}
+                    register={register}
                     schema={schemas.companyName}
                     error={errors.companyName}
                 />
                 <InputFieldAdmin
                     label="Contact Name:"
                     name="contactName"
-                    value={payload.contactName}
-                    onChange={handleChange}
+                    register={register}
                     schema={schemas.contactName}
                     error={errors.contactName}
                 />
                 <InputFieldAdmin
                     label="Address:"
                     name="address"
-                    value={payload.address}
-                    onChange={handleChange}
+                    register={register}
                     schema={schemas.address}
                     error={errors.address}
                 />
                 <InputFieldAdmin
                     label="City:"
                     name="city"
-                    value={payload.city}
-                    onChange={handleChange}
+                    register={register}
                     schema={schemas.city}
                     error={errors.city}
                 />
                 <InputFieldAdmin
                     label="Region:"
                     name="region"
-                    value={payload.region}
-                    onChange={handleChange}
+                    register={register}
                     schema={schemas.region}
                     error={errors.region}
                 />
                 <InputFieldAdmin
-                    label="Country:"
-                    name="country"
-                    value={payload.country}
-                    onChange={handleChange}
-                    schema={schemas.country}
-                    error={errors.country}
-                />
-                <InputFieldAdmin
                     label="Postal Code:"
                     name="postalCode"
-                    value={payload.postalCode}
-                    onChange={handleChange}
+                    register={register}
                     schema={schemas.postalCode}
                     error={errors.postalCode}
                 />
                 <InputFieldAdmin
-                    label="Fax:"
-                    name="fax"
-                    value={payload.fax}
-                    onChange={handleChange}
-                    schema={schemas.fax}
-                    error={errors.fax}
+                    label="Country:"
+                    name="country"
+                    register={register}
+                    schema={schemas.country}
+                    error={errors.country}
                 />
                 <InputFieldAdmin
                     label="Phone:"
                     name="phone"
-                    value={payload.phone}
-                    onChange={handleChange}
+                    register={register}
                     schema={schemas.phone}
                     error={errors.phone}
                 />
                 <InputFieldAdmin
+                    label="Fax:"
+                    name="fax"
+                    register={register}
+                    schema={schemas.fax}
+                    error={errors.fax}
+                />
+                <InputFieldAdmin
                     label="Home Page:"
                     name="homePage"
-                    value={payload.homePage}
-                    onChange={handleChange}
+                    register={register}
                     schema={schemas.homePage}
                     error={errors.homePage}
                 />
@@ -177,5 +179,4 @@ const UpdateSupplier = () => {
     );
 };
 
-export default UpdateSupplier;
-
+export default CreateSupplier;

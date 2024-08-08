@@ -6,25 +6,24 @@ export const apiGetAllSuppliers = (params) => axios({
     params,
 });
 
-export const apiAddSupplier = (data) => axios({
+export const apiCreateSupplier = (data) => axios({
     url: `/api/v1/suppliers`,
     method: "POST",
     data,
 })
 
-export const apiGetSupplierDetails = (pid, params) => axios({
-    url: `/api/v1/suppliers/${pid}`,
+export const apiGetSupplierDetails = (id) => axios({
+    url: `/api/v1/suppliers/${id}`,
     method: "GET",
-    params,
 })
 
-export const apiUpdateSupplier = (pid, data) => axios({
-    url: `/api/v1/suppliers/${pid}`,
+export const apiUpdateSupplier = (id, data) => axios({
+    url: `/api/v1/suppliers/${id}`,
     method: "PUT",
     data,
 })
 
-export const apiDeleteSupplier = (pid) => axios({
-    url: `/api/v1/suppliers/${pid}`,
+export const apiDeleteSupplier = (id) => axios({
+    url: `/api/v1/suppliers/${id}`,
     method: "DELETE",
 })

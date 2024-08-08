@@ -11,3 +11,4 @@ export { default as ResetPassword } from "./ResetPassword";
 export { default as SignUp } from "./SignUp";
 export { default as Products } from "./Products";
 export { default as Categories } from "./Categories";
+export { default as BlogDetails } from "./BlogDetails";

@@ -14,6 +14,7 @@ import {
     ResetPassword,
     SignUp,
     Categories,
+    BlogDetails,
 } from './pages/public';
 import path from './utils/path';
 import { Modal } from './components';
@@ -47,6 +48,7 @@ function App() {
                     <Route path={path.CATEGORIES} element={<Categories />} />
                     <Route path={path.PRODUCT_DETAILS__CATEGORY__PID__NAME} element={<ProductDetails />} />
                     <Route path={path.BLOGS} element={<Blog />} />
+                    <Route path={path.BLOGS__BID__TITLE} element={<BlogDetails />} />
                     <Route path={path.FAQS} element={<FAQ />} />
                     <Route path={path.OUR_SERVICES} element={<Service />} />
                     <Route path={path.VERIFY_EMAIL} element={<VerifyEmail />} />
@@ -70,12 +72,12 @@ function App() {
                     // Manage Blogs
                     <Route path={path.MANAGE_BLOGS} element={<ManageBlog />} />
                     <Route path={path.CREATE_BLOG} element={<CreateBlog />} />
-                    <Route path={path.UPDATE_BLOG} element={<UpdateBlog />} />
+                    <Route path={path.UPDATE_BLOG__BID} element={<UpdateBlog />} />
 
                     // Manage Suppliers
                     <Route path={path.MANAGE_SUPPLIERS} element={<ManageSuppliers />} />
                     <Route path={path.CREATE_SUPPLIER} element={<CreateSupplier />} />
-                    <Route path={path.UPDATE_SUPPLIER__PID} element={<UpdateSupplier />} />
+                    <Route path={path.UPDATE_SUPPLIER__SID} element={<UpdateSupplier />} />
                 </Route>
                 <Route path={path.MEMBER} element={<Member />}>
                     <Route path={path.PERSONAL} element={<Personal />} />

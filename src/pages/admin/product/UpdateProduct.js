@@ -10,8 +10,18 @@ import MarkdownEditor from 'components/input/MarkdownEditor';
 import {getBase64, validateData} from 'utils/helpers';
 import {useForm} from 'react-hook-form';
 import icons from 'utils/icons';
+import defaultProductImage from "assets/default_image_product.png"
+import Slider from "react-slick";
 
 const {ImBin} = icons;
+
+const settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 1
+};
 
 const schemas = {
     name: Joi.string().min(3).max(100).required(),
@@ -27,7 +37,6 @@ const schemas = {
 const UpdateProduct = () => {
     const [categories, setCategories] = useState([]);
     const [suppliers, setSuppliers] = useState([]);
-    const [product, setProduct] = useState(null);
     const [preview, setPreview] = useState({
         thumbImage: null,
         images: [],
@@ -52,6 +61,8 @@ const UpdateProduct = () => {
             images: [],
         }
     });
+    const [oldThumbImage, setOldThumbImage] = useState(null);
+    const [oldImages, setOldImages] = useState([]);
 
     const fetchCategories = async () => {
         const response = await apiGetCategories();
@@ -73,8 +84,9 @@ const UpdateProduct = () => {
         const response = await apiGetProductDetails(pid);
         if (response?.results?.statusCode === 200) {
             const {product} = response.results;
-            setProduct(product);
             setInitialProduct(product);
+            setOldThumbImage(product.thumbImageUrl);
+            setOldImages(product.imagesUrl);
             const {
                 name,
                 unitPrice,
@@ -100,7 +112,7 @@ const UpdateProduct = () => {
                 supplierId,
                 categoryId,
                 description,
-                thumbImage: [],
+                thumbImage: null,
                 images: [],
             });
             if (thumbImage) {
@@ -121,22 +133,22 @@ const UpdateProduct = () => {
     const updateProduct = async (data) => {
         const response = await apiUpdateProduct(pid, data);
         if (response?.results?.statusCode === 200) {
-            await Swal.fire('Cập nhật sản phẩm thành công', response?.results?.message, 'success');
+            await Swal.fire('Update product successfully.', response?.results?.message, 'success');
             navigate(`${path.ADMIN}/${path.MANAGE_PRODUCTS}`);
         } else {
-            await Swal.fire('Oops! Có lỗi xảy ra', response?.results?.message, 'error');
+            await Swal.fire('Oops! something wrong', response?.results?.message, 'error');
         }
     };
 
-    const onSubmit = (data) => {
+    const onSubmitUpdateProduct = (data) => {
         const allErrors = validateData(data, schemas);
 
         if (data.thumbImage && data.thumbImage.length > 1) {
-            allErrors.thumbImage = 'Chỉ được chọn một ảnh đại diện.';
+            allErrors.thumbImage = 'Only one thumbnail image is allowed.';
         }
 
         if (data.images && data.images.length > 10) {
-            allErrors.images = 'Chỉ được tải lên tối đa 10 ảnh.';
+            allErrors.images = 'You can upload a maximum of 10 images.';
         }
 
         if (Object.keys(allErrors).length > 0) {
@@ -146,7 +158,7 @@ const UpdateProduct = () => {
             for (const key in data) {
                 if (key === 'images' && data[key].length > 0) {
                     Array.from(data[key]).forEach((file) => formPayload.append('images', file));
-                } else if (key === 'thumbImage' && data[key].length > 0) {
+                } else if (key === 'thumbImage' && data[key]?.length > 0) {
                     formPayload.append(key, data[key][0]);
                 } else if (key !== 'thumbImage' && key !== 'images' && data[key] !== initialProduct[key]) {
                     formPayload.append(key, data[key] || null);
@@ -167,15 +179,19 @@ const UpdateProduct = () => {
     }, [pid]);
 
     const handlePreviewThumbImage = async (file) => {
-        const base64Thumb = await getBase64(file);
-        setPreview(prev => ({...prev, thumbImage: base64Thumb}));
-    };
+        if (file) {
+            const base64Thumb = await getBase64(file);
+            setPreview(prev => ({...prev, thumbImage: base64Thumb}));
+        } else {
+            setPreview(prev => ({...prev, thumbImage: null}));
+        }
+    }
 
     const handlePreviewImages = async (files) => {
         const imagesPreview = [];
         for (let file of files) {
             if (file.type !== 'image/png' && file.type !== 'image/jpeg') {
-                await Swal.fire('Oops! Có lỗi xảy ra', 'Chỉ chấp nhận định dạng png, jpeg', 'error');
+                await Swal.fire('Oops! something wrong', 'Oops! something wrong, Only accept png, jpeg', 'error');
             } else {
                 const base64 = await getBase64(file);
                 imagesPreview.push({
@@ -202,6 +218,8 @@ const UpdateProduct = () => {
     useEffect(() => {
         if (watch('thumbImage') && watch('thumbImage').length > 0) {
             handlePreviewThumbImage(watch('thumbImage')[0]);
+        } else {
+            handlePreviewThumbImage(null);
         }
     }, [watch('thumbImage')]);
 
@@ -214,7 +232,7 @@ const UpdateProduct = () => {
     return (
         <div className="p-4 w-3/5 flex flex-col">
             <h1 className="text-3xl font-bold py-4">Update Product</h1>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmitUpdateProduct)}>
                 <InputFieldAdmin
                     label="Product Name:"
                     name="name"
@@ -305,16 +323,50 @@ const UpdateProduct = () => {
                         error={errors.height}
                     />
                 </div>
-                    {
-                        preview.thumbImage &&
-                        <div className="my-4">
-                            <img
-                                className="w-[200px] object-contain"
-                                src={preview.thumbImage}
-                                alt="Preview Thumbnail Image"
-                            />
-                        </div>
-                    }
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2">Old thumb image:</label>
+                    <img
+                        className="w-[200px] min-h-[298px] object-contain border border-gray-200"
+                        src={oldThumbImage || defaultProductImage}
+                        alt="Old thumb image"
+                    />
+                </div>
+                <div>
+                    <label className="block text-gray-700 text-sm font-bold mb-2">Old images:</label>
+                    <Slider className="images-slider-admin w-[840px] flex items-center justify-center" {...settings}>
+                        {
+                            (() => {
+                                const imagesToShow = oldImages?.images?.length > 0 ? oldImages.images : oldImages;
+                                const totalImages = 6;
+                                const combinedImages = [...imagesToShow];
+
+                                while (combinedImages.length < totalImages) {
+                                    combinedImages.push(defaultProductImage);
+                                }
+
+                                return combinedImages.map((el, index) => (
+                                    <div className="flex gap-1" key={index}>
+                                        <img
+                                            className="w-[200px] min-h-[298px] object-contain border border-gray-200"
+                                            src={el instanceof File ? URL.createObjectURL(el) : el}
+                                            alt={`image ${index}`}
+                                        />
+                                    </div>
+                                ));
+                            })()
+                        }
+                    </Slider>
+                </div>
+                {
+                    preview.thumbImage &&
+                    <div className="my-4">
+                        <img
+                            className="w-[200px] min-h-[298px] object-contain"
+                            src={preview.thumbImage}
+                            alt="Preview Thumbnail Image"
+                        />
+                    </div>
+                }
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2">Thumbnail Image:</label>
                     <input
@@ -325,35 +377,36 @@ const UpdateProduct = () => {
                     {errors.thumbImage &&
                         <span className="text-red-500 text-xs italic">{errors.thumbImage.message}</span>}
                 </div>
-                    {
-                        preview.images.length > 0 &&
-                        <div className="my-4 flex w-full gap-3 flex-wrap">
-                            {
-                                preview.images.map((el, index) => (
-                                    <div
-                                        key={index}
-                                        className="w-fit relative"
-                                        onMouseEnter={() => setIsDelete(el.name)}
-                                        onMouseLeave={() => setIsDelete(null)}
-                                    >
-                                        <img
-                                            src={el.path}
-                                            alt={`Preview Image ${index + 1}`}
-                                        />
-                                        {
-                                            isDelete === el.name &&
-                                            <div
-                                                className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center"
-                                                onClick={() => handleRemoveImage(el.name)}
-                                            >
-                                                <ImBin size={35} color={'white'}/>
-                                            </div>
-                                        }
-                                    </div>
-                                ))
-                            }
-                        </div>
-                    }
+                {
+                    preview.images.length > 0 &&
+                    <div className="my-4 flex w-full gap-3 flex-wrap">
+                        {
+                            preview.images.map((el, index) => (
+                                <div
+                                    key={index}
+                                    className="w-fit relative"
+                                    onMouseEnter={() => setIsDelete(el.name)}
+                                    onMouseLeave={() => setIsDelete(null)}
+                                >
+                                    <img
+                                        className="w-[200px] min-h-[298px] object-contain"
+                                        src={el.path}
+                                        alt={`Preview Image ${index + 1}`}
+                                    />
+                                    {
+                                        isDelete === el.name &&
+                                        <div
+                                            className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+                                            onClick={() => handleRemoveImage(el.name)}
+                                        >
+                                            <ImBin size={35} color={'white'}/>
+                                        </div>
+                                    }
+                                </div>
+                            ))
+                        }
+                    </div>
+                }
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2">Product Images:</label>
                     <input

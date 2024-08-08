@@ -10,7 +10,7 @@ const Pagination = ({totalItemsFiltered, currentPage, pageSize, saveQueriesInFil
     return (
         <div className="flex items-center justify-between gap-2">
             <span className="flex text-sm italic">
-                {`Show products ${!Number(startIndex) ? 0 : startIndex} - ${endIndex} of ${totalItemsFiltered}`}
+                {`Show ${text} ${!Number(startIndex) ? 0 : startIndex} - ${endIndex} of ${totalItemsFiltered}`}
             </span>
             <div className="flex items-center gap-2">
                 {pagination?.map((el, i) => (

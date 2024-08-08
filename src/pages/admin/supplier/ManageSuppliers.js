@@ -21,8 +21,8 @@ const ManageSuppliers = () => {
     const dispatch = useDispatch();
 
     const fetchProducts = async (params) => {
+        console.log(params)
         const response = await apiGetAllSuppliers(params);
-        console.log(response?.results);
         if (response?.results?.statusCode === 200) {
             const {
                 suppliers,
@@ -75,9 +75,9 @@ const ManageSuppliers = () => {
 
     const handleSearch = () => {
         if (searchTerm) {
-            saveQueriesInFilter({ name: searchTerm, page: 1 }, []);
+            saveQueriesInFilter({ companyName: searchTerm, page: 1 }, []);
         } else {
-            saveQueriesInFilter({ page: 1 }, ['name']);
+            saveQueriesInFilter({ page: 1 }, ['companyName']);
         }
     };
 
@@ -94,7 +94,7 @@ const ManageSuppliers = () => {
                 <input
                     className="w-full p-4 pr-0 rounded-r-xl bg-[#f04646] outline-none text-gray-100 placeholder:text-sm placeholder:text-gray-200 placeholder:italic placeholder:opacity-50"
                     type="text"
-                    placeholder="Search product name"
+                    placeholder="Search supplier company name"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />

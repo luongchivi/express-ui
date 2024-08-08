@@ -7,6 +7,7 @@ const path = {
     PRODUCTS: 'products',
     CATEGORIES: 'categories',
     BLOGS: 'blogs',
+    BLOGS__BID__TITLE: 'blogs/:bid/:title',
     OUR_SERVICES: 'services',
     FAQS: 'faqs',
     PRODUCT_DETAILS__CATEGORY__PID__NAME: 'products/:category/:pid/:name',
@@ -26,11 +27,11 @@ const path = {
 
     MANAGE_SUPPLIERS: 'manage-suppliers',
     CREATE_SUPPLIER: 'create-supplier',
-    UPDATE_SUPPLIER__PID: 'update-supplier/:supplierId',
+    UPDATE_SUPPLIER__SID: 'update-supplier/:supplierId',
 
     MANAGE_BLOGS: 'manage-blogs',
     CREATE_BLOG: 'create-blog',
-    UPDATE_BLOG: 'update-blog',
+    UPDATE_BLOG__BID: 'update-blog/:blogId',
 
     // Member
     MEMBER: 'member',

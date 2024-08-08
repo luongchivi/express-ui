@@ -109,3 +109,8 @@ export const getBase64 = (file) => {
         reader.readAsDataURL(file);
     });
 };
+
+export const stripHtmlTags = (html) => {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    return doc.body.textContent || "";
+};

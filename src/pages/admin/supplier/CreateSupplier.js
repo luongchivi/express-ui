@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Joi from 'joi';
 import { Button, InputFieldAdmin } from 'components';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import path from 'utils/path';
-import {apiAddSupplier} from "apis/supplier";
-import {validateData} from "utils/helpers";
+import { apiCreateSupplier } from 'apis/supplier';
+import { validateData } from 'utils/helpers';
+import { useForm } from 'react-hook-form';
 
 const schemas = {
     companyName: Joi.string().max(30).required(),
@@ -16,28 +17,14 @@ const schemas = {
     postalCode: Joi.string().required(),
     country: Joi.string().required(),
     phone: Joi.string().required(),
-    fax: Joi.string().required(),
-    homePage: Joi.string().required(),
+    fax: Joi.string().optional(),
+    homePage: Joi.string().optional(),
 };
 
 const CreateSupplier = () => {
-    const [payload, setPayload] = useState({
-        companyName: '',
-        contactName: '',
-        address: '',
-        city: '',
-        region: '',
-        postalCode: '',
-        country: '',
-        phone: '',
-        fax: '',
-        homePage: '',
-    });
     const navigate = useNavigate();
-    const [errors, setErrors] = useState({});
-
-    const resetPayload = () => {
-        setPayload({
+    const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm({
+        defaultValues: {
             companyName: '',
             contactName: '',
             address: '',
@@ -48,119 +35,101 @@ const CreateSupplier = () => {
             phone: '',
             fax: '',
             homePage: '',
-        });
-    };
-
-    const handleChange = (name, value) => {
-        setPayload((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-    };
+        }
+    });
 
     const createSupplier = async (data) => {
-        const response = await apiAddSupplier(data);
+        const response = await apiCreateSupplier(data);
         if (response?.results?.statusCode === 201) {
-            await Swal.fire('Add new supplier successfully', response?.results?.message, 'success');
+            await Swal.fire('Create supplier successfully', response?.results?.message, 'success');
             navigate(`${path.ADMIN}/${path.MANAGE_SUPPLIERS}`);
+            reset();
         } else {
             await Swal.fire('Oops! something wrong', response?.results?.message, 'error');
-            resetPayload();
         }
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const allErrors = validateData(payload, schemas);
+    const onSubmitCreateSupplier = (data) => {
+        const allErrors = validateData(data, schemas);
+
         if (Object.keys(allErrors).length > 0) {
-            setErrors(allErrors);
+            console.log(allErrors);
         } else {
-            setErrors({});
-            createSupplier(payload).then();
+            createSupplier(data);
         }
     };
 
     return (
         <div className="p-4 w-3/5 flex flex-col">
             <h1 className="text-3xl font-bold py-4">Create Supplier</h1>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit(onSubmitCreateSupplier)}>
                 <InputFieldAdmin
                     label="Company Name:"
                     name="companyName"
-                    value={payload.companyName}
-                    onChange={handleChange}
+                    register={register}
                     schema={schemas.companyName}
                     error={errors.companyName}
                 />
                 <InputFieldAdmin
                     label="Contact Name:"
                     name="contactName"
-                    value={payload.contactName}
-                    onChange={handleChange}
+                    register={register}
                     schema={schemas.contactName}
                     error={errors.contactName}
                 />
                 <InputFieldAdmin
                     label="Address:"
                     name="address"
-                    value={payload.address}
-                    onChange={handleChange}
+                    register={register}
                     schema={schemas.address}
                     error={errors.address}
                 />
                 <InputFieldAdmin
                     label="City:"
                     name="city"
-                    value={payload.city}
-                    onChange={handleChange}
+                    register={register}
                     schema={schemas.city}
                     error={errors.city}
                 />
                 <InputFieldAdmin
                     label="Region:"
                     name="region"
-                    value={payload.region}
-                    onChange={handleChange}
+                    register={register}
                     schema={schemas.region}
                     error={errors.region}
                 />
                 <InputFieldAdmin
-                    label="Country:"
-                    name="country"
-                    value={payload.country}
-                    onChange={handleChange}
-                    schema={schemas.country}
-                    error={errors.country}
-                />
-                <InputFieldAdmin
                     label="Postal Code:"
                     name="postalCode"
-                    value={payload.postalCode}
-                    onChange={handleChange}
+                    register={register}
                     schema={schemas.postalCode}
                     error={errors.postalCode}
                 />
                 <InputFieldAdmin
-                    label="Fax:"
-                    name="fax"
-                    value={payload.fax}
-                    onChange={handleChange}
-                    schema={schemas.fax}
-                    error={errors.fax}
+                    label="Country:"
+                    name="country"
+                    register={register}
+                    schema={schemas.country}
+                    error={errors.country}
                 />
                 <InputFieldAdmin
                     label="Phone:"
                     name="phone"
-                    value={payload.phone}
-                    onChange={handleChange}
+                    register={register}
                     schema={schemas.phone}
                     error={errors.phone}
                 />
                 <InputFieldAdmin
+                    label="Fax:"
+                    name="fax"
+                    register={register}
+                    schema={schemas.fax}
+                    error={errors.fax}
+                />
+                <InputFieldAdmin
                     label="Home Page:"
                     name="homePage"
-                    value={payload.homePage}
-                    onChange={handleChange}
+                    register={register}
                     schema={schemas.homePage}
                     error={errors.homePage}
                 />
@@ -168,7 +137,6 @@ const CreateSupplier = () => {
             </form>
         </div>
     );
-}
+};
 
 export default CreateSupplier;
-

@@ -1,35 +1,49 @@
-import React, {memo} from 'react';
+import React, { memo } from 'react';
 import useBreadcrumbs from "use-react-router-breadcrumbs";
-import {Link, useLocation} from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import icons from "utils/icons";
 
-const {IoIosArrowForward} = icons;
+const { IoIosArrowForward } = icons;
 
-const Breadcrumb = ({name}) => {
-    const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
-    const categoryName = queryParams.get('categoryName');
+const CustomCategoryBreadcrumb = ({ match }) => {
+    const categoryName = match.params.category;
+    return (
+        <Link className="flex gap-1 items-center hover:text-main" to={`/products?categoryName=${categoryName}`}>
+            <span className="capitalize">{categoryName}</span>
+        </Link>
+    );
+};
+
+const Breadcrumb = ({ name, title }) => {
+
     // Define breadcrumb routes
     const routes = [
-        {path: "/", breadcrumb: "Home"},
-        {path: "/products", breadcrumb: "Products"},
-        {path: categoryName ? `/products?categoryName=${categoryName}` : "/products", breadcrumb: categoryName || "Category"},
-        {path: name ? `/products/:category/:pid/:name` : "", breadcrumb: name || ""}
+        { path: "/", breadcrumb: "Home" },
+        { path: "/products", breadcrumb: "Products" },
+        { path: "/products/:category", breadcrumb: CustomCategoryBreadcrumb },
+        { path: "/products/:category/:pid/:name", breadcrumb: name || "" },
+        { path: "/blogs/:bid/:title", breadcrumb: title || "" },
     ];
 
     const breadcrumbs = useBreadcrumbs(routes);
 
     return (
         <div className='text-sm flex items-center gap-1'>
-            {breadcrumbs.map(({match, breadcrumb}, index, self) => (
+            {breadcrumbs.map(({ match, breadcrumb }, index, self) => (
                 <React.Fragment key={match.pathname}>
-                    <Link
-                        className="flex gap-1 items-center hover:text-main"
-                        to={match.pathname}
-                    >
-                        <span className="capitalize">{breadcrumb}</span>
-                        {index !== self.length - 1 && <IoIosArrowForward />}
-                    </Link>
+                    {typeof breadcrumb === 'function' ? (
+                        React.cloneElement(breadcrumb({ match }), {
+                            key: match.pathname,
+                        })
+                    ) : (
+                        <Link
+                            className="flex gap-1 items-center hover:text-main"
+                            to={match.pathname}
+                        >
+                            <span className="capitalize">{breadcrumb}</span>
+                            {index !== self.length - 1 && <IoIosArrowForward />}
+                        </Link>
+                    )}
                 </React.Fragment>
             ))}
         </div>
