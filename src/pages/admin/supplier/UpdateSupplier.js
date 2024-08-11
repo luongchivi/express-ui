@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import Joi from 'joi';
-import { Button, InputFieldAdmin } from 'components';
+import {Button, InputFieldAdmin, Loading} from 'components';
 import {useNavigate, useParams} from 'react-router-dom';
 import Swal from 'sweetalert2';
 import path from 'utils/path';
@@ -8,6 +8,8 @@ import {apiGetSupplierDetails, apiUpdateSupplier} from 'apis/supplier';
 import { validateData } from 'utils/helpers';
 import { useForm } from 'react-hook-form';
 import {apiGetProductDetails} from "apis";
+import {useDispatch} from "react-redux";
+import {showModal} from "../../../store/app/appSlice";
 
 const schemas = {
     companyName: Joi.string().max(30).required(),
@@ -39,6 +41,7 @@ const CreateSupplier = () => {
             homePage: '',
         }
     });
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (supplierId) {
@@ -47,7 +50,9 @@ const CreateSupplier = () => {
     }, [supplierId]);
 
     const fetchSupplier = async () => {
+        dispatch(showModal({isShowModal: true, modalChildren: <Loading />}))
         const response = await apiGetSupplierDetails(supplierId);
+        dispatch(showModal({isShowModal: false, modalChildren: null}))
         if (response?.results?.statusCode === 200) {
             const {supplier} = response.results;
             const {

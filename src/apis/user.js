@@ -10,3 +10,9 @@ export const apiGetAllUsers = (params) => axios({
     method: "GET",
     params,
 });
+
+export const apiUpdateUser = (id, data) => axios({
+    url: `/api/v1/users/${id}`,
+    method: "PUT",
+    data,
+});

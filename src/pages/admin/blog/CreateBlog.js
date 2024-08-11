@@ -1,13 +1,14 @@
 import React, {memo, useCallback, useEffect, useState} from 'react';
 import Joi from 'joi';
-import { Button, InputFieldAdmin } from 'components';
+import {Button, InputFieldAdmin, Loading, MarkdownEditor} from 'components';
 import { apiCreateBlog } from 'apis';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import path from 'utils/path';
-import MarkdownEditor from 'components/input/MarkdownEditor';
 import { getBase64, validateData } from 'utils/helpers';
 import { useForm, useWatch } from 'react-hook-form';
+import {showModal} from "store/app/appSlice";
+import {useDispatch} from "react-redux";
 
 const schemas = {
     title: Joi.string().max(250).required(),
@@ -24,11 +25,13 @@ const CreateBlog = () => {
         }
     });
     const [preview, setPreview] = useState(null);
-
+    const dispatch = useDispatch();
     const thumbImage = useWatch({ control, name: 'thumbImage' });
 
     const createBlog = async (data) => {
+        dispatch(showModal({isShowModal: true, modalChildren: <Loading />}))
         const response = await apiCreateBlog(data);
+        dispatch(showModal({isShowModal: false, modalChildren: null}))
         if (response?.results?.statusCode === 201) {
             await Swal.fire('Create blog successfully', response?.results?.message, 'success');
             navigate(`${path.ADMIN}/${path.MANAGE_BLOGS}`);

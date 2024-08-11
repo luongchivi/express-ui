@@ -1,12 +1,14 @@
 import React from 'react';
 import Joi from 'joi';
-import { Button, InputFieldAdmin } from 'components';
+import {Button, InputFieldAdmin, Loading} from 'components';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import path from 'utils/path';
 import { apiCreateSupplier } from 'apis/supplier';
 import { validateData } from 'utils/helpers';
 import { useForm } from 'react-hook-form';
+import {showModal} from "store/app/appSlice";
+import {useDispatch} from "react-redux";
 
 const schemas = {
     companyName: Joi.string().max(30).required(),
@@ -37,9 +39,12 @@ const CreateSupplier = () => {
             homePage: '',
         }
     });
+    const dispatch = useDispatch();
 
     const createSupplier = async (data) => {
+        dispatch(showModal({isShowModal: true, modalChildren: <Loading />}))
         const response = await apiCreateSupplier(data);
+        dispatch(showModal({isShowModal: false, modalChildren: null}))
         if (response?.results?.statusCode === 201) {
             await Swal.fire('Create supplier successfully', response?.results?.message, 'success');
             navigate(`${path.ADMIN}/${path.MANAGE_SUPPLIERS}`);

@@ -18,8 +18,11 @@ const path = {
     // Admin
     ADMIN: '/admin',
     DASHBOARD: 'dashboard',
-    MANAGE_USERS: 'manage-users',
     MANAGE_ORDERS: 'manage-orders',
+
+    MANAGE_USERS: 'manage-users',
+    UPDATE_USER: 'update-user',
+    CREATE_USER: 'create-user',
 
     MANAGE_PRODUCTS: 'manage-products',
     CREATE_PRODUCT: 'create-product',
@@ -36,6 +39,7 @@ const path = {
     // Member
     MEMBER: 'member',
     PERSONAL: 'personal',
+    CART: 'cart',
 };
 
 export default path;

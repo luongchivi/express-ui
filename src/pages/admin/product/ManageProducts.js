@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { apiDeleteProduct, apiGetProducts } from "apis";
 import moment from "moment/moment";
-import { ConfirmDelete, Pagination } from "components";
+import {ConfirmDelete, Loading, Pagination} from "components";
 import { createSearchParams, Link, useNavigate } from "react-router-dom";
 import defaultImage from "assets/default_image_product.png";
 import icons from "utils/icons";
-import { showModal } from "store/app/appSlice";
+import {showLoadingModal, showModal} from "store/app/appSlice";
 import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 
@@ -42,12 +42,11 @@ const ManageProducts = () => {
     };
 
     const handleDelete = async (productId) => {
-        console.log('Delete product with ID:', productId);
         if (productId) {
             const response = await apiDeleteProduct(productId);
             if (response?.results?.statusCode === 200) {
                 await Swal.fire('Delete product successfully.', response?.results?.message, 'success');
-                setQueries(prev => ({ ...prev })); // Triggers a re-fetch
+                setQueries(prev => ({ ...prev }));
             } else {
                 await Swal.fire('Oops! something wrong.', response?.results?.message, 'error');
             }
@@ -197,6 +196,7 @@ const ManageProducts = () => {
                                     className="text-red-600 hover:text-red-900"
                                     onClick={(e) => {
                                         e.preventDefault();
+                                        console.log(1);
                                         dispatch(showModal({
                                             isShowModal: true,
                                             modalChildren: <ConfirmDelete id={product?.id} handleSubmit={handleDelete}/>

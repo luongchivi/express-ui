@@ -1,11 +1,13 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {InputField, Button} from "../../components";
+import {InputField, Button, Loading} from "components";
 import Swal from 'sweetalert2';
 import {useNavigate} from "react-router-dom";
-import icons from '../../utils/icons';
-import path from "../../utils/path";
-import {validate} from "../../utils/helpers";
-import {apiSignUp} from "../../apis/auth";
+import icons from 'utils/icons';
+import path from "utils/path";
+import {validate} from "utils/helpers";
+import {apiSignUp} from "apis/auth";
+import {showModal} from "store/app/appSlice";
+import {useDispatch} from "react-redux";
 
 const {FaRegRegistered} = icons;
 
@@ -18,6 +20,7 @@ const SignUp = () => {
         firstName: '',
         lastName: '',
     });
+    const dispatch = useDispatch();
 
     const resetPayload = () => {
         setPayload({
@@ -36,7 +39,9 @@ const SignUp = () => {
         try {
             const invalids = validate(payload, setInvalidFields);
             if (invalids === 0) {
+                dispatch(showModal({isShowModal: true, modalChildren: <Loading />}))
                 const response = await apiSignUp(payload);
+                dispatch(showModal({isShowModal: false, modalChildren: null}))
                 if (response?.results?.statusCode === 201) {
                     await Swal.fire('Sign up successfully', response?.results?.message, 'success').then(() => {
                         navigate(`/${path.VERIFY_EMAIL}`);

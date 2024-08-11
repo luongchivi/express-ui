@@ -1,9 +1,11 @@
 import React, {useCallback, useState} from 'react';
-import {Button, InputField} from "../../components";
-import icons from '../../utils/icons';
-import {apiForgotPassword} from "../../apis/auth";
+import {Button, InputField, Loading} from "components";
+import icons from 'utils/icons';
+import {apiForgotPassword} from "apis";
 import Swal from "sweetalert2";
-import {validate} from "../../utils/helpers";
+import {validate} from "utils/helpers";
+import {showModal} from "../../store/app/appSlice";
+import {useDispatch} from "react-redux";
 
 const {FaLock} = icons;
 
@@ -12,6 +14,7 @@ const ForgotPassword = () => {
     const [payload, setPayload] = React.useState({
         email: '',
     });
+    const dispatch = useDispatch();
 
     const resetPayload = () => {
         setPayload({
@@ -23,7 +26,9 @@ const ForgotPassword = () => {
         try {
             const invalids = validate(payload, setInvalidFields);
             if (invalids === 0) {
+                dispatch(showModal({isShowModal: true, modalChildren: <Loading />}))
                 const response = await apiForgotPassword(payload);
+                dispatch(showModal({isShowModal: false, modalChildren: null}))
                 if (response?.results?.statusCode === 200) {
                     await Swal.fire('Request forgot password successfully.', response?.results?.message, 'success');
                     resetPayload();

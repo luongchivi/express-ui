@@ -1,9 +1,11 @@
 import React, {useCallback, useState} from 'react';
-import icons from '../../utils/icons';
-import {Button, InputField} from "../../components";
-import {apiResendVerifyEmail} from "../../apis/auth";
+import icons from 'utils/icons';
+import {Button, InputField, Loading} from "components";
+import {apiResendVerifyEmail} from "apis/auth";
 import Swal from "sweetalert2";
-import {validate} from "../../utils/helpers";
+import {validate} from "utils/helpers";
+import {showModal} from "store/app/appSlice";
+import {useDispatch} from "react-redux";
 
 const {MdMarkEmailUnread} = icons;
 
@@ -12,6 +14,7 @@ const VerifyEmail = () => {
     const [payload, setPayload] = useState({
         email: '',
     })
+    const dispatch = useDispatch();
 
     const resetPayload = () => {
         setPayload({
@@ -23,7 +26,9 @@ const VerifyEmail = () => {
         try {
             const invalids = validate(payload, setInvalidFields);
             if (invalids === 0) {
+                dispatch(showModal({isShowModal: true, modalChildren: <Loading />}))
                 const response = await apiResendVerifyEmail(payload);
+                dispatch(showModal({isShowModal: false, modalChildren: null}))
                 if (response?.results?.statusCode === 200) {
                     await Swal.fire('Resend email successfully.', response?.results?.message, 'success');
                     resetPayload();

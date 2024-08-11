@@ -222,6 +222,9 @@ const {
     TiShoppingCart,
     FaBloggerB,
     TbBuildingWarehouse,
+    IoMdSettings,
+    FaHeart,
+    MdHistory,
 } = icons;
 
 export const adminSidebar = [
@@ -234,9 +237,18 @@ export const adminSidebar = [
     },
     {
         id: 2,
-        type: 'SINGLE',
+        type: 'PARENT',
         text: 'Manage Users',
-        path: `${path.ADMIN}/${path.MANAGE_USERS}`,
+        submenu: [
+            {
+                text: 'Manage Users',
+                path: `${path.ADMIN}/${path.MANAGE_USERS}`,
+            },
+            {
+                text: 'Create Users',
+                path: `${path.ADMIN}/${path.CREATE_USER}`,
+            },
+        ],
         icon: <MdGroups/>
     },
     {
@@ -293,5 +305,36 @@ export const adminSidebar = [
             },
         ],
         icon: <TbBuildingWarehouse/>
+    },
+];
+
+export const personalSidebar = [
+    {
+        id: 1,
+        type: 'SINGLE',
+        text: 'User info',
+        path: `/${path.MEMBER}/${path.PERSONAL}`,
+        icon: <IoMdSettings/>
+    },
+    {
+        id: 2,
+        type: 'SINGLE',
+        text: 'Cart',
+        path: `/${path.MEMBER}/${path.CART}`,
+        icon: <TiShoppingCart/>
+    },
+    {
+        id: 3,
+        type: 'SINGLE',
+        text: 'Wishlist',
+        path: `${path.ADMIN}/${path.DASHBOARD}`,
+        icon: <FaHeart/>
+    },
+    {
+        id: 4,
+        type: 'SINGLE',
+        text: 'History buy',
+        path: `${path.ADMIN}/${path.DASHBOARD}`,
+        icon: <MdHistory/>
     },
 ];

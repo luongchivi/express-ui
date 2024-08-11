@@ -1,28 +1,31 @@
 import React from 'react';
-import icons from '../../utils/icons';
+import icons from 'utils/icons';
 import {useNavigate, useParams} from "react-router-dom";
-import {Button, InputField} from "../../components";
-import {apiResetPassword} from "../../apis/auth";
+import {Button, InputField, Loading} from "../../components";
+import {apiResetPassword} from "apis/auth";
 import Swal from "sweetalert2";
-import path from "../../utils/path";
+import path from "utils/path";
+import {showModal} from "store/app/appSlice";
+import {useDispatch} from "react-redux";
 
 const {RiLockPasswordFill} = icons
 
 const ResetPassword = () => {
     const navigate = useNavigate();
     const {resetToken} = useParams();
-    console.log('ResetToken: ', resetToken);
     const [payload, setPayload] = React.useState({
         newPassword: '',
     });
+    const dispatch = useDispatch();
 
     const handleSubmit = async () => {
         try {
+            dispatch(showModal({isShowModal: true, modalChildren: <Loading />}))
             const response = await apiResetPassword({
                 resetToken,
                 newPassword: payload.newPassword,
             });
-            console.log(response);
+            dispatch(showModal({isShowModal: false, modalChildren: null}))
             if (response?.results?.statusCode === 200) {
                 await Swal.fire('Reset Password Successfully', response?.results?.message, 'success');
                 navigate(`/${path.LOGIN}`);

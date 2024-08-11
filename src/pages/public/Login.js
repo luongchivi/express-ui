@@ -1,13 +1,14 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {InputField, Button} from "../../components";
-import {apiLogin} from "../../apis/auth";
+import {InputField, Button, Loading} from "components";
+import {apiLogin} from "apis";
 import Swal from 'sweetalert2';
 import {useNavigate} from "react-router-dom";
-import path from '../../utils/path';
-import {login} from '../../store/user/userSlice';
+import path from 'utils/path';
+import {login} from 'store/user/userSlice';
 import {useDispatch} from "react-redux";
-import {validate} from '../../utils/helpers';
-import icons from '../../utils/icons';
+import {validate} from 'utils/helpers';
+import icons from 'utils/icons';
+import {showModal} from "../../store/app/appSlice";
 
 const {MdLogin} = icons;
 
@@ -35,7 +36,9 @@ const Login = () => {
         try {
             const invalids = validate(payload, setInvalidFields);
             if (invalids === 0) {
+                dispatch(showModal({isShowModal: true, modalChildren: <Loading />}))
                 const response = await apiLogin(payload);
+                dispatch(showModal({isShowModal: false, modalChildren: null}))
                 if (response?.results?.statusCode === 200) {
                     const { accessToken, user } = response?.results;
                     await Swal.fire('Login successfully', response?.results?.message, 'success');

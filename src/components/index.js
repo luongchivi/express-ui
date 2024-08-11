@@ -30,4 +30,5 @@ export { default as AdminSidebar } from './sidebar/AdminSidebar';
 export { default as InputFieldAdmin } from './input/InputFieldAdmin';
 export { default as ConfirmDelete } from './common/ConfirmDelete';
 export { default as MarkdownEditor } from './input/MarkdownEditor';
+export { default as Loading } from './common/Loading';
 

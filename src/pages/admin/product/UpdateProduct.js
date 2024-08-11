@@ -1,17 +1,18 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import Joi from 'joi';
-import {Button, InputFieldAdmin} from 'components';
+import {Button, InputFieldAdmin, Loading, MarkdownEditor} from 'components';
 import {apiGetCategories, apiGetProductDetails, apiUpdateProduct} from 'apis';
 import {useNavigate, useParams} from 'react-router-dom';
 import Swal from 'sweetalert2';
 import path from 'utils/path';
 import {apiGetAllSuppliers} from 'apis/supplier';
-import MarkdownEditor from 'components/input/MarkdownEditor';
 import {getBase64, validateData} from 'utils/helpers';
 import {useForm} from 'react-hook-form';
 import icons from 'utils/icons';
 import defaultProductImage from "assets/default_image_product.png"
 import Slider from "react-slick";
+import {showModal} from "../../../store/app/appSlice";
+import {useDispatch} from "react-redux";
 
 const {ImBin} = icons;
 
@@ -44,7 +45,7 @@ const UpdateProduct = () => {
     const [initialProduct, setInitialProduct] = useState({});
     const [isDelete, setIsDelete] = useState(null);
     const navigate = useNavigate();
-    const {pid} = useParams(); // Assuming the product ID is passed via URL params
+    const {pid} = useParams();
     const {register, handleSubmit, formState: {errors}, reset, setValue, watch} = useForm({
         defaultValues: {
             name: '',
@@ -63,6 +64,7 @@ const UpdateProduct = () => {
     });
     const [oldThumbImage, setOldThumbImage] = useState(null);
     const [oldImages, setOldImages] = useState([]);
+    const dispatch = useDispatch();
 
     const fetchCategories = async () => {
         const response = await apiGetCategories();
@@ -131,7 +133,9 @@ const UpdateProduct = () => {
     };
 
     const updateProduct = async (data) => {
+        dispatch(showModal({isShowModal: true, modalChildren: <Loading />}))
         const response = await apiUpdateProduct(pid, data);
+        dispatch(showModal({isShowModal: false, modalChildren: null}))
         if (response?.results?.statusCode === 200) {
             await Swal.fire('Update product successfully.', response?.results?.message, 'success');
             navigate(`${path.ADMIN}/${path.MANAGE_PRODUCTS}`);

@@ -1,15 +1,16 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import Joi from 'joi';
-import {Button, InputFieldAdmin} from 'components';
+import {Button, InputFieldAdmin, Loading, MarkdownEditor} from 'components';
 import {apiCreateProduct, apiGetCategories} from 'apis';
 import {useNavigate} from 'react-router-dom';
 import Swal from 'sweetalert2';
 import path from 'utils/path';
 import {apiGetAllSuppliers} from 'apis/supplier';
-import MarkdownEditor from 'components/input/MarkdownEditor';
 import {getBase64, validateData} from 'utils/helpers';
 import {useForm} from 'react-hook-form';
 import icons from 'utils/icons'
+import {useDispatch} from "react-redux";
+import {showModal} from "../../../store/app/appSlice";
 
 const {ImBin} = icons
 
@@ -47,6 +48,7 @@ const CreateProduct = () => {
         images: [],
     });
     const [isDelete, setIsDelete] = useState(null);
+    const dispatch = useDispatch();
 
     const fetchCategories = async () => {
         const response = await apiGetCategories();
@@ -65,7 +67,9 @@ const CreateProduct = () => {
     };
 
     const createProduct = async (data) => {
+        dispatch(showModal({isShowModal: true, modalChildren: <Loading />}))
         const response = await apiCreateProduct(data);
+        dispatch(showModal({isShowModal: false, modalChildren: null}))
         if (response?.results?.statusCode === 201) {
             await Swal.fire('Create product successfully', response?.results?.message, 'success');
             navigate(`${path.ADMIN}/${path.MANAGE_PRODUCTS}`);

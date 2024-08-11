@@ -32,6 +32,8 @@ import { IoSearchOutline } from "react-icons/io5";
 import { TbBuildingWarehouse } from "react-icons/tb";
 import { ImBin } from "react-icons/im";
 import { MdArrowRightAlt } from "react-icons/md";
+import { IoMdSettings } from "react-icons/io";
+import { MdHistory } from "react-icons/md";
 
 const icons = {
     MdPhone,
@@ -68,6 +70,8 @@ const icons = {
     TbBuildingWarehouse,
     ImBin,
     MdArrowRightAlt,
+    IoMdSettings,
+    MdHistory,
 }
 
 export default icons;

@@ -33,8 +33,10 @@ import {
     CreateSupplier,
     UpdateSupplier,
     ManageSuppliers,
+    CreateUser,
+    UpdateUser,
 } from './pages/admin';
-import { Member, Personal } from './pages/member';
+import {Cart, Member, Personal} from './pages/member';
 
 function App() {
     const { isShowModal, modalChildren } = useSelector(state => state.app);
@@ -57,11 +59,19 @@ function App() {
                     <Route path={path.LOGIN} element={<Login />} />
                     <Route path={path.SIGN_UP} element={<SignUp />} />
                     <Route path={path.ALL} element={<Home />} />
+                    <Route path={path.MEMBER} element={<Member />}>
+                        <Route path={path.PERSONAL} element={<Personal />} />
+                        <Route path={path.CART} element={<Cart />} />
+                    </Route>
                 </Route>
                 <Route path={path.ADMIN} element={<Admin />}>
                     <Route path={path.DASHBOARD} element={<Dashboard />} />
 
+                    // Manage Users
                     <Route path={path.MANAGE_USERS} element={<ManageUsers />} />
+                    <Route path={path.CREATE_USER} element={<CreateUser />} />
+                    <Route path={path.UPDATE_USER} element={<UpdateUser />} />
+
                     <Route path={path.MANAGE_ORDERS} element={<ManageOrders />} />
 
                     // Manage Products
@@ -78,9 +88,6 @@ function App() {
                     <Route path={path.MANAGE_SUPPLIERS} element={<ManageSuppliers />} />
                     <Route path={path.CREATE_SUPPLIER} element={<CreateSupplier />} />
                     <Route path={path.UPDATE_SUPPLIER__SID} element={<UpdateSupplier />} />
-                </Route>
-                <Route path={path.MEMBER} element={<Member />}>
-                    <Route path={path.PERSONAL} element={<Personal />} />
                 </Route>
             </Routes>
         </div>

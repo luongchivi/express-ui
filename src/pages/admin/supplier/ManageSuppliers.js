@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import moment from "moment/moment";
-import {ConfirmDelete, Pagination} from "components";
+import {ConfirmDelete, Loading, Pagination} from "components";
 import {createSearchParams, useNavigate} from "react-router-dom";
 import icons from "utils/icons";
 import {apiGetAllSuppliers, apiDeleteSupplier} from "apis/supplier";
@@ -21,7 +21,6 @@ const ManageSuppliers = () => {
     const dispatch = useDispatch();
 
     const fetchProducts = async (params) => {
-        console.log(params)
         const response = await apiGetAllSuppliers(params);
         if (response?.results?.statusCode === 200) {
             const {
@@ -38,14 +37,15 @@ const ManageSuppliers = () => {
     };
 
     const handleEdit = (supplierId) => {
-        console.log(supplierId);
         navigate({ pathname: `/admin/update-supplier/${supplierId}` });
     };
 
     const handleDelete = async (supplierId) => {
-        console.log('Delete supplier with ID:', supplierId);
         if (supplierId) {
+            console.log(3);
+            dispatch(showModal({isShowModal: true, modalChildren: <Loading />}))
             const response = await apiDeleteSupplier(supplierId);
+            dispatch(showModal({isShowModal: false, modalChildren: null}))
             if (response?.results?.statusCode === 200) {
                 await Swal.fire('Delete supplier successfully.', response?.results?.message, 'success');
                 setQueries(prev => ({...prev})); // Triggers a re-fetch
@@ -187,6 +187,7 @@ const ManageSuppliers = () => {
                                     className="text-red-600 hover:text-red-900"
                                     onClick={(e) => {
                                         e.preventDefault();
+                                        console.log(1);
                                         dispatch(showModal({
                                             isShowModal: true,
                                             modalChildren: <ConfirmDelete id={supplier?.id} handleSubmit={handleDelete}/>

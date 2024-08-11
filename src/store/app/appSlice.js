@@ -5,7 +5,6 @@ export const appSlice = createSlice({
     name: 'app',
     initialState: {
         categories: [],
-        isLoading: false,
         messageErrorAPI: null,
         isShowModal: false,
         modalChildren: null,

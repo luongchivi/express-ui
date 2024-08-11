@@ -1,7 +1,7 @@
 import React, {memo, useCallback, useEffect, useState} from 'react';
 import {apiDeleteBlog, apiDeleteProduct, apiGetAllBlogs, apiGetProducts} from "apis";
 import moment from "moment/moment";
-import { ConfirmDelete, Pagination } from "components";
+import {ConfirmDelete, Loading, Pagination} from "components";
 import { createSearchParams, Link, useNavigate } from "react-router-dom";
 import defaultImage from "assets/default_image_product.png";
 import icons from "utils/icons";
@@ -43,7 +43,9 @@ const ManageBlogs = () => {
 
     const handleDelete = async (blogId) => {
         if (blogId) {
+            dispatch(showModal({isShowModal: true, modalChildren: <Loading />}))
             const response = await apiDeleteBlog(blogId);
+            dispatch(showModal({isShowModal: false, modalChildren: null}))
             if (response?.results?.statusCode === 200) {
                 await Swal.fire('Delete blog successfully.', response?.results?.message, 'success');
                 setQueries(prev => ({ ...prev })); // Triggers a re-fetch
