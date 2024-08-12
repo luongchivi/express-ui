@@ -29,7 +29,7 @@ const Member = () => {
     return (
         <div className="flex">
             <div className="w-main m-auto flex">
-                <div className="w-1/5 bg-zinc-600">
+                <div className="w-1/6 bg-zinc-600 py-4">
                     <div className="p-4 flex flex-col justify-center items-center gap-2">
                         <img className="w-[100px] object-contain" src={defaultAvatar} alt="logo"/>
                     </div>
@@ -77,7 +77,7 @@ const Member = () => {
                         ))}
                     </div>
                 </div>
-                <div className="w-4/5 py-4">
+                <div className="w-5/6 p-4 flex flex-col items-center">
                     <Outlet/>
                 </div>
             </div>
@@ -86,3 +86,4 @@ const Member = () => {
 }
 
 export default Member
+

@@ -1,4 +1,7 @@
 import icons from "./icons";
+import {apiAddToCart} from "../apis";
+import Swal from "sweetalert2";
+import path from "./path";
 
 
 export const createSlug = string => string.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").split(" ").join("-");
@@ -114,3 +117,30 @@ export const stripHtmlTags = (html) => {
     const doc = new DOMParser().parseFromString(html, 'text/html');
     return doc.body.textContent || "";
 };
+
+export const handleAddToCart = async (e, id, navigate, isLogin) => {
+    if(e) {
+        e.preventDefault();
+    }
+    console.log(id);
+    console.log("add to cart");
+    try {
+        if(isLogin) {
+            const response = await apiAddToCart({
+                productId: id,
+                quantity: 1,
+            });
+            if (response?.results?.statusCode === 200) {
+                await Swal.fire('Add item successfully.', response?.results?.message, 'success');
+                navigate(`/${path.MEMBER}/${path.CART}`);
+            } else {
+                await Swal.fire('Oops! something wrong.', response?.results?.message, 'error');
+            }
+        } else {
+            await Swal.fire('Oops! something wrong.', 'You need to login.', 'error');
+            navigate(`/${path.LOGIN}`);
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}

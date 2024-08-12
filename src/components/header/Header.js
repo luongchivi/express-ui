@@ -1,16 +1,18 @@
-import React, {Fragment, memo, useState} from 'react';
+import React, {Fragment, memo, useEffect, useState} from 'react';
 import logo from 'assets/logo_digital_new_250x.png';
 import icons from 'utils/icons';
 import {Link} from 'react-router-dom';
 import path from 'utils/path';
 import {useDispatch, useSelector} from 'react-redux';
-import {logout} from "../../store/user/userSlice";
+import {logout} from "store/user/userSlice";
+import {getCartMe} from "../../store/cart/asyncAction";
 
 const Header = () => {
     const {currentUser, isLogin} = useSelector(state => state.user);
     const isAdmin = currentUser?.roles?.some(role => role.name === 'Admin');
     const isUser = currentUser?.roles?.some(role => role.name === 'User');
     const dispatch = useDispatch();
+    const { totalItems } = useSelector(state => state.cart);
     const {
         MdPhone, IoMdMail, IoBagCheckSharp, FaCircleUser
     } = icons;
@@ -25,6 +27,10 @@ const Header = () => {
         dispatch(logout());
         setIsDropdownOpen(false);
     };
+
+    useEffect(() => {
+        dispatch(getCartMe())
+    }, []);
 
     return (
         <div className='w-main h-[110px] py-[35px] flex justify-between'>
@@ -52,7 +58,7 @@ const Header = () => {
                             to={`/${path.MEMBER}/${path.CART}`}
                             className='flex items-center justify-center gap-2 px-6 border-r cursor-pointer'>
                             <IoBagCheckSharp color='red' size={20}/>
-                            <span>0 item(s)</span>
+                            <span>{totalItems} item(s)</span>
                         </Link>
                         <div className='relative flex'>
                             <div

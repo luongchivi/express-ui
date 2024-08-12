@@ -1,12 +1,12 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {useParams} from 'react-router-dom'
-import {apiGetProductDetails, apiGetProducts} from '../../apis';
+import {useNavigate, useParams} from 'react-router-dom'
+import {apiGetProductDetails, apiGetProducts} from 'apis';
 import {Breadcrumb, Button, CustomSlider, ProductDescription, ProductExtraInfo, SelectQuantity} from '../../components';
 import Slider from "react-slick";
 import ReactImageMagnify from 'react-image-magnify';
-import {formatMoney, renderStar} from "../../utils/helpers";
-import {productExtraInfo} from "../../utils/containts"
-import defaultImageProduct from "../../assets/default_image_product.png";
+import {formatMoney, handleAddToCart, renderStar} from "utils/helpers";
+import {productExtraInfo} from "utils/containts"
+import defaultImageProduct from "assets/default_image_product.png";
 import DOMPurify from 'dompurify';
 
 const settings = {
@@ -24,6 +24,7 @@ const ProductDetails = () => {
     const [products, setProducts] = useState([]);
     const [quantity, setQuantity] = useState(1);
     const [currentImage, setCurrentImage] = useState(null);
+    const navigate = useNavigate();
 
     const fetchProductByCategory = async () => {
         const response = await apiGetProducts({
@@ -148,6 +149,7 @@ const ProductDetails = () => {
                         </div>
                         <Button
                             fw
+                            handleOnClick={e => handleAddToCart(e, pid, navigate)}
                         >
                             Add to Cart
                         </Button>

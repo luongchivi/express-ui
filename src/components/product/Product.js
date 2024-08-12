@@ -1,16 +1,20 @@
 import React, {memo, useState} from 'react';
-import {formatMoney, renderStar} from 'utils/helpers';
+import {formatMoney, handleAddToCart, renderStar} from 'utils/helpers';
 import labelNew from 'assets/label_new.png';
 import labelBest from 'assets/label_best.png';
 import {SelectOption} from 'components';
 import icons from "utils/icons";
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import defaultImageProduct from 'assets/default_image_product.png';
+import {useSelector} from "react-redux";
 
-const {IoEyeSharp, IoMenu, FaHeart} = icons;
+
+const {IoEyeSharp, TiShoppingCart, FaHeart} = icons;
 
 const Product = ({productData, isNew, normal}) => {
+    const {isLogin} = useSelector(state => state.user);
     const [isShowOption, setShowOption] = useState(false);
+    const navigate = useNavigate();
 
     return (
         <div className="w-full text-base px-[10px]">
@@ -31,9 +35,9 @@ const Product = ({productData, isNew, normal}) => {
                         isShowOption &&
                         <div
                             className="absolute bottom-[-10px] left-0 right-0 flex justify-center gap-4 animate-slide-top">
-                            <SelectOption icon={<IoEyeSharp/>}/>
-                            <SelectOption icon={<IoMenu/>}/>
-                            <SelectOption icon={<FaHeart/>}/>
+                            <span><SelectOption icon={<IoEyeSharp/>}/></span>
+                            <span onClick={e => handleAddToCart(e, productData?.id, navigate, isLogin)}><SelectOption icon={<TiShoppingCart/>}/></span>
+                            <span><SelectOption icon={<FaHeart/>}/></span>
                         </div>
                     }
                     <img
@@ -50,8 +54,8 @@ const Product = ({productData, isNew, normal}) => {
                         />
                     }
                 </div>
-                <div className="flex flex-col gap-2 mt-[15px] items-start w-full gap-1">
-                    <span className="line-clamp-1">{productData?.name}</span>
+                <div className="flex flex-col gap-2 mt-[15px] items-start w-full">
+                    <span className="truncate w-full">{productData?.name}</span>
                     <span className="flex">{renderStar(productData?.averageRating)?.map((el, index) => (
                         <span key={index}>{el}</span>
                     ))}</span>

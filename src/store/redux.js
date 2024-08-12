@@ -1,8 +1,9 @@
 import {configureStore} from '@reduxjs/toolkit';
 import appSlice from "./app/appSlice";
-import productSlice from "./product/productSlice";
+import productSlice from "store/product/productSlice";
 import storage from 'redux-persist/lib/storage';
-import userSlice from '../store/user/userSlice';
+import userSlice from 'store/user/userSlice';
+import cartSlice from 'store/cart/cartSlice';
 import {
     persistStore,
     persistReducer,
@@ -29,6 +30,7 @@ export const redux = configureStore({
     reducer: {
         app: appSlice,
         products: productSlice,
+        cart: cartSlice,
         user: persistReducer(userConfig, userSlice)
     },
     middleware: (getDefaultMiddleware) =>
