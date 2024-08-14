@@ -17,9 +17,9 @@ const schemas = {
     email: Joi.string().required(),
     isActive: Joi.boolean().required(),
     address: Joi.string().required(),
-    districtId: Joi.number().required(),
-    wardId: Joi.number().required(),
-    provinceId: Joi.number().required(),
+    districtId: Joi.string().required(),
+    wardId: Joi.string().required(),
+    provinceId: Joi.string().required(),
     phone: Joi.string().required(),
 };
 
@@ -96,46 +96,6 @@ const Personal = () => {
         };
     }, [currentUser, address, setValue]);
 
-    // useEffect(() => {
-    //     const initializeForm = () => {
-    //         setValue("firstName", currentUser.firstName);
-    //         setValue("lastName", currentUser.lastName);
-    //         setValue("email", currentUser.email);
-    //         setValue("isActive", currentUser.isActive.toString());
-    //         setValue("address", address.address);
-    //         setValue("phone", address.phone);
-    //         setValue("provinceId", address.provinceId);
-    //         setProvinceIdQuery(address.provinceId);
-    //     };
-    //
-    //     const fetchProvinces = async () => {
-    //         try {
-    //             const response = await apiGetProvinces({ pageSize: 63 });
-    //             if (response?.results?.statusCode === 200) {
-    //                 setProvinces(response?.results?.provinces);
-    //             }
-    //         } catch (error) {
-    //             console.log(error);
-    //         }
-    //     };
-    //
-    //     initializeForm();
-    //     fetchProvinces();
-    //
-    //     // Store initial values
-    //     initialValuesRef.current = {
-    //         firstName: currentUser.firstName,
-    //         lastName: currentUser.lastName,
-    //         email: currentUser.email,
-    //         isActive: currentUser.isActive.toString(),
-    //         address: address.address,
-    //         phone: address.phone,
-    //         districtId: address.districtId,
-    //         wardId: address.wardId,
-    //         provinceId: address.provinceId
-    //     };
-    // }, [currentUser, address, setValue]);
-
     useEffect(() => {
         dispatch(getCurrentUser());
     }, [dispatch]);
@@ -206,9 +166,6 @@ const Personal = () => {
     };
 
     const onSubmitSaveUserInfo = (data) => {
-        console.log("isDirty: ", isDirty);
-        console.log("isFormDirty: ", isFormDirty);
-        console.log(watch());
         if (!isDirty && !isFormDirty) {
             Swal.fire('No changes detected', 'You have not made any changes to the form', 'info');
             return;
@@ -311,7 +268,7 @@ const Personal = () => {
                     selectors={wards}
                     selectorName={'ward'}
                     onChange={(e) => {
-                        setValue("wardId", parseInt(e.target.value, 10));
+                        setValue("wardId", e.target.value);
                         setIsFormDirty(true);
                     }}
                 />

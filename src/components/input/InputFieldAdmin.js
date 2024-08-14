@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 
 const InputFieldAdmin = ({ label, name, register, schema, error, placeholder, type = 'text', selectors, selectorName, defaultValue, onChange, disabled }) => {
     const [inputError, setInputError] = useState('');
@@ -27,7 +27,7 @@ const InputFieldAdmin = ({ label, name, register, schema, error, placeholder, ty
                     >
                         <option value={defaultValue}>Select a {selectorName}</option>
                         {selectors?.map(el => (
-                            <option key={el.code} value={el.code}>{el.name}</option>
+                            <option key={el.code} value={el.id}>{el.name}</option>
                         ))}
                     </select>
                 );
@@ -50,9 +50,9 @@ const InputFieldAdmin = ({ label, name, register, schema, error, placeholder, ty
     };
 
     return (
-        <div className="mb-4">
+        <div className="mb-4 w-full">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor={name}>
-            {label}
+                {label}
             </label>
             {renderInputField()}
             {inputError && <p className="text-red-500 text-xs italic">{inputError}</p>}

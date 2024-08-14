@@ -34,6 +34,7 @@ import { ImBin } from "react-icons/im";
 import { MdArrowRightAlt } from "react-icons/md";
 import { IoMdSettings } from "react-icons/io";
 import { MdHistory } from "react-icons/md";
+import { AiOutlineFileDone } from "react-icons/ai";
 
 const icons = {
     MdPhone,
@@ -72,6 +73,7 @@ const icons = {
     MdArrowRightAlt,
     IoMdSettings,
     MdHistory,
+    AiOutlineFileDone,
 }
 
 export default icons;

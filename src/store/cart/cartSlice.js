@@ -22,6 +22,11 @@ const cartSlice = createSlice({
             state.totalItems = action.payload.items.length;
             state.totalPrice = action.payload.totalPrice;
         });
+        builder.addCase(actions.getCartMe.rejected, (state, action) => {
+            state.items = [];
+            state.totalItems = 0;
+            state.totalPrice = 0;
+        });
     },
 });
 

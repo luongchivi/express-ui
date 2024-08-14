@@ -40,6 +40,10 @@ const path = {
     MEMBER: 'member',
     PERSONAL: 'personal',
     CART: 'cart',
+    CHECK_OUT: 'check-out',
+    PURCHASE: 'purchase-items',
+    SUCCESS__OID: 'purchase-success/:orderId',
+    SUCCESS: 'purchase-success',
 };
 
 export default path;

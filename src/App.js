@@ -36,7 +36,7 @@ import {
     CreateUser,
     UpdateUser,
 } from './pages/admin';
-import {Cart, Member, Personal} from './pages/member';
+import {Cart, CheckOut, Member, Personal, Purchase, Success} from './pages/member';
 
 function App() {
     const { isShowModal, modalChildren } = useSelector(state => state.app);
@@ -62,6 +62,9 @@ function App() {
                     <Route path={path.MEMBER} element={<Member />}>
                         <Route path={path.PERSONAL} element={<Personal />} />
                         <Route path={path.CART} element={<Cart />} />
+                        <Route path={path.CHECK_OUT} element={<CheckOut />} />
+                        <Route path={path.PURCHASE} element={<Purchase />} />
+                        <Route path={path.SUCCESS__OID} element={<Success />} />
                     </Route>
                 </Route>
                 <Route path={path.ADMIN} element={<Admin />}>

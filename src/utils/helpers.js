@@ -2,6 +2,9 @@ import icons from "./icons";
 import {apiAddToCart} from "../apis";
 import Swal from "sweetalert2";
 import path from "./path";
+import {showModal} from "../store/app/appSlice";
+import {Loading} from "../components";
+import React from "react";
 
 
 export const createSlug = string => string.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").split(" ").join("-");
@@ -118,17 +121,15 @@ export const stripHtmlTags = (html) => {
     return doc.body.textContent || "";
 };
 
-export const handleAddToCart = async (e, id, navigate, isLogin) => {
+export const handleAddToCart = async (e, id, navigate, isLogin, quantity = 1) => {
     if(e) {
         e.preventDefault();
     }
-    console.log(id);
-    console.log("add to cart");
     try {
         if(isLogin) {
             const response = await apiAddToCart({
                 productId: id,
-                quantity: 1,
+                quantity,
             });
             if (response?.results?.statusCode === 200) {
                 await Swal.fire('Add item successfully.', response?.results?.message, 'success');

@@ -8,6 +8,7 @@ import {formatMoney, handleAddToCart, renderStar} from "utils/helpers";
 import {productExtraInfo} from "utils/containts"
 import defaultImageProduct from "assets/default_image_product.png";
 import DOMPurify from 'dompurify';
+import {useSelector} from "react-redux";
 
 const settings = {
     dots: false,
@@ -25,6 +26,7 @@ const ProductDetails = () => {
     const [quantity, setQuantity] = useState(1);
     const [currentImage, setCurrentImage] = useState(null);
     const navigate = useNavigate();
+    const {isLogin} = useSelector(state => state.user);
 
     const fetchProductByCategory = async () => {
         const response = await apiGetProducts({
@@ -149,7 +151,7 @@ const ProductDetails = () => {
                         </div>
                         <Button
                             fw
-                            handleOnClick={e => handleAddToCart(e, pid, navigate)}
+                            handleOnClick={e => handleAddToCart(e, pid, navigate, isLogin, quantity)}
                         >
                             Add to Cart
                         </Button>
