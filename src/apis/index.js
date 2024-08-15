@@ -9,4 +9,4 @@ export * from './district';
 export * from './ward';
 export * from './cart';
 export * from './transaction';
-export * from './checkout';
+export * from './order';

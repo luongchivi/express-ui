@@ -1,13 +1,21 @@
-import React from 'react';
-import {Sidebar, Banner, BestSeller, DealDaily, FeatureProduct, CustomSlider} from '../../components';
-import {useSelector} from "react-redux";
+import React, {useEffect} from 'react';
+import {Sidebar, Banner, BestSeller, DealDaily, FeatureProduct, CustomSlider, BlogSlider} from 'components';
+import {useDispatch, useSelector} from "react-redux";
 import icons from "../../utils/icons";
+import {getBlogs} from "../../store/blog/asyncAction";
 
-const { IoIosArrowForward } = icons;
+const {IoIosArrowForward} = icons;
 
 const Home = () => {
     const {newProducts} = useSelector(state => state.products);
     const {categories} = useSelector(state => state.app);
+    const {blogs} = useSelector(state => state.blog);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getBlogs());
+    }, [dispatch]);
+
 
     return (
         <>
@@ -67,8 +75,10 @@ const Home = () => {
             </div>
             <div className="w-main">
                 <h3 className="text-[20px] font-semibold py-[15px] border-b-2 border-main">BLOGS POSTS</h3>
+                <BlogSlider
+                    blogs={blogs}
+                />
             </div>
-            <div className="w-main h-[500px]">FOOTER</div>
         </>
     )
 }

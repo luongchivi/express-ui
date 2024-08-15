@@ -12,9 +12,8 @@ import {useNavigate} from "react-router-dom";
 // This value is from the props in the UI
 const style = {"layout": "vertical"};
 
-
 // Custom component to wrap the PayPalButtons and show loading spinner
-const ButtonWrapper = ({currency, showSpinner, amount, payload}) => {
+const ButtonWrapper = ({currency, showSpinner, amount, payload, cart}) => {
     const [{isPending, options}, dispatch] = usePayPalScriptReducer();
     const navigate = useNavigate();
 
@@ -34,7 +33,6 @@ const ButtonWrapper = ({currency, showSpinner, amount, payload}) => {
             if (response?.results?.statusCode === 200) {
                 const {id: orderId} = response?.results?.order;
                 await Swal.fire('Check out order successfully.', response?.results?.message, 'success');
-                console.log('orderId:', orderId);
                 return orderId;
             } else {
                 throw new Error('Failed to check out order.');
@@ -48,12 +46,31 @@ const ButtonWrapper = ({currency, showSpinner, amount, payload}) => {
     const handleSaveTransaction = async (response, orderId) => {
         try {
             const payload = JSON.stringify(response);
-            const responseApi = await apiSaveTransactionPaypal({
-                payloadResponsePaypal: payload,
-                orderId,
-            });
-            if (responseApi?.results?.statusCode !== 201) {
-                throw new Error('Failed to save PayPal transaction');
+
+            if (response.status === 'COMPLETED') {
+                const responseApi = await apiSaveTransactionPaypal({
+                    payloadResponsePaypal: payload,
+                    orderId,
+                });
+                if (responseApi?.results?.statusCode !== 201) {
+                    throw new Error('Failed to save PayPal transaction');
+                }
+            } else {
+                // Handle error scenario
+                await apiSaveTransactionPaypal({
+                    payloadResponsePaypal: JSON.stringify({
+                        rawResponse: response,
+                        intent: 'FAILED'
+                    }),
+                    orderId
+                });
+                const responseApi = await apiSaveTransactionPaypal({
+                    payloadResponsePaypal: payload,
+                    orderId,
+                });
+                if (responseApi?.results?.statusCode !== 201) {
+                    throw new Error('Failed to save PayPal transaction');
+                }
             }
         } catch (error) {
             console.error(error);
@@ -73,9 +90,12 @@ const ButtonWrapper = ({currency, showSpinner, amount, payload}) => {
         }
     };
 
+    const totalItemAmount = cart.cart.reduce((acc, item) => acc + (Math.trunc(item.unitPrice / 23500) * item.quantity), 0);
+    const totalAmount = totalItemAmount + cart.shippingFee;
+
     return (
         <>
-            {(showSpinner && isPending) && <div className="spinner" />}
+            {(showSpinner && isPending) && <div className="spinner"/>}
             <PayPalButtons
                 style={style}
                 disabled={false}
@@ -83,42 +103,75 @@ const ButtonWrapper = ({currency, showSpinner, amount, payload}) => {
                 fundingSource={undefined}
                 createOrder={(data, actions) =>
                     actions.order.create({
-                        purchase_units: [{
-                            amount: {
-                                currency_code: currency,
-                                value: amount,
-                            },
-                        }]
+                        purchase_units: [
+                            {
+                                items: cart.cart.map((item) => ({
+                                    name: item.product.name,
+                                    unit_amount: {
+                                        currency_code: currency,
+                                        value: Math.trunc(item.unitPrice / 23500),
+                                    },
+                                    quantity: item.quantity,
+                                })),
+                                amount: {
+                                    currency_code: currency,
+                                    value: totalAmount,
+                                    breakdown: {
+                                        item_total: {
+                                            currency_code: currency,
+                                            value: totalItemAmount,
+                                        },
+                                        shipping: {
+                                            currency_code: currency,
+                                            value: cart.shippingFee,
+                                        },
+                                    }
+                                },
+                            }
+                        ]
                     }).then((orderId) => orderId)
                 }
                 onApprove={(data, actions) => {
-                    console.log('handleCheckOutPayPal is about to be called with payload:', payload);
-                    const orderId = handleCheckOutPayPal(payload).then(orderId => {
-                        console.log('Received orderId from handleCheckOutPayPal:', orderId);
+                    handleCheckOutPayPal(payload).then(orderId => {
                         return actions.order.capture().then(
                             async (response) => {
                                 if (response.status === 'COMPLETED') {
                                     await handleUpdateOrderStatus(orderId);
                                     await handleSaveTransaction(response, orderId);
                                     navigate(`/${path.MEMBER}/${path.SUCCESS}/${orderId}`);
+                                } else {
+                                    await Swal.fire('Error', 'Payment not completed.', 'error');
+                                    throw new Error('Payment not completed.');
                                 }
                             }
-                        );
+                        ).catch(async (error) => {
+                            await handleSaveTransaction({
+                                status: 'FAILED',
+                                ...error
+                            }, orderId);
+                            await Swal.fire('Error', 'Payment not completed.', 'error');
+                            throw new Error('Payment not completed.');
+                        });
                     }).catch(error => {
                         console.error('Error in handleCheckOutPayPal:', error);
                     });
                 }}
-
             />
         </>
     );
 };
 
-export default function Paypal({amount, payload}) {
+export default function Paypal({amount, payload, cart}) {
     return (
         <div style={{maxWidth: "750px", minHeight: "150px"}}>
             <PayPalScriptProvider options={{clientId: "test", components: "buttons", currency: "USD"}}>
-                <ButtonWrapper payload={payload} currency={'USD'} amount={amount} showSpinner={false} />
+                <ButtonWrapper
+                    cart={cart}
+                    payload={payload}
+                    currency={'USD'}
+                    amount={amount}
+                    showSpinner={false}
+                />
             </PayPalScriptProvider>
         </div>
     );

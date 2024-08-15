@@ -20,3 +20,14 @@ export const apiUpdateOrderStatus = (orderId) => axios({
     url: `/api/v1/orders/${orderId}/user`,
     method: "PUT",
 });
+
+export const apiGetAllListOrders = (params) => axios({
+    url: '/api/v1/orders/user',
+    method: "GET",
+    params,
+});
+
+export const apiCancelOrder = (orderId) => axios({
+    url: `/api/v1/orders/${orderId}/cancel-order`,
+    method: "POST",
+});

@@ -1,16 +1,20 @@
 import React, {useEffect} from 'react';
 import {Link, useParams} from "react-router-dom";
-import {apiGetOrderDetailsUser} from "../../apis";
+import {apiCancelOrder, apiGetOrderDetailsUser} from "../../apis";
 import moment from "moment";
 import {formatMoney} from "../../utils/helpers";
 import defaultImageProduct from "../../assets/default_image_product.png";
 import {getCartMe} from "../../store/cart/asyncAction";
 import {useDispatch} from "react-redux";
+import {Button} from "../../components";
+import Swal from "sweetalert2";
 
 const Success = () => {
     const {orderId} = useParams();
     const [order, setOrder] = React.useState(null);
     const dispatch = useDispatch();
+    const isCancellable = moment().diff(moment(order?.createdAt), 'hours') <= 12;
+    const [isCancel, setIsCancel] = React.useState(null);
 
     const fetchOrderDetails = async () => {
         try {
@@ -24,9 +28,21 @@ const Success = () => {
         }
     }
 
+    const handleCancelOrder = async (orderId) => {
+        try {
+            const response = await apiCancelOrder(orderId);
+            if (response?.results?.statusCode === 200) {
+                setIsCancel(true);
+                await Swal.fire('Successfully', 'Cancel order successfully.', 'success');
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     useEffect(() => {
         fetchOrderDetails();
-    }, [orderId])
+    }, [orderId, isCancel])
 
     return (
         <div className="w-[800px] flex flex-col border border-gray-200 p-6 rounded-md">
@@ -77,6 +93,18 @@ const Success = () => {
                     </div>
                 </span>
             </div>
+            <div className="py-4 border-main border-t">
+                <small className="text-[15px] text-gray-600 font-medium">
+                    <strong>Note:</strong> Orders can only be canceled within the last 12 hours.
+                </small>
+            </div>
+            {isCancellable && order?.orderStatus !== 'Cancelled' && (
+                <div className="mb-2">
+                    <Button
+                        handleOnClick={() => handleCancelOrder(orderId)}
+                    >Cancel order</Button>
+                </div>
+            )}
             <div className="mb-4 border-b border-main">
                 <h3 className="text-3xl font-bold mb-2">Order Items</h3>
             </div>

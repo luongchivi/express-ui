@@ -9,8 +9,8 @@ import defaultImageProduct from "assets/default_image_product.png";
 import {formatMoney} from "utils/helpers";
 import path from "utils/path";
 import Swal from "sweetalert2";
-import {getCartMe} from "../../store/cart/asyncAction";
-import {showModal} from "../../store/app/appSlice";
+import {getCartMe} from "store/cart/asyncAction";
+import {showModal} from "store/app/appSlice";
 
 const schemas = {
     firstName: Joi.string().max(30).required(),
@@ -134,7 +134,7 @@ const CheckOut = () => {
         };
 
         setPayloadCheckOut(payload);
-        dispatch(showModal({isShowModal: true, modalChildren: <Loading />}))
+        dispatch(showModal({isShowModal: true, modalChildren: <Loading/>}))
         const response = await apiCheckOutOrder(payload);
         dispatch(showModal({isShowModal: false, modalChildren: null}))
         const {id: orderId} = response?.results?.order;
@@ -320,8 +320,12 @@ const CheckOut = () => {
                                 isPaypal &&
                                 <div className="mt-4">
                                     <Paypal
-                                        amount={Math.round(+totalPrice / 23500)}
+                                        amount={Math.trunc((totalPrice / 23500)) + Math.trunc((shippingFee / 23500))}
                                         payload={{paymentType: 'PayPal'}}
+                                        cart={{
+                                            cart: items,
+                                            shippingFee: Math.trunc(shippingFee / 23500),
+                                        }}
                                     />
                                 </div>
                             }

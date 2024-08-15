@@ -3,29 +3,20 @@ import {createSearchParams, Link, useNavigate, useSearchParams} from 'react-rout
 import {Breadcrumb, Pagination} from 'components';
 import {apiGetAllBlogs} from 'apis';
 import moment from "moment";
-import DOMPurify from "dompurify";
-import icons from "utils/icons"
+import defaultImageProduct from "assets/default_image_product.png";
+import icons from "utils/icons";
 import {stripHtmlTags} from "../../utils/helpers";
 
 const {MdArrowRightAlt} = icons;
 
-const defaultSort = {
-    sortBy: 'createdAt',
-    sortOrder: 'desc',
-};
-
 const Blog = () => {
     const [blogs, setBlogs] = useState([]);
     const [params] = useSearchParams();
-    const [sort, setSort] = useState(defaultSort);
     const [totalItemsFiltered, setTotalItemsFiltered] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(8);
     const navigate = useNavigate();
-    const [queriesFilter, setQueriesFilter] = useState({
-        page: 1,
-        ...defaultSort,
-    });
+    const [queriesFilter, setQueriesFilter] = useState({});
 
     const fetchBlogs = async (queries) => {
         const response = await apiGetAllBlogs(queries);
@@ -59,13 +50,16 @@ const Blog = () => {
     }, [params]);
 
     useEffect(() => {
+        fetchBlogs(queriesFilter);
+    }, [queriesFilter]);
+
+    useEffect(() => {
         window.scrollTo(0, 0);
-        fetchBlogs(queriesFilter).then();
         navigate({
             pathname: '/blogs',
             search: createSearchParams(queriesFilter).toString()
         });
-    }, [queriesFilter, navigate]);
+    }, [queriesFilter]);
 
     return (
         <div className="w-full flex flex-col">
@@ -82,7 +76,7 @@ const Blog = () => {
                                 <div className="w-3/5 flex">
                                     <img
                                         className="object-cover w-full h-[280px] p-1"
-                                        src={blog.thumbImageUrl}
+                                        src={blog.thumbImageUrl || defaultImageProduct}
                                         alt="Thumb Image"
                                     />
                                 </div>

@@ -32,4 +32,6 @@ export { default as ConfirmDelete } from './common/ConfirmDelete';
 export { default as MarkdownEditor } from './input/MarkdownEditor';
 export { default as Loading } from './common/Loading';
 export { default as Paypal } from './common/Paypal';
+export { default as BlogSlider } from './blog/BlogSlider';
+export { default as BlogItem } from './blog/BlogItem';
 

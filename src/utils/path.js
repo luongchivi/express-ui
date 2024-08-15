@@ -44,6 +44,7 @@ const path = {
     PURCHASE: 'purchase-items',
     SUCCESS__OID: 'purchase-success/:orderId',
     SUCCESS: 'purchase-success',
+    HISTORY_ORDER: 'history-order',
 };
 
 export default path;

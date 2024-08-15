@@ -334,7 +334,7 @@ export const personalSidebar = [
         id: 4,
         type: 'SINGLE',
         text: 'History buy',
-        path: `${path.ADMIN}/${path.DASHBOARD}`,
+        path: `/${path.MEMBER}/${path.HISTORY_ORDER}`,
         icon: <MdHistory/>
     },
 ];
