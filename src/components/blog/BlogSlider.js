@@ -14,7 +14,7 @@ const settings = {
 
 const BlogSlider = ({blogs}) => {
     return (
-        <div className="my-4">
+        <div className="my-4 mx-[-10px]">
             {blogs && <Slider className="custom-slider" {...settings}>
                 {blogs.map(blog => (
                     <Link

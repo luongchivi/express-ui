@@ -36,6 +36,8 @@ import { IoMdSettings } from "react-icons/io";
 import { MdHistory } from "react-icons/md";
 import { AiOutlineFileDone } from "react-icons/ai";
 import { FaCalendarAlt } from "react-icons/fa";
+import { FaLocationDot } from "react-icons/fa6";
+import { FaCheck } from "react-icons/fa";
 
 const icons = {
     MdPhone,
@@ -76,6 +78,8 @@ const icons = {
     MdHistory,
     AiOutlineFileDone,
     FaCalendarAlt,
+    FaLocationDot,
+    FaCheck,
 }
 
 export default icons;

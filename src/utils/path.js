@@ -8,8 +8,7 @@ const path = {
     CATEGORIES: 'categories',
     BLOGS: 'blogs',
     BLOGS__BID__TITLE: 'blogs/:bid/:title',
-    OUR_SERVICES: 'services',
-    FAQS: 'faqs',
+    CONTACT_US: 'contact-us',
     PRODUCT_DETAILS__CATEGORY__PID__NAME: 'products/:category/:pid/:name',
     VERIFY_EMAIL: 'verify-email',
     FORGOT_PASSWORD: 'forgot-password',
@@ -21,8 +20,6 @@ const path = {
     MANAGE_ORDERS: 'manage-orders',
 
     MANAGE_USERS: 'manage-users',
-    UPDATE_USER: 'update-user',
-    CREATE_USER: 'create-user',
 
     MANAGE_PRODUCTS: 'manage-products',
     CREATE_PRODUCT: 'create-product',

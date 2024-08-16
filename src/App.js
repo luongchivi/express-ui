@@ -6,8 +6,6 @@ import {
     Public,
     Blog,
     ProductDetails,
-    FAQ,
-    Service,
     Products,
     VerifyEmail,
     ForgotPassword,
@@ -15,6 +13,7 @@ import {
     SignUp,
     Categories,
     BlogDetails,
+    ContactUs,
 } from './pages/public';
 import path from './utils/path';
 import { Modal } from './components';
@@ -33,8 +32,6 @@ import {
     CreateSupplier,
     UpdateSupplier,
     ManageSuppliers,
-    CreateUser,
-    UpdateUser,
 } from './pages/admin';
 import {Cart, CheckOut, Member, Personal, Purchase, Success, HistoryOrder} from './pages/member';
 
@@ -51,8 +48,7 @@ function App() {
                     <Route path={path.PRODUCT_DETAILS__CATEGORY__PID__NAME} element={<ProductDetails />} />
                     <Route path={path.BLOGS} element={<Blog />} />
                     <Route path={path.BLOGS__BID__TITLE} element={<BlogDetails />} />
-                    <Route path={path.FAQS} element={<FAQ />} />
-                    <Route path={path.OUR_SERVICES} element={<Service />} />
+                    <Route path={path.CONTACT_US} element={<ContactUs />} />
                     <Route path={path.VERIFY_EMAIL} element={<VerifyEmail />} />
                     <Route path={path.FORGOT_PASSWORD} element={<ForgotPassword />} />
                     <Route path={path.RESET_PASSWORD__RESET_TOKEN} element={<ResetPassword />} />
@@ -73,8 +69,6 @@ function App() {
 
                     // Manage Users
                     <Route path={path.MANAGE_USERS} element={<ManageUsers />} />
-                    <Route path={path.CREATE_USER} element={<CreateUser />} />
-                    <Route path={path.UPDATE_USER} element={<UpdateUser />} />
 
                     <Route path={path.MANAGE_ORDERS} element={<ManageOrders />} />
 

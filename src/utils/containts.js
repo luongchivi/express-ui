@@ -25,13 +25,8 @@ export const navigation = [
     },
     {
         id: 5,
-        value: 'OUR SERVICES',
-        path: `/${path.OUR_SERVICES}`,
-    },
-    {
-        id: 6,
-        value: 'FAQS',
-        path: `/${path.FAQS}`,
+        value: 'CONTACT US',
+        path: `/${path.CONTACT_US}`,
     }
 ];
 
@@ -244,10 +239,6 @@ export const adminSidebar = [
                 text: 'Manage Users',
                 path: `${path.ADMIN}/${path.MANAGE_USERS}`,
             },
-            {
-                text: 'Create Users',
-                path: `${path.ADMIN}/${path.CREATE_USER}`,
-            },
         ],
         icon: <MdGroups/>
     },
@@ -336,5 +327,36 @@ export const personalSidebar = [
         text: 'History buy',
         path: `/${path.MEMBER}/${path.HISTORY_ORDER}`,
         icon: <MdHistory/>
+    },
+];
+
+export const brandsSlider = [
+    {
+        id: 1,
+        image: 'https://digital-world-2.myshopify.com/cdn/shop/files/logo-1_large_large_768f374b-12c0-4dd0-b9ef-7585f08cdc38_160x160.png?v=1613166661'
+    },
+    {
+        id: 2,
+        image: 'https://digital-world-2.myshopify.com/cdn/shop/files/logo-2_large_large_1c0f984f-9760-4b73-866e-10b9d225d851_160x160.png?v=1613166661'
+    },
+    {
+        id: 3,
+        image: 'https://digital-world-2.myshopify.com/cdn/shop/files/logo-3_large_large_3c4606a2-a297-403f-98ec-271ece5c40db_160x160.png?v=1613166661'
+    },
+    {
+        id: 4,
+        image: 'https://digital-world-2.myshopify.com/cdn/shop/files/logo-4_large_large_f4d00a02-3fbf-4bf1-81a6-daec160e076f_160x160.png?v=1613166661'
+    },
+    {
+        id: 5,
+        image: 'https://digital-world-2.myshopify.com/cdn/shop/files/logo-5_large_large_2629fcad-3956-4ce9-9265-c2e31d94a8c5_160x160.png?v=1613166661'
+    },
+    {
+        id: 6,
+        image: 'https://digital-world-2.myshopify.com/cdn/shop/files/logo-6_large_large_e49d4a97-fd54-48c7-9865-8fc912607190_160x160.png?v=1613166661'
+    },
+    {
+        id: 7,
+        image: 'https://digital-world-2.myshopify.com/cdn/shop/files/logo-7_large_large_de3782ee-9ae1-44b9-b73f-0a77d9c266ee_160x160.png?v=1613166661'
     },
 ];

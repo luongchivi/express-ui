@@ -9,9 +9,9 @@ const { FaCalendarAlt } = icons;
 const BlogItem = ({ blogData }) => {
     return (
         <div>
-            <div className="flex flex-col min-h-[400px] gap-2">
+            <div className="flex flex-col min-h-[400px] gap-2 w-full px-[10px]">
                 <img
-                    className="object-contain w-[407px] h-[270px] shadow-md" // Customize border here
+                    className="object-contain w-[407px] h-[270px] shadow-md"
                     src={blogData.thumbImageUrl || defaultImageProduct}
                     alt="Blog Thumbnail"
                 />

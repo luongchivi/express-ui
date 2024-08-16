@@ -1,8 +1,18 @@
 import React, {useEffect} from 'react';
-import {Sidebar, Banner, BestSeller, DealDaily, FeatureProduct, CustomSlider, BlogSlider} from 'components';
+import {
+    Sidebar,
+    Banner,
+    BestSeller,
+    DealDaily,
+    FeatureProduct,
+    CustomSlider,
+    BlogSlider,
+    BrandSlider
+} from 'components';
 import {useDispatch, useSelector} from "react-redux";
-import icons from "../../utils/icons";
-import {getBlogs} from "../../store/blog/asyncAction";
+import icons from "utils/icons";
+import {getBlogs} from "store/blog/asyncAction";
+import {brandsSlider} from "utils/containts";
 
 const {IoIosArrowForward} = icons;
 
@@ -29,19 +39,19 @@ const Home = () => {
                     <BestSeller/>
                 </div>
             </div>
-            <div className="my-8">
+            <div className="my-4">
                 <FeatureProduct/>
             </div>
-            <div className="my-8 w-main">
-                <h3 className="text-[20px] font-semibold py-[15px] border-b-2 border-main">NEW ARRIVALS</h3>
+            <div className="my-4 w-main">
+                <h3 className="text-[20px] font-semibold mt-4 border-b-2 border-main">NEW ARRIVALS</h3>
                 <div className="mt-4 mx-[-10px]">
                     <CustomSlider
                         products={newProducts}
                     />
                 </div>
             </div>
-            <div className="my-8 w-main">
-                <h3 className="text-[20px] font-semibold py-[15px] border-b-2 border-main">HOT COLLECTIONS</h3>
+            <div className="my-4 w-main">
+                <h3 className="text-[20px] font-semibold mt-4 border-b-2 border-main">HOT COLLECTIONS</h3>
                 <div className="flex flex-wrap gap-4 mt-4">
                     {categories?.map(el => (
                         <div
@@ -73,11 +83,18 @@ const Home = () => {
                     ))}
                 </div>
             </div>
-            <div className="w-main">
-                <h3 className="text-[20px] font-semibold py-[15px] border-b-2 border-main">BLOGS POSTS</h3>
+            <div className="w-main px-0">
+                <h3 className="text-[20px] font-semibold mt-4 border-b-2 border-main">BLOGS POSTS</h3>
                 <BlogSlider
                     blogs={blogs}
                 />
+            </div>
+            <div className="w-main px-0">
+                <div className="mt-4 mx-[-10px]">
+                    <BrandSlider
+                        brands={brandsSlider}
+                    />
+                </div>
             </div>
         </>
     )

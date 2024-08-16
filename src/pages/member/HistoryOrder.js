@@ -1,7 +1,7 @@
 import React, {memo, useCallback, useEffect, useState} from 'react';
 import moment from "moment/moment";
 import { formatMoney } from "utils/helpers";
-import { apiGetAllListOrders } from "apis";
+import { apiGetAllListOrdersUser } from "apis";
 import { createSearchParams, Link, useNavigate, useSearchParams } from "react-router-dom";
 import icons from "utils/icons";
 import path from "utils/path";
@@ -20,7 +20,7 @@ const HistoryOrder = () => {
 
     const fetchOrders = async (filter) => {
         try {
-            const response = await apiGetAllListOrders(filter);
+            const response = await apiGetAllListOrdersUser(filter);
             if (response?.results?.statusCode === 200) {
                 const {
                     orders,

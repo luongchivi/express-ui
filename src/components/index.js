@@ -34,4 +34,6 @@ export { default as Loading } from './common/Loading';
 export { default as Paypal } from './common/Paypal';
 export { default as BlogSlider } from './blog/BlogSlider';
 export { default as BlogItem } from './blog/BlogItem';
+export { default as BrandSlider } from './brand/BrandSlider';
+export { default as BrandItem } from './brand/BrandItem';
 

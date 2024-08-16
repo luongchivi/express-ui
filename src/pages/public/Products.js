@@ -115,7 +115,7 @@ const Products = () => {
         <div className="w-full">
             <div className="h-[81px] flex justify-center items-center bg-gray-100">
                 <div className="w-main">
-                    <h3 className="font-semibold uppercase">{categoryName || 'All Categories'}</h3>
+                    <h3 className="font-semibold uppercase">{categoryName || 'All Products'}</h3>
                     <Breadcrumb categoryName={categoryName}/>
                 </div>
             </div>

@@ -28,6 +28,7 @@ const FeatureProduct = () => {
                         name={el.name}
                         averageRating={el.averageRating}
                         unitPrice={el.unitPrice}
+                        product={el}
                     />
                 ))}
             </div>

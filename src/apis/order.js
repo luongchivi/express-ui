@@ -16,12 +16,12 @@ export const apiGetOrderDetailsUser = (orderId) => axios({
     method: "GET",
 });
 
-export const apiUpdateOrderStatus = (orderId) => axios({
+export const apiUpdateOrderStatusUser = (orderId) => axios({
     url: `/api/v1/orders/${orderId}/user`,
     method: "PUT",
 });
 
-export const apiGetAllListOrders = (params) => axios({
+export const apiGetAllListOrdersUser = (params) => axios({
     url: '/api/v1/orders/user',
     method: "GET",
     params,
@@ -30,4 +30,16 @@ export const apiGetAllListOrders = (params) => axios({
 export const apiCancelOrder = (orderId) => axios({
     url: `/api/v1/orders/${orderId}/cancel-order`,
     method: "POST",
+});
+
+export const apiGetAllListOrdersAdmin = (params) => axios({
+    url: '/api/v1/orders',
+    method: "GET",
+    params,
+});
+
+export const apiUpdateOrderStatusAdmin = (orderId, data) => axios({
+    url: `/api/v1/orders/${orderId}`,
+    method: "PUT",
+    data,
 });

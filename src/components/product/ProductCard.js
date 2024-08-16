@@ -1,10 +1,13 @@
 import React, {memo} from 'react';
 import {formatMoney, renderStar} from "utils/helpers";
+import {Link} from "react-router-dom";
 
 
-const ProductCard = ({thumbImageUrl, name, unitPrice, averageRating}) => {
+const ProductCard = ({thumbImageUrl, name, unitPrice, averageRating, product}) => {
     return (
-        <div className="w-1/3 flex-auto  px-[10px] mb-[20px]">
+        <Link className="w-1/3 flex-auto  px-[10px] mb-[20px]"
+              to={`/products/${product?.category?.name?.toLowerCase() || 'product'}/${product?.id}/${product?.name}`}
+        >
             <div className="border flex w-full">
                 <img
                     src={thumbImageUrl}
@@ -19,7 +22,7 @@ const ProductCard = ({thumbImageUrl, name, unitPrice, averageRating}) => {
                     <span>{formatMoney(unitPrice)} VND</span>
                 </div>
             </div>
-        </div>
+        </Link>
     );
 }
 

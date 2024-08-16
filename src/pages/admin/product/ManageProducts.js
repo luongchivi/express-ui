@@ -5,7 +5,7 @@ import {ConfirmDelete, Loading, Pagination} from "components";
 import { createSearchParams, Link, useNavigate } from "react-router-dom";
 import defaultImage from "assets/default_image_product.png";
 import icons from "utils/icons";
-import {showLoadingModal, showModal} from "store/app/appSlice";
+import {showModal} from "store/app/appSlice";
 import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 
@@ -83,19 +83,19 @@ const ManageProducts = () => {
         <div className="p-4 m-auto flex flex-col">
             <h1 className="text-3xl font-bold py-4">Manage Products</h1>
             <div className="w-[500px] flex items-center py-4">
-                <div
-                    className="h-[56px] w-[56px] bg-black rounded-l-xl flex items-center justify-center text-white cursor-pointer"
-                    onClick={handleSearch}
-                >
-                    <IoSearchOutline size={18}/>
-                </div>
                 <input
-                    className="w-full p-4 pr-0 rounded-r-xl bg-[#f04646] outline-none text-gray-100 placeholder:text-sm placeholder:text-gray-200 placeholder:italic placeholder:opacity-50"
+                    className="w-full p-4 pr-0 rounded-l-xl bg-[#f04646] outline-none text-gray-100 placeholder:text-sm placeholder:text-gray-200 placeholder:italic placeholder:opacity-50"
                     type="text"
                     placeholder="Search product name"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
+                <div
+                    className="h-[56px] w-[56px] bg-black rounded-r-xl flex items-center justify-center text-white cursor-pointer"
+                    onClick={handleSearch}
+                >
+                    <IoSearchOutline size={18}/>
+                </div>
             </div>
             <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200 border rounded-md">
@@ -196,7 +196,6 @@ const ManageProducts = () => {
                                     className="text-red-600 hover:text-red-900"
                                     onClick={(e) => {
                                         e.preventDefault();
-                                        console.log(1);
                                         dispatch(showModal({
                                             isShowModal: true,
                                             modalChildren: <ConfirmDelete id={product?.id} handleSubmit={handleDelete}/>

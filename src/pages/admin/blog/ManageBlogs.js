@@ -85,19 +85,19 @@ const ManageBlogs = () => {
         <div className="p-4 m-auto flex flex-col">
             <h1 className="text-3xl font-bold py-4">Manage Blogs</h1>
             <div className="w-[500px] flex items-center py-4">
-                <div
-                    className="h-[56px] w-[56px] bg-black rounded-l-xl flex items-center justify-center text-white cursor-pointer"
-                    onClick={handleSearch}
-                >
-                    <IoSearchOutline size={18}/>
-                </div>
                 <input
-                    className="w-full p-4 pr-0 rounded-r-xl bg-[#f04646] outline-none text-gray-100 placeholder:text-sm placeholder:text-gray-200 placeholder:italic placeholder:opacity-50"
+                    className="w-full p-4 pr-0 rounded-l-xl bg-[#f04646] outline-none text-gray-100 placeholder:text-sm placeholder:text-gray-200 placeholder:italic placeholder:opacity-50"
                     type="text"
                     placeholder="Search blog title"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
+                <div
+                    className="h-[56px] w-[56px] bg-black rounded-r-xl flex items-center justify-center text-white cursor-pointer"
+                    onClick={handleSearch}
+                >
+                    <IoSearchOutline size={18}/>
+                </div>
             </div>
             <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200 border rounded-md">

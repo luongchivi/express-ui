@@ -16,3 +16,9 @@ export const apiUpdateUser = (id, data) => axios({
     method: "PUT",
     data,
 });
+
+export const apiUpdateStatusAdmin = (id, data) => axios({
+    url: `/api/v1/users/${id}/admin`,
+    method: "PUT",
+    data,
+});

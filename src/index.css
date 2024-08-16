@@ -16,7 +16,7 @@
 
 .custom-slider button.slick-next::before{
     color: #8a8585;
-    background-color: #f6e5e5;
+    background-color: #e5e2e2;
     font-size: 30px;
     width: 60px;
     height: 60px;
@@ -29,7 +29,7 @@
 }
 .custom-slider button.slick-prev::before{
     color: #8a8585;
-    background-color: #f6e5e5;
+    background-color: #e5e2e2;
     font-size: 30px;
     width: 60px;
     height: 60px;
@@ -55,7 +55,7 @@
 
 .images-slider button.slick-next::before{
     color: #8a8585;
-    background-color: #f6e5e5;
+    background-color: #e5e2e2;
     font-size: 30px;
     width: 40px;
     height: 40px;
@@ -68,7 +68,7 @@
 }
 .images-slider button.slick-prev::before{
     color: #8a8585;
-    background-color: #f6e5e5;
+    background-color: #e5e2e2;
     font-size: 30px;
     width: 40px;
     height: 40px;
@@ -98,7 +98,7 @@
 
 .images-slider-admin button.slick-next::before{
     color: #8a8585;
-    background-color: #f6e5e5;
+    background-color: #e5e2e2;
     font-size: 30px;
     width: 40px;
     height: 40px;
@@ -111,7 +111,7 @@
 }
 .images-slider-admin button.slick-prev::before{
     color: #8a8585;
-    background-color: #f6e5e5;
+    background-color: #e5e2e2;
     font-size: 30px;
     width: 40px;
     height: 40px;
@@ -122,3 +122,41 @@
     transform: translateY(-50%);
     content: '\276E';
 }
+
+.custom-slider-brand button.slick-next{
+    right: 60px;
+    z-index: 10;
+}
+
+.custom-slider-brand button.slick-prev{
+    left: 20px;
+    z-index: 10;
+}
+
+.custom-slider-brand button.slick-next::before{
+    color: #8a8585;
+    background-color: #e5e2e2;
+    font-size: 30px;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 50%;
+    transform: translateY(-40%);
+    content: '\276F'; /* https://www.toptal.com/designers/htmlarrows/symbols/ */
+}
+.custom-slider-brand button.slick-prev::before{
+    color: #8a8585;
+    background-color: #e5e2e2;
+    font-size: 30px;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 50%;
+    transform: translateY(-40%);
+    content: '\276E';
+}
+

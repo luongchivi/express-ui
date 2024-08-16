@@ -4,7 +4,7 @@ import {
     usePayPalScriptReducer
 } from "@paypal/react-paypal-js";
 import {useEffect} from "react";
-import {apiCheckOutOrder, apiSaveTransactionPaypal, apiUpdateOrderStatus} from "../../apis";
+import {apiCheckOutOrder, apiSaveTransactionPaypal, apiUpdateOrderStatusUser} from "../../apis";
 import Swal from "sweetalert2";
 import path from "../../utils/path";
 import {useNavigate} from "react-router-dom";
@@ -80,7 +80,7 @@ const ButtonWrapper = ({currency, showSpinner, amount, payload, cart}) => {
 
     const handleUpdateOrderStatus = async (orderId) => {
         try {
-            const responseApi = await apiUpdateOrderStatus(orderId);
+            const responseApi = await apiUpdateOrderStatusUser(orderId);
             if (responseApi?.results?.statusCode !== 200) {
                 throw new Error('Failed to update order status.');
             }
@@ -164,7 +164,7 @@ const ButtonWrapper = ({currency, showSpinner, amount, payload, cart}) => {
 export default function Paypal({amount, payload, cart}) {
     return (
         <div style={{maxWidth: "750px", minHeight: "150px"}}>
-            <PayPalScriptProvider options={{clientId: "test", components: "buttons", currency: "USD"}}>
+            <PayPalScriptProvider options={{clientId: process.env.REACT_APP_PAYPAL_CLIENT_ID, components: "buttons", currency: "USD"}}>
                 <ButtonWrapper
                     cart={cart}
                     payload={payload}
