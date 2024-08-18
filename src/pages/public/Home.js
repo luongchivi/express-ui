@@ -83,12 +83,15 @@ const Home = () => {
                     ))}
                 </div>
             </div>
-            <div className="w-main px-0">
-                <h3 className="text-[20px] font-semibold mt-4 border-b-2 border-main">BLOGS POSTS</h3>
-                <BlogSlider
-                    blogs={blogs}
-                />
-            </div>
+            {
+                blogs.length > 0 &&
+                <div className="w-main px-0">
+                    <h3 className="text-[20px] font-semibold mt-4 border-b-2 border-main">BLOGS POSTS</h3>
+                    <BlogSlider
+                        blogs={blogs}
+                    />
+                </div>
+            }
             <div className="w-main px-0">
                 <div className="mt-4 mx-[-10px]">
                     <BrandSlider

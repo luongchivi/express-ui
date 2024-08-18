@@ -5,6 +5,7 @@ import path from "./path";
 import {showModal} from "../store/app/appSlice";
 import {Loading} from "../components";
 import React from "react";
+import {apiAddToWishlist} from "../apis/wishlist";
 
 
 export const createSlug = string => string.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").split(" ").join("-");
@@ -134,6 +135,30 @@ export const handleAddToCart = async (e, id, navigate, isLogin, quantity = 1) =>
             if (response?.results?.statusCode === 200) {
                 await Swal.fire('Add item successfully.', response?.results?.message, 'success');
                 navigate(`/${path.MEMBER}/${path.CART}`);
+            } else {
+                await Swal.fire('Oops! something wrong.', response?.results?.message, 'error');
+            }
+        } else {
+            await Swal.fire('Oops! something wrong.', 'You need to login.', 'error');
+            navigate(`/${path.LOGIN}`);
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const handleAddToWishlist = async (e, id, navigate, isLogin) => {
+    if(e) {
+        e.preventDefault();
+    }
+    try {
+        if(isLogin) {
+            const response = await apiAddToWishlist({
+                productId: id,
+            });
+            if (response?.results?.statusCode === 200) {
+                await Swal.fire('Add item to wishlist successfully.', response?.results?.message, 'success');
+                navigate(`/${path.MEMBER}/${path.WISHLIST}`);
             } else {
                 await Swal.fire('Oops! something wrong.', response?.results?.message, 'error');
             }

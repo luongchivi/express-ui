@@ -1,5 +1,5 @@
 import React, {memo, useState} from 'react';
-import {formatMoney, handleAddToCart, renderStar} from 'utils/helpers';
+import {formatMoney, handleAddToCart, handleAddToWishlist, renderStar} from 'utils/helpers';
 import labelNew from 'assets/label_new.png';
 import labelBest from 'assets/label_best.png';
 import {SelectOption} from 'components';
@@ -37,7 +37,7 @@ const Product = ({productData, isNew, normal}) => {
                             className="absolute bottom-[-10px] left-0 right-0 flex justify-center gap-4 animate-slide-top">
                             <span><SelectOption icon={<IoEyeSharp/>}/></span>
                             <span onClick={e => handleAddToCart(e, productData?.id, navigate, isLogin)}><SelectOption icon={<TiShoppingCart/>}/></span>
-                            <span><SelectOption icon={<FaHeart/>}/></span>
+                            <span onClick={e => handleAddToWishlist(e, productData?.id, navigate, isLogin)}><SelectOption icon={<FaHeart/>}/></span>
                         </div>
                     }
                     <img

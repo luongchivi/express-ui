@@ -42,6 +42,7 @@ const path = {
     SUCCESS__OID: 'purchase-success/:orderId',
     SUCCESS: 'purchase-success',
     HISTORY_ORDER: 'history-order',
+    WISHLIST: 'wishlist'
 };
 
 export default path;

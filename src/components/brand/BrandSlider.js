@@ -14,7 +14,7 @@ const settings = {
 
 const BrandSlider = ({brands}) => {
     return (
-        <div className="my-4 mx-[-10px]">
+        <div className="my-4">
             {brands && <Slider className="custom-slider-brand" {...settings}>
                 {brands.map(blog => (
                     <div

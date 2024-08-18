@@ -5,6 +5,7 @@ import storage from 'redux-persist/lib/storage';
 import userSlice from 'store/user/userSlice';
 import cartSlice from 'store/cart/cartSlice';
 import blogSlice from "store/blog/blogSlice";
+import wishlistSlice from "store/wishlist/wishlistSlice";
 import {
     persistStore,
     persistReducer,
@@ -33,6 +34,7 @@ export const redux = configureStore({
         blog: blogSlice,
         products: productSlice,
         cart: cartSlice,
+        wishlist: wishlistSlice,
         user: persistReducer(userConfig, userSlice)
     },
     middleware: (getDefaultMiddleware) =>

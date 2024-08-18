@@ -318,7 +318,7 @@ export const personalSidebar = [
         id: 3,
         type: 'SINGLE',
         text: 'Wishlist',
-        path: `${path.ADMIN}/${path.DASHBOARD}`,
+        path: `/${path.MEMBER}/${path.WISHLIST}`,
         icon: <FaHeart/>
     },
     {
