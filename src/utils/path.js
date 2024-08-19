@@ -33,6 +33,10 @@ const path = {
     CREATE_BLOG: 'create-blog',
     UPDATE_BLOG__BID: 'update-blog/:blogId',
 
+    MANAGE_CATEGORIES: 'manage-categories',
+    CREATE_CATEGORY: 'create-category',
+    UPDATE_CATEGORY__CID: 'update-category/:categoryId',
+
     // Member
     MEMBER: 'member',
     PERSONAL: 'personal',

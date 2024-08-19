@@ -31,9 +31,10 @@ import {
     UpdateProduct,
     CreateSupplier,
     UpdateSupplier,
-    ManageSuppliers,
+    ManageSuppliers, ManageCategories, CreateCategory,
 } from './pages/admin';
 import {Cart, CheckOut, Member, Personal, Purchase, Success, HistoryOrder, Wishlist} from './pages/member';
+import UpdateCategory from "./pages/admin/category/UpdateCategory";
 
 function App() {
     const { isShowModal, modalChildren } = useSelector(state => state.app);
@@ -87,6 +88,11 @@ function App() {
                     <Route path={path.MANAGE_SUPPLIERS} element={<ManageSuppliers />} />
                     <Route path={path.CREATE_SUPPLIER} element={<CreateSupplier />} />
                     <Route path={path.UPDATE_SUPPLIER__SID} element={<UpdateSupplier />} />
+
+                    // Manage Categories
+                    <Route path={path.MANAGE_CATEGORIES} element={<ManageCategories />} />
+                    <Route path={path.CREATE_CATEGORY} element={<CreateCategory />} />
+                    <Route path={path.UPDATE_CATEGORY__CID} element={<UpdateCategory />} />
                 </Route>
             </Routes>
         </div>

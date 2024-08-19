@@ -11,3 +11,4 @@ export * from './cart';
 export * from './transaction';
 export * from './order';
 export * from './wishlist';
+export * from './supplier';

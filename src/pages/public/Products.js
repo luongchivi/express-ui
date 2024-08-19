@@ -4,6 +4,7 @@ import {Breadcrumb, InputSelect, Pagination, Product, SearchItem} from "../../co
 import {apiGetCategories, apiGetProducts} from "../../apis";
 import Masonry from 'react-masonry-css';
 import {sortBy} from "../../utils/containts";
+import {apiGetAllSuppliers} from "../../apis/supplier";
 
 const breakpointColumnsObj = {
     default: 4,
@@ -27,7 +28,9 @@ const Products = () => {
     const [pageSize, setPageSize] = useState(10);
     const navigate = useNavigate();
     const [categories, setCategories] = useState([]);
+    const [suppliers, setSuppliers] = useState([]);
     const [categoryName, setCategoryName] = useState('');
+    const [supplierName, setSupplierName] = useState('');
     const [queriesFilter, setQueriesFilter] = useState({
         page: 1,
         ...defaultSort,
@@ -56,6 +59,16 @@ const Products = () => {
                 categories,
             } = response?.results;
             setCategories(categories);
+        }
+    };
+
+    const fetchSuppliers = async () => {
+        const response = await apiGetAllSuppliers();
+        if (response?.results?.statusCode === 200) {
+            const {
+                suppliers,
+            } = response?.results;
+            setSuppliers(suppliers);
         }
     };
 
@@ -95,6 +108,21 @@ const Products = () => {
         })
     };
 
+    const handleOnChangeSupplierFilter = (e) => {
+        const selectedSupplier = e.target.value;
+        setSupplierName(selectedSupplier);
+        setQueriesFilter(prev => {
+            const updatedFilter = {...prev};
+            if (selectedSupplier === 'All Brands') {
+                delete updatedFilter.supplierName;
+            } else {
+                updatedFilter.supplierName = selectedSupplier;
+            }
+            updatedFilter.page = 1;
+            return updatedFilter;
+        })
+    };
+
     useEffect(() => {
         const newQueriesFilter = Object.fromEntries([...params.entries()]);
         setQueriesFilter(prev => ({...prev, ...newQueriesFilter}));
@@ -105,6 +133,7 @@ const Products = () => {
         window.scrollTo(0, 0);
         fetchProducts(queriesFilter).then();
         fetchCategories().then();
+        fetchSuppliers().then();
         navigate({
             pathname: '/products',
             search: createSearchParams(queriesFilter).toString()
@@ -151,7 +180,18 @@ const Products = () => {
                                 </option>
                             ))}
                         </select>
-
+                        <select
+                            className="form-select text-gray-500 text-sm block min-w-[25px] min-h-[46px] border border-gray-800 cursor-pointer"
+                            value={supplierName}
+                            onChange={(e) => handleOnChangeSupplierFilter(e)}
+                        >
+                            <option value={"All Categories"}>All Brands</option>
+                            {suppliers?.map((el, index) => (
+                                <option className="text-gray-500" key={index} value={el.companyName}>
+                                    {el.companyName}
+                                </option>
+                            ))}
+                        </select>
                     </div>
                 </div>
                 <div className="w-1/5 flex flex-col gap-3">

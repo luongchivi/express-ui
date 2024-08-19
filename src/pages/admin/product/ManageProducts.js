@@ -119,7 +119,7 @@ const ManageProducts = () => {
                     </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                    {products.map((product, index) => (
+                    {products.map(product => (
                         <tr key={product.id} className="hover:bg-gray-100">
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 <Link

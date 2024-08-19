@@ -38,6 +38,8 @@ import { AiOutlineFileDone } from "react-icons/ai";
 import { FaCalendarAlt } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import { FaCheck } from "react-icons/fa";
+import { MdCategory } from "react-icons/md";
+import { MdIndeterminateCheckBox } from "react-icons/md";
 
 const icons = {
     MdPhone,
@@ -80,6 +82,8 @@ const icons = {
     FaCalendarAlt,
     FaLocationDot,
     FaCheck,
+    MdCategory,
+    MdIndeterminateCheckBox,
 }
 
 export default icons;

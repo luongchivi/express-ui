@@ -11,3 +11,5 @@ export { default as UpdateProduct } from './product/UpdateProduct';
 export { default as ManageSuppliers } from './supplier/ManageSuppliers';
 export { default as CreateSupplier } from './supplier/CreateSupplier';
 export { default as UpdateSupplier } from './supplier/UpdateSupplier';
+export { default as ManageCategories } from './category/ManageCategories';
+export { default as CreateCategory } from './category/CreateCategory';

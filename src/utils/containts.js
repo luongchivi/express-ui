@@ -220,6 +220,7 @@ const {
     IoMdSettings,
     FaHeart,
     MdHistory,
+    MdCategory,
 } = icons;
 
 export const adminSidebar = [
@@ -296,6 +297,22 @@ export const adminSidebar = [
             },
         ],
         icon: <TbBuildingWarehouse/>
+    },
+    {
+        id: 7,
+        type: 'PARENT',
+        text: 'Manage Category',
+        submenu: [
+            {
+                text: 'Manage Category',
+                path: `${path.ADMIN}/${path.MANAGE_CATEGORIES}`,
+            },
+            {
+                text: 'Create Category',
+                path: `${path.ADMIN}/${path.CREATE_CATEGORY}`,
+            },
+        ],
+        icon: <MdCategory/>
     },
 ];
 
