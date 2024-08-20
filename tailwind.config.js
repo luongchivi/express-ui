@@ -37,7 +37,7 @@ module.exports = {
             // http://animista.net
             keyframes: {
                 'slide-top': {
-                    '0%:': {
+                    '0%': {
                         '-webkit-transform': 'translateY(0);',
                         transform: 'translateY(0);',
                     },
@@ -60,7 +60,6 @@ module.exports = {
         }
     },
     plugins: [
-        require('@tailwindcss/line-clamp'),
         require("@tailwindcss/forms")({
             strategy: 'class',
         }),
